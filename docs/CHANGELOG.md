@@ -157,3 +157,27 @@ own repositories rather than from memory.
   and "tell me about the petrol pump software" both return project chunks as
   the top sources, "what database does PMC hospital use" answers correctly from
   the tech chunk, and an off-topic question is still refused ungrounded.
+
+### Clickable links in answers
+
+Answers used to print "/request?service=online-store" as dead text, which on a
+phone is a path somebody has to retype.
+
+- **The model writes bare paths; the site decides what is a link.**
+  `linkify.js` resolves a path against the real routes and renders it as a
+  labelled button ("Request E-Commerce Stores"), leaves anything unrecognised
+  as plain text, and links the WhatsApp number only when the digits match ours.
+  The alternative, asking the model for markdown or full URLs, hands it the
+  ability to link confidently to a page we do not have.
+
+- **Two off-by-one bugs, both found by testing the parser rather than eyeballing
+  it.** A query string runs to the next space, so it ate the sentence's full
+  stop; the phone pattern allows spaces inside a number, so it ate the space
+  after it and glued the link to the next word. Both are split off and pushed
+  back as text.
+
+- **The prompt now puts the path at the end**, as its own closing line, because
+  it renders as a button and reads badly mid-sentence ("you can request it
+  directly at [Request E-Commerce Stores]"). And when someone asks for a
+  person, the number itself must appear: "message us on WhatsApp" without a
+  number is useless to somebody holding a phone.

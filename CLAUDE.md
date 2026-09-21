@@ -120,10 +120,22 @@ chatbot and the site start telling visitors different things.
 **Never let it invent a price.** We quote per project. The pricing chunk says
 so and the system prompt says so; keep both.
 
+**Links in answers are allowlisted, not trusted.** The model writes bare paths
+(`/request?service=online-store`) because that is the one format it cannot get
+wrong; `_components/chat/linkify.js` then decides whether that route actually
+exists and what to label it. A path to a service we do not sell stays plain
+text rather than becoming a link to a 404, and a phone number that is not ours
+never becomes a tappable WhatsApp link. Asking the model for markdown or full
+URLs instead would invite a confident link to somewhere we did not choose.
+
 Things to know before changing it:
 - The SSE controller is closed in exactly one place, the `finally` in the
   route. Early returns fall through to it. Closing it in a branch as well
   throws "Controller is already closed" and the visitor gets an empty reply.
+- The path pattern runs to the next space, and the phone pattern allows spaces
+  inside the number, so both swallow the character that follows them. Both are
+  split off and pushed back as text; without that, every answer quietly loses
+  its full stop and glues the number to the next word.
 - Only first-turn questions are cached. A follow-up embeds close to its
   neighbours while meaning something different, so caching those serves a
   confident wrong answer.

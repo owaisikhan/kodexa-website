@@ -2,9 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Bot, MessageCircle, Send, Sparkles, X } from "lucide-react";
+import { ArrowUpRight, Bot, MessageCircle, Send, Sparkles, X } from "lucide-react";
+
+import Link from "next/link";
 
 import { siteConfig } from "@/app/_lib/siteConfig";
+import { parseAnswer } from "@/app/_components/chat/linkify";
 
 // The assistant, bottom right. It answers from what the site itself knows and
 // says so plainly when a question is outside that.
@@ -246,10 +249,53 @@ function Bubble({ message }) {
             : "rounded-bl-sm bg-white/[0.05] text-[var(--color-muted)]"
         }`}
       >
-        {message.content || (message.pending ? <Typing /> : null)}
+        {message.content ? (
+          mine ? (
+            message.content
+          ) : (
+            <Linked text={message.content} />
+          )
+        ) : message.pending ? (
+          <Typing />
+        ) : null}
       </p>
     </motion.div>
   );
+}
+
+// An answer's paths and numbers, turned into things you can tap. Only routes
+// that actually exist become links; see linkify.js for why that matters.
+function Linked({ text }) {
+  return parseAnswer(text).map((part, i) => {
+    if (part.type === "link") {
+      return (
+        <Link
+          key={i}
+          href={part.href}
+          className="mx-0.5 inline-flex items-center gap-1 rounded-lg bg-[var(--color-primary)]/15 px-2 py-0.5 font-medium text-[var(--color-primary)] transition-colors hover:bg-[var(--color-primary)]/25"
+        >
+          {part.label}
+          <ArrowUpRight className="h-3 w-3" />
+        </Link>
+      );
+    }
+
+    if (part.type === "external") {
+      return (
+        <a
+          key={i}
+          href={part.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-[var(--color-primary)] underline decoration-[var(--color-primary)]/40 underline-offset-2 hover:decoration-[var(--color-primary)]"
+        >
+          {part.label}
+        </a>
+      );
+    }
+
+    return <span key={i}>{part.value}</span>;
+  });
 }
 
 function Typing() {
