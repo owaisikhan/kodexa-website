@@ -230,34 +230,43 @@ export const process = [
 ];
 
 // Proof. Every item here is a real shipped project.
+//
+// `shot` is the real screenshot, and it wins when it is set. Leave it empty and
+// the card draws the mock in `_components/ui/WorkMock.js` instead, chosen by
+// `mock`. Dropping a file into public/work/ and filling in `shot` is the whole
+// job: no component changes, no layout changes.
 export const work = [
   {
     title: "SAAM'S Store",
     kind: "Online store, admin panel, AI assistant",
     body: "A full storefront with cart, checkout and a chatbot that answers from the live catalogue.",
     href: "https://saam-s-store.vercel.app/",
-    image: "/work/store.jpg",
+    shot: "",
+    mock: "store",
     tags: ["E-Commerce", "AI Assistant", "Admin Panel"],
   },
   {
     title: "Petrol Pump Manager",
     kind: "Business software, offline desktop",
     body: "Daily readings, stock, customer credit and monthly profit. Also ships as a Windows app that needs no internet.",
-    image: "/work/pump.jpg",
+    shot: "",
+    mock: "dashboard",
     tags: ["Dashboard", "Offline Desktop", "Reports"],
   },
   {
     title: "Committee Ledger",
     kind: "Android app, offline first",
     body: "A monthly committee's books on the phone, with the timing problem the bank balance hides made visible.",
-    image: "/work/ledger.jpg",
+    shot: "",
+    mock: "phone",
     tags: ["Android", "Offline", "Ledger"],
   },
   {
     title: "PMC Hospital",
     kind: "Internal system behind a login",
     body: "Wards, pharmacy and lab records for a paediatric hospital. No public pages at all.",
-    image: "/work/hospital.jpg",
+    shot: "",
+    mock: "dashboard",
     tags: ["Internal Tool", "Auth", "Records"],
   },
 ];

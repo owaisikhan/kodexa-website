@@ -51,6 +51,16 @@ generated in `actions.js` rather than returned by the database: reading it
 back would have meant `INSERT ... RETURNING`, which needs a SELECT policy,
 which would have opened the whole table.
 
+## Adding a screenshot of your work
+
+Put the image in `public/work/`, then set `shot: "/work/<file>"` on that
+project in `app/_lib/services-data.js`. Cards without a screenshot draw an
+interface mock instead, which is the honest default for the systems that sit
+behind a login.
+
+`public/work/README.md` has the size, the crop and the list of things to blur
+out before shooting.
+
 ## Changing the important things
 
 | Want to change | Edit |

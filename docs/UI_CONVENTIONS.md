@@ -46,6 +46,21 @@ for labels and metadata only, never a sentence someone has to read.
 - Hover: 0.3 to 0.35s. Anything slower feels broken on a trackpad.
 - Nothing animates on a value a user needs to read before it settles.
 
+## Work cards
+
+Every card leads with a 16:10 image area, whether that is a real screenshot or
+a drawn mock, so the grid keeps one rhythm no matter which it is.
+
+- Screenshots are `object-cover object-top`: the **top** of a screenshot is the
+  part that explains the product, so a tall image loses its bottom, not its
+  header.
+- A screenshot gets a short fade at its bottom edge, only so a bright screen
+  does not fight the dark panel border.
+- Mocks are drawn in `_components/ui/WorkMock.js`: `store`, `dashboard` and
+  `phone`. Add a kind there rather than reaching for an image.
+- Hover scales a screenshot by 1.03 over 700ms. Mocks do not scale; their
+  contents animate in on scroll instead.
+
 ## Accessibility
 
 - Decoration is `aria-hidden`. Every glow, grid and mock.

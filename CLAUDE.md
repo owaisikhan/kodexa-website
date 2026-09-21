@@ -35,6 +35,34 @@ component entrances and exits, Lenis for the scroll itself.
 - `prefers-reduced-motion` is honoured in `globals.css` and checked again in
   every GSAP effect. Test it: DevTools > Rendering > Emulate CSS media.
 
+## Screenshots of our work
+
+The work cards show a **real screenshot when there is one, and a drawn mock
+otherwise**. Most of these systems are behind a login, so the drawings are the
+honest default rather than a placeholder waiting to be replaced.
+
+To add a real one:
+
+1. Put the file in `public/work/` (see `public/work/README.md` for the size,
+   the crop and what must be blurred out first).
+2. Set `shot: "/work/<file>"` on that project in `app/_lib/services-data.js`.
+
+That is the entire change. `WorkMock` picks the screenshot over the drawing on
+its own, and no component needs touching. Leave `mock` in place: it is the
+fallback if the file is ever removed.
+
+**Never invent a screenshot.** No stock photos, no mockups of screens that do
+not exist, and nothing from a project that carries someone else's branding. A
+course-project demo with a banner across the top is not our work.
+
+## The navbar height is load-bearing
+
+The header is `h-[88px]`. Pages that start underneath it hardcode that:
+`pt-[88px]` on full-height sections (hero, 404, error) and `pt-[152px]` on
+pages with a heading block (services, request, work), plus `top-[88px]` on the
+mobile drawer. **Change the header height and all five move**, or content hides
+behind the header on one page and floats on another.
+
 ## Verifying a change
 
 `npm run build` catches imports and typos. It does not catch a page that looks
