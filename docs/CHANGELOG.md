@@ -181,3 +181,23 @@ phone is a path somebody has to retype.
   directly at [Request E-Commerce Stores]"). And when someone asks for a
   person, the number itself must appear: "message us on WhatsApp" without a
   number is useless to somebody holding a phone.
+
+### The request form now follows the URL
+
+Clicking a chat link while already on /request changed the address bar and
+nothing else: the form kept whatever service was selected before, so the URL
+said one thing and the heading said another.
+
+`RequestForm` read `useSearchParams()` once into `useState`. Arriving from
+another page remounts the component and picks the service up correctly, which
+is why this looked fine in every test until the chat widget started offering
+tappable service links from the request page itself. Same route, query string
+only, no remount, stale state.
+
+Fixed with React's "adjust state when a prop changes" pattern: compare against
+the last preset during render and update immediately, rather than in an effect
+that would paint the wrong service first and correct it on the next pass.
+
+Also: the website service said "loads fast on a cheap phone", which the
+assistant repeated back as "loads fast on any phone". It is any device, phone
+or laptop.

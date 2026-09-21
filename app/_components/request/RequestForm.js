@@ -40,6 +40,28 @@ export default function RequestForm() {
   const [values, setValues] = useState(EMPTY);
   const [state, formAction, pending] = useActionState(submitRequest, null);
 
+  // Follow the URL when it changes under us.
+  //
+  // The initial useState above runs once. Arriving at /request?service=x from
+  // somewhere else remounts the component and picks the right service up, but
+  // a link clicked while already on /request only changes the query string:
+  // same route, no remount, so the form quietly kept whatever was selected
+  // before and disagreed with the address bar. The chat widget makes that easy
+  // to hit, since its buttons are tappable from the request page itself.
+  //
+  // This is React's "adjust state when a prop changes" pattern: compare
+  // against the last value during render and update immediately, rather than
+  // in an effect that would render the wrong service first and correct it on
+  // the next pass.
+  const [lastPreset, setLastPreset] = useState(preset);
+  if (preset !== lastPreset) {
+    setLastPreset(preset);
+    if (presetValid && preset !== service) {
+      setService(preset);
+      setStep(1);
+    }
+  }
+
   const chosen = useMemo(
     () => services.find((s) => s.slug === service) || null,
     [service]

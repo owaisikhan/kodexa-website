@@ -15,7 +15,7 @@ export const services = [
     accent: "primary",
     for: "Any business with no site, or a site that embarrasses them.",
     outcomes: [
-      "Loads fast on a cheap phone",
+      "Loads fast on any device, phone or laptop",
       "Looks right at every screen size",
       "Pages you can add to as you grow",
       "Found on Google for your own name",
