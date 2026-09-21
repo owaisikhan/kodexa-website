@@ -60,3 +60,39 @@ error pages. Dark, motion-led, deliberately light on text.
   publicly reachable are either login screens (the pump manager, PMC) or a
   course demo carrying someone else's banner (the-wild-oasis), and a client's
   private dashboard is not ours to publish. Ammar is supplying real ones.
+
+## Branch: feature/admin
+
+An `/admin` area: sign in, read every request, filter by status, move leads
+along, write notes, reply on WhatsApp.
+
+- **`app_admins` is a table, not a hardcoded address in a policy.** Changing
+  who can read the leads is one row rather than a migration. `is_admin()` is
+  SECURITY DEFINER because `app_admins` has RLS on with no policies at all, so
+  a function running as the caller would see zero rows and fail every check
+  closed.
+
+- **Column grants, not just row policies.** RLS says which rows an admin can
+  touch; `grant update (status, notes)` says which fields. An admin moves a
+  lead through its statuses and writes notes, and cannot rewrite the brief the
+  customer actually sent. Proved by trying it as the admin role and getting
+  `insufficient_privilege`.
+
+- **The login page had to move out of the gated layout.** Next composes nested
+  layouts instead of replacing them, so the auth check in `app/admin/layout.js`
+  also wrapped `/admin/login`: signed out, the login page redirected to itself
+  until the browser gave up with ERR_TOO_MANY_REDIRECTS. The gate now lives in
+  `admin/(protected)/layout.js`, which the login page sits outside of.
+
+- **The public chrome moved into `(site)/`.** It was in the root layout, so
+  `/admin` rendered the marketing navbar and the WhatsApp button on top of the
+  admin header, and the fixed navbar swallowed clicks aimed at Sign out. Found
+  by driving the real page, not by reading the code.
+
+- **`STATUSES` moved to `requests-data.js`.** It lived in `data-service.js`,
+  which is `server-only`, and the status buttons are a client component, so
+  importing it dragged the Supabase server client into the browser bundle and
+  the build refused.
+
+- Verified against the live database: anon 0 rows, signed-in non-admin 0 rows,
+  admin sees everything.
