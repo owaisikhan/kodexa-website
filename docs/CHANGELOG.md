@@ -201,3 +201,18 @@ that would paint the wrong service first and correct it on the next pass.
 Also: the website service said "loads fast on a cheap phone", which the
 assistant repeated back as "loads fast on any phone". It is any device, phone
 or laptop.
+
+### The chat list would not scroll with the wheel
+
+Lenis takes the wheel event for the whole document, so the chat's own
+`overflow-y-auto` list never got one: scrolling over the conversation moved the
+page behind it instead, and the messages sat still.
+
+`data-lenis-prevent` on the list hands wheel events back to it, and
+`overscroll-contain` stops the page taking over once you reach the end.
+Measured rather than eyeballed: the list moves 300px on a 300px wheel, and the
+page stays at 0.
+
+Any scrollable panel added later needs both attributes. This is the kind of bug
+that only exists because of a library choice made elsewhere, so it is in
+CLAUDE.md as well.

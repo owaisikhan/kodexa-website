@@ -169,7 +169,15 @@ export default function ChatWidget() {
               </button>
             </header>
 
-            <div ref={scroller} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+            {/* data-lenis-prevent is load-bearing. Lenis takes over the wheel
+                for the whole page, so without it a wheel over this list
+                scrolls the page behind the chat and the conversation itself
+                never moves. Any scrollable panel added later needs it too. */}
+            <div
+              ref={scroller}
+              data-lenis-prevent
+              className="flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-4"
+            >
               {messages.map((m, i) => (
                 <Bubble key={i} message={m} />
               ))}

@@ -20,6 +20,15 @@ make that faster or clearer. Anything that makes it slower needs a reason.
 - **Content is data.** Services, process and work live in `services-data.js`.
   Never write a service's copy into a component.
 
+## Anything scrollable needs data-lenis-prevent
+
+Lenis drives the page scroll and takes the wheel event for the whole document.
+A panel with its own `overflow-y-auto` therefore never receives one: the wheel
+scrolls the page behind it and the panel sits still, looking broken. The chat's
+message list carries `data-lenis-prevent` for exactly this reason. Any
+scrollable panel added later needs it too, plus `overscroll-contain` so
+reaching the end does not start scrolling the page underneath.
+
 ## Motion
 
 GSAP for anything tied to the scroll or a timeline, Motion (Framer) for
