@@ -71,7 +71,12 @@ question is about anything else.
 It needs `GEMINI_API_KEY`. Without one the widget simply does not render and
 the rest of the site is unaffected.
 
-After editing `services-data.js` or `siteConfig.js`:
+It knows two things: what Kodexa sells (built from `services-data.js` and
+`siteConfig.js`) and what Kodexa has built (`app/_lib/chatbot/projects-data.js`,
+covering SAAM'S Store, Petrol Pump Manager, Committee Ledger and PMC Hospital in
+enough depth to answer a real question about any of them).
+
+After editing `services-data.js`, `siteConfig.js` or `projects-data.js`:
 
 ```bash
 npm run seed:knowledge     # needs SUPABASE_SERVICE_ROLE_KEY in .env.local

@@ -12,6 +12,11 @@ export const CHAT = {
   // be to count. The floor is what makes "I can only help with Kodexa" the
   // answer to an off-topic question rather than a confident guess.
   topK: Number(process.env.RAG_TOP_K) || 4,
+
+  // Project knowledge is searched separately, so it gets its own budget. Fewer
+  // than topK because a project answer needs depth on one project, not a
+  // shallow line about four of them.
+  projectTopK: Number(process.env.RAG_PROJECT_TOP_K) || 3,
   minSimilarity: Number(process.env.RAG_MIN_SIMILARITY) || 0.45,
 
   // Turns of conversation folded into the embedded query, so a bare follow-up

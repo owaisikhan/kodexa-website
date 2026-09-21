@@ -98,6 +98,19 @@ question about the weather clears no chunk above the similarity floor and there
 is nothing to answer from: the route sends the fixed out-of-scope line without
 calling the model at all. Lower `RAG_MIN_SIMILARITY` and that fence weakens.
 
+**There are two knowledge bases, searched separately and merged.** `kb_chunks`
+is what we sell and how working with us goes; `project_chunks` is what we have
+actually built, roughly four chunks per project (overview, how it works, the
+tech, the story worth telling). Separate tables rather than one with a `kind`
+column, because in a single table a question about a project competes with nine
+service descriptions that embed nearby, and the project detail gets pushed out
+of the top matches by things that merely sound similar.
+
+`project_chunks` is edited in `app/_lib/chatbot/projects-data.js`. Two rules
+there: every fact comes from that project's own repository, and nothing that is
+not ours to publish. These run real businesses, so describe what the software
+does, never a client's actual numbers, customers or staff.
+
 **The knowledge base is derived, never written by hand.** Every chunk is built
 from `services-data.js` and `siteConfig.js`, so the assistant cannot quote a
 service we do not sell, a timeline the page disagrees with, or an old phone

@@ -139,3 +139,21 @@ tracing.
 
 - **Cost tracing logs a null for an unpriced model** rather than a guessed
   figure. An invented cost is worse than none, because it looks measured.
+
+### Project knowledge
+
+A second knowledge base, `project_chunks`, holding what Kodexa has actually
+built: four projects, roughly four chunks each, written from those projects'
+own repositories rather than from memory.
+
+- **A separate table, not a `kind` column on `kb_chunks`.** Retrieval searches
+  both and merges by similarity. In one combined table a question about a
+  project competes with nine service descriptions that embed nearby, and the
+  detail that actually answers the question gets pushed out of the top matches
+  by things that merely sound similar. Searched separately, each gets its own
+  budget: four knowledge chunks and three project chunks.
+
+- Verified against the live database: "have you built an online store before"
+  and "tell me about the petrol pump software" both return project chunks as
+  the top sources, "what database does PMC hospital use" answers correctly from
+  the tech chunk, and an off-topic question is still refused ungrounded.

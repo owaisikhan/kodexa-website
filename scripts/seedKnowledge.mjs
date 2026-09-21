@@ -14,6 +14,7 @@ import { createClient } from "@supabase/supabase-js";
 
 import { services, process as steps, work } from "../app/_lib/services-data.js";
 import { siteConfig } from "../app/_lib/siteConfig.js";
+import { buildProjectChunks } from "../app/_lib/chatbot/projects-data.js";
 
 const EMBEDDING_MODEL = process.env.GEMINI_EMBEDDING_MODEL || "gemini-embedding-001";
 const DIMENSIONS = 768;
@@ -108,20 +109,29 @@ function buildChunks() {
 const ai = new GoogleGenAI({ apiKey: key });
 const supabase = createClient(url, serviceKey, { auth: { persistSession: false } });
 
-const chunks = buildChunks();
-console.log(`Embedding ${chunks.length} chunks with ${EMBEDDING_MODEL}...`);
-
-const rows = [];
-for (const chunk of chunks) {
-  const response = await ai.models.embedContent({
-    model: EMBEDDING_MODEL,
-    contents: [`${chunk.title}\n${chunk.content}`],
-    config: { outputDimensionality: DIMENSIONS },
-  });
-  rows.push({ ...chunk, embedding: response.embeddings[0].values });
-  process.stdout.write(".");
+async function embedAll(chunks) {
+  const rows = [];
+  for (const chunk of chunks) {
+    const response = await ai.models.embedContent({
+      model: EMBEDDING_MODEL,
+      contents: [`${chunk.title}\n${chunk.content}`],
+      config: { outputDimensionality: DIMENSIONS },
+    });
+    rows.push({ ...chunk, embedding: response.embeddings[0].values });
+    process.stdout.write(".");
+  }
+  console.log();
+  return rows;
 }
-console.log();
+
+const chunks = buildChunks();
+const projectChunks = buildProjectChunks();
+
+console.log(`Embedding ${chunks.length} knowledge chunks with ${EMBEDDING_MODEL}...`);
+const rows = await embedAll(chunks);
+
+console.log(`Embedding ${projectChunks.length} project chunks...`);
+const projectRows = await embedAll(projectChunks);
 
 // Replace rather than append: a renamed or deleted service must not linger in
 // the knowledge base answering questions about itself.
@@ -140,4 +150,21 @@ if (insertError) {
   process.exit(1);
 }
 
-console.log(`Seeded ${rows.length} chunks.`);
+// Same replace-everything rule for the project knowledge: a project that has
+// been renamed or dropped must not linger, answering questions about itself.
+const { error: clearProjects } = await supabase
+  .from("project_chunks")
+  .delete()
+  .gte("id", 0);
+if (clearProjects) {
+  console.error("Could not clear project_chunks:", clearProjects.message);
+  process.exit(1);
+}
+
+const { error: insertProjects } = await supabase.from("project_chunks").insert(projectRows);
+if (insertProjects) {
+  console.error("Could not insert project chunks:", insertProjects.message);
+  process.exit(1);
+}
+
+console.log(`Seeded ${rows.length} knowledge chunks and ${projectRows.length} project chunks.`);
