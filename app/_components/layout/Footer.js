@@ -34,19 +34,19 @@ export default function Footer() {
                 href={whatsappHref({ service: "a project" })}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 hover:text-[var(--color-text)]"
+                className="tap gap-2 hover:text-[var(--color-text)]"
               >
                 <MessageCircle className="h-4 w-4 text-[#25D366]" />
                 {siteConfig.whatsappDisplay}
               </a>
               <a
                 href={`mailto:${siteConfig.email}`}
-                className="inline-flex items-center gap-2 hover:text-[var(--color-text)]"
+                className="tap gap-2 hover:text-[var(--color-text)]"
               >
                 <Mail className="h-4 w-4" />
                 {siteConfig.email}
               </a>
-              <span className="inline-flex items-center gap-2">
+              <span className="tap gap-2">
                 <MapPin className="h-4 w-4" />
                 {siteConfig.location}
               </span>
@@ -62,7 +62,7 @@ export default function Footer() {
                 <li key={s.slug}>
                   <Link
                     href={`/services/${s.slug}`}
-                    className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+                    className="tap text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
                   >
                     {s.title}
                   </Link>
@@ -77,17 +77,17 @@ export default function Footer() {
             </h3>
             <ul className="mt-5 space-y-2.5">
               <li>
-                <Link href="/work" className="text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+                <Link href="/work" className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]">
                   Work
                 </Link>
               </li>
               <li>
-                <Link href="/#process" className="text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+                <Link href="/#process" className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]">
                   How it works
                 </Link>
               </li>
               <li>
-                <Link href="/request" className="text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+                <Link href="/request" className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]">
                   Request a service
                 </Link>
               </li>
@@ -96,7 +96,7 @@ export default function Footer() {
                   href={siteConfig.social.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]"
+                  className="tap gap-1.5 text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]"
                 >
                   <GitBranch className="h-3.5 w-3.5" />
                   GitHub

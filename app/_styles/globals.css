@@ -193,6 +193,45 @@
     background: var(--color-surface-2);
   }
 
+  /* An inline link is about 17px tall, which is a fiddly thing to hit with a
+     thumb. On touch screens this grows the hit area to 44px without changing
+     how anything looks on a mouse-driven screen, so the footer does not turn
+     into a ladder on desktop. Keyed to pointer: coarse rather than a width
+     breakpoint, because the question is what you are pointing with, not how
+     wide the window is. */
+  @media (pointer: coarse) {
+    .tap {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      /* A short word like "Work" is only 35px wide, so height alone is not
+         enough to make it comfortable to hit. */
+      min-width: 44px;
+    }
+  }
+
+  /* Sized by whichever dimension is tighter. 7vw alone gives a 1366x768
+     laptop the same headline as a 27-inch monitor, which pushed the hero's
+     button off the bottom of the screen on the single most common laptop
+     resolution there is. */
+  .hero-title {
+    font-size: clamp(2.5rem, min(7vw, 8.5vh), 5.4rem);
+  }
+
+  /* Hero spacing that shrinks on a short screen instead of holding a desktop
+     gap open on a laptop. */
+  .hero-pad {
+    padding-block: clamp(2rem, 6vh, 5rem);
+  }
+
+  .hero-gap-sm {
+    margin-top: clamp(1rem, 3.2vh, 1.75rem);
+  }
+
+  .hero-gap-lg {
+    margin-top: clamp(1.5rem, 4.5vh, 4rem);
+  }
+
   .marquee-track {
     animation: marquee 38s linear infinite;
   }

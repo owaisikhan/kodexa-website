@@ -56,7 +56,7 @@ export default function WorkShowcase() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)] hover:underline"
+                    className="tap mt-3 gap-1.5 text-sm font-semibold text-[var(--color-primary)] hover:underline"
                   >
                     Visit the live site
                     <ArrowUpRight className="h-4 w-4" />

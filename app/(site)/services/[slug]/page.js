@@ -48,7 +48,7 @@ export default async function ServicePage({ params }) {
           <Reveal direction="none">
             <Link
               href="/#services"
-              className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+              className="tap text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
             >
               &larr; All services
             </Link>

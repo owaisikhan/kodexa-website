@@ -61,6 +61,27 @@ a drawn mock, so the grid keeps one rhythm no matter which it is.
 - Hover scales a screenshot by 1.03 over 700ms. Mocks do not scale; their
   contents animate in on scroll instead.
 
+## Responsive rules
+
+- **Hero type is sized by whichever dimension is tighter**, not by width alone:
+  `clamp(2.5rem, min(7vw, 8.5vh), 5.4rem)`. Width alone hands a 1366x768 laptop
+  the same 90px headline as a 27-inch monitor, and the hero's button falls off
+  the bottom of the screen on the commonest laptop resolution there is.
+- **Hero spacing is viewport-relative** (`hero-pad`, `hero-gap-sm`,
+  `hero-gap-lg`), so a short screen closes the gaps instead of holding a
+  desktop rhythm open.
+- **`.tap` on any inline link.** Under `pointer: coarse` it grows the hit area
+  to 44x44 without changing anything on a mouse-driven screen. A 17px-tall
+  footer link is a miserable thing to hit with a thumb.
+- **The glow orbs shrink on phones**, and the hero carries a scrim below `sm`.
+  At 390px wide a 420px orb sits directly behind the body copy; measured, the
+  paragraph now reads at 6.2:1 against what is actually painted behind it.
+
+The checks that keep this honest are not eyeball work: render every page at
+360, 390, 414, 768, 1024, 1280, 1440 and 1920, then assert no horizontal
+overflow, nothing past the right edge, no text under 12px, no tap target under
+36px, and the hero's call to action above the fold.
+
 ## Accessibility
 
 - Decoration is `aria-hidden`. Every glow, grid and mock.

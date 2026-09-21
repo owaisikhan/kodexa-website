@@ -216,3 +216,30 @@ page stays at 0.
 Any scrollable panel added later needs both attributes. This is the kind of bug
 that only exists because of a library choice made elsewhere, so it is in
 CLAUDE.md as well.
+
+### Responsive pass
+
+Rendered every page at eight widths and asserted against the DOM rather than
+looking at screenshots. Three real problems, all invisible at 1440px:
+
+- **The hero call to action fell below the fold on every common laptop.**
+  1024x600, 1024x640, 1280x720 and 1366x768 all pushed "Request a service" off
+  the bottom, because the headline was sized from viewport width alone, so a
+  laptop got a 27-inch monitor's 90px type. Now sized by whichever dimension is
+  tighter, with viewport-relative hero spacing. The button is above the fold at
+  every size tested, phones included.
+
+- **60 tap targets under 36px on phones**: footer links, "Visit the live site",
+  "← All services". A `.tap` class under `pointer: coarse` gives them a 44x44
+  hit area and leaves desktop alone. Keyed to the pointer rather than a width
+  breakpoint, because the question is what you are pointing with.
+
+- **The hero glow washed out the body copy on phones.** At 390px a 420px orb
+  sits directly behind the paragraph. Orbs shrink below `sm` and a scrim sits
+  between them and the text; the paragraph measures 6.2:1 against the pixels
+  actually painted behind it, which clears WCAG AA for body text.
+
+Also checked, and clean: no horizontal overflow anywhere, no text under 12px,
+nothing clipped, the chat panel fits and its input works at 360px and on a
+landscape phone, the two floating buttons never overlap, and the admin area has
+no overflow at 390px.

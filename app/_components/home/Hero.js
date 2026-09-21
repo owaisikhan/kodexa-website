@@ -70,23 +70,31 @@ export default function Hero() {
       <div
         data-animate="orb"
         data-orb="1"
-        className="glow left-[8%] top-[14%] h-[380px] w-[380px] opacity-0"
+        className="glow left-[8%] top-[14%] h-[200px] w-[200px] opacity-0 sm:h-[380px] sm:w-[380px]"
         style={{ background: "var(--color-primary)", transform: "scale(0.6)" }}
         aria-hidden
       />
       <div
         data-animate="orb"
         data-orb="2"
-        className="glow right-[6%] bottom-[10%] h-[420px] w-[420px] opacity-0"
+        className="glow right-[6%] bottom-[10%] h-[220px] w-[220px] opacity-0 sm:h-[420px] sm:w-[420px]"
         style={{ background: "var(--color-secondary)", transform: "scale(0.6)" }}
         aria-hidden
       />
 
-      <div className="container-x relative grid items-center gap-10 py-20 lg:grid-cols-[1.05fr_0.95fr]">
+      {/* Phones only: the orbs are unavoidably close to the text at this size,
+          so this takes the wash down far enough for muted body copy to stay
+          readable without flattening the effect. */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-[var(--color-bg)]/55 sm:hidden"
+        aria-hidden
+      />
+
+      <div className="container-x hero-pad relative grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
         <div>
         <div
           data-animate="kicker"
-          className="mb-7 inline-flex translate-y-4 items-center gap-2.5 rounded-full border border-[var(--color-primary)]/35 bg-[#070c16]/85 px-5 py-2.5 backdrop-blur-md"
+          className="mb-5 inline-flex translate-y-4 items-center gap-2.5 rounded-full border border-[var(--color-primary)]/35 bg-[#070c16]/85 px-5 py-2.5 backdrop-blur-md"
         >
           <Sparkles className="h-4.5 w-4.5 text-[var(--color-primary)]" />
           <span className="text-[0.95rem] font-semibold tracking-wide text-[var(--color-text)]">
@@ -94,7 +102,7 @@ export default function Hero() {
           </span>
         </div>
 
-        <h1 data-lines className="max-w-4xl text-[clamp(2.6rem,8vw,5.6rem)]">
+        <h1 data-lines className="hero-title max-w-4xl">
           {words.map((w, i) => (
             <span key={i} className="inline-block translate-y-8 opacity-0">
               {w}&nbsp;
@@ -107,7 +115,7 @@ export default function Hero() {
 
         <p
           data-animate="sub"
-          className="mt-7 max-w-xl translate-y-5 text-lg leading-relaxed text-[var(--color-muted)] opacity-0 md:text-xl"
+          className="hero-gap-sm max-w-xl translate-y-5 text-lg leading-relaxed text-[var(--color-muted)] opacity-0 md:text-xl"
         >
           Tell us what you need in two minutes. We reply with a plan and a fixed
           price, usually the same day.
@@ -115,7 +123,7 @@ export default function Hero() {
 
         <div
           data-animate="cta"
-          className="mt-10 flex translate-y-5 flex-col gap-3 opacity-0 sm:flex-row sm:items-center"
+          className="hero-gap-lg flex translate-y-5 flex-col gap-3 opacity-0 sm:flex-row sm:items-center"
         >
           <Button href="/request" size="lg">
             Request a service
@@ -134,7 +142,7 @@ export default function Hero() {
 
         <dl
           data-animate="stats"
-          className="mt-16 flex translate-y-5 flex-wrap gap-x-12 gap-y-6 opacity-0"
+          className="hero-gap-lg flex translate-y-5 flex-wrap gap-x-12 gap-y-5 opacity-0"
         >
           {siteConfig.stats.map((s) => (
             <div key={s.label}>
