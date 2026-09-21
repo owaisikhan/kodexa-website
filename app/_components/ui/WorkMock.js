@@ -1,20 +1,40 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 
-// Interface mocks drawn in the browser. A screenshot of a client's private
-// dashboard is not ours to publish, and a stock photo of a laptop says nothing,
-// so each project gets a small honest drawing of the kind of screen it is.
+// The picture at the top of a work card.
 //
-// `variant` is the image path in services-data.js, kept as a path so swapping
-// in real screenshots later is a one-line change per project.
+// A real screenshot if there is one (`shot`), otherwise an interface drawn in
+// the browser (`mock`). The drawings exist because most of these systems sit
+// behind a login: a client's private dashboard is not ours to publish, and a
+// stock photo of a laptop says nothing.
+//
+// To swap a drawing for the real thing: drop the file in public/work/ and set
+// `shot` on that project in services-data.js. Nothing here needs changing.
 
-export default function WorkMock({ variant, title }) {
-  const kind = String(variant || "").includes("ledger")
-    ? "phone"
-    : String(variant || "").includes("pump") || String(variant || "").includes("hospital")
-      ? "dashboard"
-      : "store";
+export default function WorkMock({ shot, mock = "store", title }) {
+  if (shot) {
+    return (
+      <div className="relative aspect-[16/10] overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-surface)]">
+        <Image
+          src={shot}
+          alt={`${title} screenshot`}
+          fill
+          sizes="(min-width: 768px) 46vw, 100vw"
+          className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+        {/* The card's own text sits below, so the fade is only to stop a bright
+            screenshot fighting the dark panel edge. */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[var(--color-surface)] to-transparent"
+          aria-hidden
+        />
+      </div>
+    );
+  }
+
+  const kind = mock;
 
   return (
     <div className="relative aspect-[16/10] overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-surface)]">

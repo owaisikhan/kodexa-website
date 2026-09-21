@@ -2,7 +2,7 @@ import Button from "@/app/_components/ui/Button";
 
 export default function NotFound() {
   return (
-    <section className="relative flex min-h-[70svh] items-center overflow-hidden pt-[72px]">
+    <section className="relative flex min-h-[70svh] items-center overflow-hidden pt-[88px]">
       <div className="absolute inset-0 grid-bg" aria-hidden />
       <div className="container-x relative text-center">
         <p className="kicker mb-4">404</p>

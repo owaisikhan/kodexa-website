@@ -36,7 +36,7 @@ export default async function ServicePage({ params }) {
 
   return (
     <>
-      <section className="relative overflow-hidden pt-[136px] pb-16 md:pb-24">
+      <section className="relative overflow-hidden pt-[152px] pb-16 md:pb-24">
         <div className="absolute inset-0 grid-bg" aria-hidden />
         <div
           className="glow left-[10%] top-0 h-[360px] w-[420px] opacity-25"

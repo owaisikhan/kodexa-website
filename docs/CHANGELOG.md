@@ -35,3 +35,28 @@ error pages. Dark, motion-led, deliberately light on text.
 - **Work is drawn, not screenshotted.** Most of these projects are behind a
   login and are not ours to publish. `WorkMock` draws the kind of screen each
   one is, so nothing goes stale and nothing pretends to be a photo.
+
+## Branch: feature/real-screenshots
+
+- **The header is bigger.** 72px to 88px, with a larger mark, wordmark and nav
+  links. Every offset derived from it moved with it (`pt-[88px]`,
+  `pt-[152px]`, `top-[88px]`); they are hardcoded in five files, so a future
+  resize means the same sweep.
+
+- **The hero chip was unreadable.** Small muted grey text sat directly on the
+  cyan glow behind it. It is now a denser, darker pill with full-strength text
+  at a larger size, so it stops depending on whatever the glow is doing behind
+  it.
+
+- **Work cards take real screenshots.** `WorkMock` renders `shot` when a
+  project has one and falls back to the drawing otherwise. Adding a screenshot
+  is a file in `public/work/` plus one field in `services-data.js`.
+
+  Verified both paths render together before shipping: a card with a real
+  screenshot sitting beside three drawn ones looks like one grid, which is why
+  the image area is a fixed 16:10 regardless of which is used.
+
+- **No screenshots included yet, deliberately.** The candidates that are
+  publicly reachable are either login screens (the pump manager, PMC) or a
+  course demo carrying someone else's banner (the-wild-oasis), and a client's
+  private dashboard is not ours to publish. Ammar is supplying real ones.

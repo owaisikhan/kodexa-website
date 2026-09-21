@@ -4,7 +4,7 @@ import Button from "@/app/_components/ui/Button";
 
 export default function Error({ reset }) {
   return (
-    <section className="flex min-h-[70svh] items-center pt-[72px]">
+    <section className="flex min-h-[70svh] items-center pt-[88px]">
       <div className="container-x text-center">
         <h1 className="text-[clamp(2rem,5vw,3rem)]">Something went wrong</h1>
         <p className="mx-auto mt-5 max-w-md text-lg text-[var(--color-muted)]">

@@ -31,7 +31,7 @@ export default function WorkShowcase() {
               transition={{ duration: 0.65, delay: (i % 2) * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="panel panel-hover group overflow-hidden"
             >
-              <WorkMock variant={item.image} title={item.title} />
+              <WorkMock shot={item.shot} mock={item.mock} title={item.title} />
 
               <div className="p-6">
                 <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-primary)]">

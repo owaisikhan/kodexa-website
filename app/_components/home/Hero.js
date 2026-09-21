@@ -63,7 +63,7 @@ export default function Hero() {
   return (
     <section
       ref={root}
-      className="relative flex min-h-[92svh] items-center overflow-hidden pt-[72px]"
+      className="relative flex min-h-[92svh] items-center overflow-hidden pt-[88px]"
     >
       <div className="absolute inset-0 grid-bg" aria-hidden />
 
@@ -86,10 +86,10 @@ export default function Hero() {
         <div>
         <div
           data-animate="kicker"
-          className="mb-7 inline-flex translate-y-4 items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/[0.03] px-4 py-1.5"
+          className="mb-7 inline-flex translate-y-4 items-center gap-2.5 rounded-full border border-[var(--color-primary)]/35 bg-[#070c16]/85 px-5 py-2.5 backdrop-blur-md"
         >
-          <Sparkles className="h-3.5 w-3.5 text-[var(--color-primary)]" />
-          <span className="text-xs font-medium tracking-wide text-[var(--color-muted)]">
+          <Sparkles className="h-4.5 w-4.5 text-[var(--color-primary)]" />
+          <span className="text-[0.95rem] font-semibold tracking-wide text-[var(--color-text)]">
             Websites, stores, dashboards, apps and AI
           </span>
         </div>

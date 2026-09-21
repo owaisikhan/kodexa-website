@@ -15,7 +15,7 @@ export const metadata = {
 export default function WorkPage() {
   return (
     <>
-      <section className="relative overflow-hidden pt-[136px] pb-10">
+      <section className="relative overflow-hidden pt-[152px] pb-10">
         <div className="absolute inset-0 grid-bg" aria-hidden />
         <div className="container-x relative">
           <Reveal>
@@ -36,7 +36,7 @@ export default function WorkPage() {
           {work.map((item, i) => (
             <Reveal key={item.title} delay={(i % 2) * 0.1}>
               <article className="panel panel-hover h-full overflow-hidden">
-                <WorkMock variant={item.image} title={item.title} />
+                <WorkMock shot={item.shot} mock={item.mock} title={item.title} />
                 <div className="p-6">
                   <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-primary)]">
                     {item.kind}
