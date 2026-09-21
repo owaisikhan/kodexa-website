@@ -31,7 +31,13 @@ screenshot work described below, waiting on Ammar to test it.
    everything, and even the admin cannot rewrite a customer's brief because
    UPDATE is granted on `status` and `notes` only.
 
-3. **Deploy.** Vercel, region `bom1` to sit beside the database, with
+3. **The chatbot: done**, on `feature/chatbot`. Ask it anything about Kodexa
+   and it answers from the site's own content; ask it anything else and it
+   says it can only help with Kodexa. Needs `GEMINI_API_KEY` in Vercel, and
+   `npm run seed:knowledge` re-run whenever services or contact details
+   change.
+
+4. **Deploy.** Vercel, region `bom1` to sit beside the database, with
    `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and
    `NEXT_PUBLIC_SITE_URL` set.
 
@@ -50,5 +56,9 @@ session transcript, which is not where a production password should live.
   placeholders. The WhatsApp number is real; these two are not.
 - The stats in the hero ("9 services", "20+ projects", "24h reply") are
   hand-written. Keep them true.
+- The chatbot has no voice I/O. The store's pipeline speaks answers aloud
+  through `GEMINI_TTS_MODEL`; here it would be a second paid call per answer
+  for a marketing widget, so it was left out rather than half-built. The
+  agent is one function away from it if it is ever wanted.
 - No analytics. Worth adding before any ad spend, or there is no way to tell
   which service the traffic actually wants.

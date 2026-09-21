@@ -84,6 +84,54 @@ Adding an admin: insert their email into `app_admins` (Supabase dashboard or
 SQL) **and** create the Supabase Auth user. Both, or they sign in to an empty
 table.
 
+## The chatbot
+
+`/api/chat` answers questions about Kodexa and nothing else. The pipeline, in
+order: embed the question (with the last few turns folded in), check the
+semantic cache, retrieve from `kb_chunks` through the `match_kb_chunks`
+function, then stream an answer from Gemini grounded in what came back.
+
+**Scope is enforced twice, and the retrieval half is the real one.** The prompt
+tells the model to refuse anything that is not about Kodexa, but a prompt is
+not a boundary. Retrieval only ever returns Kodexa's own knowledge, so a
+question about the weather clears no chunk above the similarity floor and there
+is nothing to answer from: the route sends the fixed out-of-scope line without
+calling the model at all. Lower `RAG_MIN_SIMILARITY` and that fence weakens.
+
+**There are two knowledge bases, searched separately and merged.** `kb_chunks`
+is what we sell and how working with us goes; `project_chunks` is what we have
+actually built, roughly four chunks per project (overview, how it works, the
+tech, the story worth telling). Separate tables rather than one with a `kind`
+column, because in a single table a question about a project competes with nine
+service descriptions that embed nearby, and the project detail gets pushed out
+of the top matches by things that merely sound similar.
+
+`project_chunks` is edited in `app/_lib/chatbot/projects-data.js`. Two rules
+there: every fact comes from that project's own repository, and nothing that is
+not ours to publish. These run real businesses, so describe what the software
+does, never a client's actual numbers, customers or staff.
+
+**The knowledge base is derived, never written by hand.** Every chunk is built
+from `services-data.js` and `siteConfig.js`, so the assistant cannot quote a
+service we do not sell, a timeline the page disagrees with, or an old phone
+number. **Edit either file and re-run `npm run seed:knowledge`**, or the
+chatbot and the site start telling visitors different things.
+
+**Never let it invent a price.** We quote per project. The pricing chunk says
+so and the system prompt says so; keep both.
+
+Things to know before changing it:
+- The SSE controller is closed in exactly one place, the `finally` in the
+  route. Early returns fall through to it. Closing it in a branch as well
+  throws "Controller is already closed" and the visitor gets an empty reply.
+- Only first-turn questions are cached. A follow-up embeds close to its
+  neighbours while meaning something different, so caching those serves a
+  confident wrong answer.
+- `kb_chunks` has RLS on and no policies. Reading goes through
+  `match_kb_chunks` (SECURITY DEFINER), so a browser can ask for the best few
+  matches and cannot page through the whole knowledge base. Writing needs the
+  service-role key, which only the seed script has.
+
 ## The navbar height is load-bearing
 
 The header is `h-[88px]`. Pages that start underneath it hardcode that:

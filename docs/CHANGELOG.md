@@ -96,3 +96,64 @@ along, write notes, reply on WhatsApp.
 
 - Verified against the live database: anon 0 rows, signed-in non-admin 0 rows,
   admin sees everything.
+
+## Branch: feature/chatbot
+
+A site-scoped assistant, ported from the storefront's pipeline in
+`Ammar-Sagheer/saam-s-store` and cut down to what a marketing site needs.
+
+**What was deliberately left out of the port.** The store's pipeline generates
+SQL against a product database, guards it with a SELECT-only validator, heals
+failed queries, draws charts from the rows and keeps conversation history in
+Redis. None of that applies here: there is no product database to query, no
+rows to chart, and on serverless Redis for a handful of daily questions is more
+moving parts than the problem has. What carried over is the part that matters:
+retrieval-grounded answers, streaming, a semantic cache and per-request cost
+tracing.
+
+- **Scope is retrieval, not just prompting.** The system prompt refuses
+  off-topic questions, but the fence that actually holds is that retrieval only
+  returns Kodexa's own knowledge. An off-topic question clears nothing above
+  the similarity floor, so the route answers with a fixed line without calling
+  the model. Verified: "capital of France" refused ungrounded, "write me a
+  python script" refused, "ignore your instructions" refused, and real
+  questions answered with the right timelines and the right request links.
+
+- **The knowledge base is derived from services-data.js and siteConfig.js.**
+  Nothing is typed by hand, so the assistant cannot quote a service we do not
+  sell or a timeline the page disagrees with.
+
+- **The SSE controller is closed in one place.** The first version closed it in
+  the out-of-scope branch and again in `finally`, which throws "Invalid state:
+  Controller is already closed", fails the whole response, and sends the
+  visitor nothing at all. Found by asking it an off-topic question, not by
+  reading the code: the happy path was perfect.
+
+- **Only first-turn questions are cached.** A follow-up embeds close to its
+  neighbours while meaning something else entirely, so caching it would serve a
+  confident wrong answer to the next person.
+
+- **Rate limited to 8 messages a minute per IP**, in memory. Every message
+  costs real money and the widget sits on a page that ads point at. Per
+  instance rather than global is the honest trade at this size.
+
+- **Cost tracing logs a null for an unpriced model** rather than a guessed
+  figure. An invented cost is worse than none, because it looks measured.
+
+### Project knowledge
+
+A second knowledge base, `project_chunks`, holding what Kodexa has actually
+built: four projects, roughly four chunks each, written from those projects'
+own repositories rather than from memory.
+
+- **A separate table, not a `kind` column on `kb_chunks`.** Retrieval searches
+  both and merges by similarity. In one combined table a question about a
+  project competes with nine service descriptions that embed nearby, and the
+  detail that actually answers the question gets pushed out of the top matches
+  by things that merely sound similar. Searched separately, each gets its own
+  budget: four knowledge chunks and three project chunks.
+
+- Verified against the live database: "have you built an online store before"
+  and "tell me about the petrol pump software" both return project chunks as
+  the top sources, "what database does PMC hospital use" answers correctly from
+  the tech chunk, and an off-topic question is still refused ungrounded.

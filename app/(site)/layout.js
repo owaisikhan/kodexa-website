@@ -2,6 +2,8 @@ import Navbar from "@/app/_components/layout/Navbar";
 import Footer from "@/app/_components/layout/Footer";
 import SmoothScroll from "@/app/_components/layout/SmoothScroll";
 import WhatsAppFab from "@/app/_components/layout/WhatsAppFab";
+import ChatWidget from "@/app/_components/chat/ChatWidget";
+import { isChatConfigured } from "@/app/_lib/chatbot/config";
 
 // The marketing chrome, and only the marketing chrome.
 //
@@ -22,6 +24,9 @@ export default function SiteLayout({ children }) {
       <main id="main">{children}</main>
       <Footer />
       <WhatsAppFab />
+      {/* No API key, no widget: the site keeps working, it just does not offer
+          a chat it cannot answer. */}
+      {isChatConfigured() ? <ChatWidget /> : null}
     </>
   );
 }
