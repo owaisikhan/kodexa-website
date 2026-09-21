@@ -3,10 +3,6 @@ import { Toaster } from "react-hot-toast";
 
 import "@/app/_styles/globals.css";
 import { siteConfig } from "@/app/_lib/siteConfig";
-import Navbar from "@/app/_components/layout/Navbar";
-import Footer from "@/app/_components/layout/Footer";
-import SmoothScroll from "@/app/_components/layout/SmoothScroll";
-import WhatsAppFab from "@/app/_components/layout/WhatsAppFab";
 
 const sans = Inter({
   subsets: ["latin"],
@@ -45,18 +41,11 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${sans.variable} ${display.variable}`}>
+      {/* The root layout carries the fonts, the tokens and the toaster only.
+          Public chrome lives in (site)/layout.js so /admin does not inherit a
+          marketing navbar over its own header. */}
       <body>
-        <SmoothScroll />
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[var(--color-primary)] focus:px-4 focus:py-2 focus:text-[#04121a]"
-        >
-          Skip to content
-        </a>
-        <Navbar />
-        <main id="main">{children}</main>
-        <Footer />
-        <WhatsAppFab />
+        {children}
         <Toaster
           position="bottom-center"
           toastOptions={{

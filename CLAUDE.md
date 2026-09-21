@@ -55,6 +55,35 @@ fallback if the file is ever removed.
 not exist, and nothing from a project that carries someone else's branding. A
 course-project demo with a banner across the top is not our work.
 
+## The admin area
+
+`/admin` reads and works the leads. Three things about it are not negotiable:
+
+**Never grant SELECT on `service_requests` to `anon`.** The publishable key is
+in the page source of a public site. An anon read policy hands every lead, with
+phone numbers, to anyone who opens DevTools. Admin access goes through
+`public.is_admin()`, which checks the caller's email against the `app_admins`
+table.
+
+**Three fences, and none of them assumes another ran.** `proxy.js` redirects a
+request with no session, `(protected)/layout.js` checks the session is an
+admin, and RLS checks again in the database. Middleware is a redirect that
+saves a wasted render, not access control.
+
+**Signed in is not admin.** Every admin action re-checks with `getAdmin()`
+before touching a row. The moment anything else can sign up, that check is the
+only thing standing between them and the leads.
+
+Layout notes: the login page sits **outside** `(protected)/`, because Next
+composes nested layouts rather than replacing them, so a gate in
+`app/admin/layout.js` would wrap the login page and redirect it to itself
+forever. Public chrome lives in `(site)/layout.js`, not the root layout, or the
+fixed marketing navbar renders over the admin header and eats its clicks.
+
+Adding an admin: insert their email into `app_admins` (Supabase dashboard or
+SQL) **and** create the Supabase Auth user. Both, or they sign in to an empty
+table.
+
 ## The navbar height is load-bearing
 
 The header is `h-[88px]`. Pages that start underneath it hardcode that:

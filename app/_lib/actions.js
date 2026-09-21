@@ -2,9 +2,14 @@
 
 import { randomBytes } from "node:crypto";
 
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
 import { createSupabaseServer, isSupabaseConfigured } from "@/app/_lib/supabase-server";
 import { getService } from "@/app/_lib/services-data";
 import { whatsappHref } from "@/app/_lib/siteConfig";
+import { getAdmin } from "@/app/_lib/helpers";
+import { STATUSES } from "@/app/_lib/requests-data";
 
 // Every action returns the same shape, so one message component renders them
 // all: { ok, message, ...extras }.
@@ -124,4 +129,100 @@ export async function submitRequest(prevState, formData) {
     whatsappUrl,
     reference,
   };
+}
+
+// ---------------------------------------------------------------------------
+// Admin
+// ---------------------------------------------------------------------------
+
+/** Sign in. Wrong credentials say so without saying which half was wrong. */
+export async function signInAction(prevState, formData) {
+  const email = clean(formData.get("email"), 120);
+  const password = String(formData.get("password") ?? "");
+  const next = clean(formData.get("next"), 200) || "/admin";
+
+  if (!email || !password) {
+    return { ok: false, message: "Enter your email and password." };
+  }
+
+  const supabase = await createSupabaseServer();
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    return { ok: false, message: "That email and password do not match." };
+  }
+
+  // Signing in is not the same as being allowed in. If this account is not on
+  // the admin list, end the session here rather than letting it sit on a page
+  // that will only ever show an empty table.
+  const admin = await getAdmin();
+  if (!admin) {
+    await supabase.auth.signOut();
+    return { ok: false, message: "That account does not have access." };
+  }
+
+  redirect(next.startsWith("/admin") ? next : "/admin");
+}
+
+export async function signOutAction() {
+  const supabase = await createSupabaseServer();
+  await supabase.auth.signOut();
+  redirect("/admin/login");
+}
+
+/** Move a request along: new, contacted, quoted, won, lost. */
+export async function updateRequestStatusAction(prevState, formData) {
+  const admin = await getAdmin();
+  if (!admin) return { ok: false, message: "Not signed in." };
+
+  const id = Number(formData.get("id"));
+  const status = clean(formData.get("status"), 20);
+
+  if (!Number.isInteger(id) || id <= 0) {
+    return { ok: false, message: "That request no longer exists." };
+  }
+  if (!STATUSES.includes(status)) {
+    return { ok: false, message: "That is not a status we use." };
+  }
+
+  const supabase = await createSupabaseServer();
+  const { error } = await supabase
+    .from("service_requests")
+    .update({ status })
+    .eq("id", id);
+
+  if (error) {
+    console.error("status update failed:", error.message);
+    return { ok: false, message: "Could not save that. Try again." };
+  }
+
+  revalidatePath("/admin");
+  return { ok: true, message: `Marked ${status}.`, status };
+}
+
+/** Your own notes on a request. The customer's brief is never editable. */
+export async function updateRequestNotesAction(prevState, formData) {
+  const admin = await getAdmin();
+  if (!admin) return { ok: false, message: "Not signed in." };
+
+  const id = Number(formData.get("id"));
+  const notes = clean(formData.get("notes"), 4000);
+
+  if (!Number.isInteger(id) || id <= 0) {
+    return { ok: false, message: "That request no longer exists." };
+  }
+
+  const supabase = await createSupabaseServer();
+  const { error } = await supabase
+    .from("service_requests")
+    .update({ notes: notes || null })
+    .eq("id", id);
+
+  if (error) {
+    console.error("notes update failed:", error.message);
+    return { ok: false, message: "Could not save your note. Try again." };
+  }
+
+  revalidatePath("/admin");
+  return { ok: true, message: "Note saved." };
 }

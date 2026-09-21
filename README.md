@@ -61,6 +61,15 @@ behind a login.
 `public/work/README.md` has the size, the crop and the list of things to blur
 out before shooting.
 
+## Reading the leads
+
+Sign in at `/admin`. Requests are listed newest first with filters for each
+status, a note field, and a button that replies to the sender on WhatsApp.
+
+Access is one email in the `app_admins` table. To add someone: create their
+Supabase Auth user **and** insert their email into that table. Either one on
+its own leaves them signed in to an empty screen.
+
 ## Changing the important things
 
 | Want to change | Edit |

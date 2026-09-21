@@ -20,24 +20,29 @@ screenshot work described below, waiting on Ammar to test it.
    `public/work/` and set `shot` in `app/_lib/services-data.js`. See
    `public/work/README.md`. Nothing else changes.
 
-2. **The `/admin` page.** Agreed but not started. Leads currently have to be
-   read in the Supabase dashboard. What it needs:
+2. **The `/admin` page: done**, on `feature/admin`. Sign in at `/admin/login`,
+   see every request newest first, filter by status, move a lead through
+   `new → contacted → quoted → won → lost`, write private notes, and reply
+   straight to their WhatsApp. Reads are in `data-service.js`, writes in
+   `actions.js`, and access is `app_admins` + `is_admin()` + RLS.
 
-   - A login. Supabase Auth, one admin account, checked in
-     `app/admin/layout.js` **and** enforced again by an RLS policy, because
-     "authenticated" will not mean "admin" the moment anything else can sign in.
-   - **A SELECT policy on `service_requests`, scoped to the admin.** The table
-     has none today on purpose. Do not widen it to `anon`: the publishable key
-     is in the page source, and a public SELECT policy hands every lead to
-     anyone who opens DevTools.
-   - Reads go in `app/_lib/data-service.js`, the status update goes in
-     `app/_lib/actions.js`, returning `{ ok, message }` like everything else.
-   - A list with the status column (`new`, `contacted`, `quoted`, `won`,
-     `lost`), newest first, paginated, and a notes field.
+   Verified against the live database: anon sees 0 rows, a signed-in
+   non-admin sees 0 rows and `is_admin()` returns false, the admin sees
+   everything, and even the admin cannot rewrite a customer's brief because
+   UPDATE is granted on `status` and `notes` only.
 
 3. **Deploy.** Vercel, region `bom1` to sit beside the database, with
    `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and
    `NEXT_PUBLIC_SITE_URL` set.
+
+## The admin login
+
+One account: `owasikhan22@gmail.com`, created through the Supabase signup
+endpoint and confirmed directly in `auth.users`, with its email seeded into
+`app_admins`.
+
+**Change that password in the Supabase dashboard.** It was generated in a
+session transcript, which is not where a production password should live.
 
 ## Known gaps
 
