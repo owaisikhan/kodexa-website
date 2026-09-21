@@ -61,6 +61,25 @@ behind a login.
 `public/work/README.md` has the size, the crop and the list of things to blur
 out before shooting.
 
+## The chatbot
+
+The widget bottom right answers questions about Kodexa: what we build, what a
+service includes, how long it takes, how to request it. It answers from the
+site's own content, and says plainly that it can only help with Kodexa when a
+question is about anything else.
+
+It needs `GEMINI_API_KEY`. Without one the widget simply does not render and
+the rest of the site is unaffected.
+
+After editing `services-data.js` or `siteConfig.js`:
+
+```bash
+npm run seed:knowledge     # needs SUPABASE_SERVICE_ROLE_KEY in .env.local
+```
+
+That rebuilds what the assistant knows from those two files. Skip it and the
+chatbot keeps quoting the old timelines.
+
 ## Reading the leads
 
 Sign in at `/admin`. Requests are listed newest first with filters for each
