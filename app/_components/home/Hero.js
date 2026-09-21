@@ -1,0 +1,154 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ArrowRight, MessageCircle, Sparkles } from "lucide-react";
+
+import { siteConfig, whatsappHref } from "@/app/_lib/siteConfig";
+import Button from "@/app/_components/ui/Button";
+import HeroVisual from "@/app/_components/home/HeroVisual";
+
+// The first screen. One promise, two buttons, and enough motion to say
+// "these people build things" without making the sentence hard to read.
+
+export default function Hero() {
+  const root = useRef(null);
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ctx = gsap.context(() => {
+      if (reduced) {
+        gsap.set("[data-animate], [data-lines] > span", { opacity: 1, y: 0 });
+        return;
+      }
+
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      tl.to("[data-animate='kicker']", { opacity: 1, y: 0, duration: 0.6 })
+        .to(
+          "[data-lines] > span",
+          { opacity: 1, y: 0, duration: 0.9, stagger: 0.09 },
+          "-=0.3"
+        )
+        .to("[data-animate='sub']", { opacity: 1, y: 0, duration: 0.7 }, "-=0.5")
+        .to("[data-animate='cta']", { opacity: 1, y: 0, duration: 0.7 }, "-=0.45")
+        .to("[data-animate='stats']", { opacity: 1, y: 0, duration: 0.7 }, "-=0.45")
+        .to("[data-animate='orb']", { opacity: 1, scale: 1, duration: 1.4, stagger: 0.15 }, 0);
+
+      // The orbs drift forever. Cheap, and it keeps the screen alive while
+      // somebody reads.
+      gsap.to("[data-orb='1']", {
+        x: 60,
+        y: -40,
+        duration: 9,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+      gsap.to("[data-orb='2']", {
+        x: -50,
+        y: 50,
+        duration: 11,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    }, root);
+
+    return () => ctx.revert();
+  }, []);
+
+  const words = ["We", "build", "the", "software"];
+
+  return (
+    <section
+      ref={root}
+      className="relative flex min-h-[92svh] items-center overflow-hidden pt-[72px]"
+    >
+      <div className="absolute inset-0 grid-bg" aria-hidden />
+
+      <div
+        data-animate="orb"
+        data-orb="1"
+        className="glow left-[8%] top-[14%] h-[380px] w-[380px] opacity-0"
+        style={{ background: "var(--color-primary)", transform: "scale(0.6)" }}
+        aria-hidden
+      />
+      <div
+        data-animate="orb"
+        data-orb="2"
+        className="glow right-[6%] bottom-[10%] h-[420px] w-[420px] opacity-0"
+        style={{ background: "var(--color-secondary)", transform: "scale(0.6)" }}
+        aria-hidden
+      />
+
+      <div className="container-x relative grid items-center gap-10 py-20 lg:grid-cols-[1.05fr_0.95fr]">
+        <div>
+        <div
+          data-animate="kicker"
+          className="mb-7 inline-flex translate-y-4 items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/[0.03] px-4 py-1.5"
+        >
+          <Sparkles className="h-3.5 w-3.5 text-[var(--color-primary)]" />
+          <span className="text-xs font-medium tracking-wide text-[var(--color-muted)]">
+            Websites, stores, dashboards, apps and AI
+          </span>
+        </div>
+
+        <h1 data-lines className="max-w-4xl text-[clamp(2.6rem,8vw,5.6rem)]">
+          {words.map((w, i) => (
+            <span key={i} className="inline-block translate-y-8 opacity-0">
+              {w}&nbsp;
+            </span>
+          ))}
+          <span className="text-gradient inline-block translate-y-8 opacity-0">
+            your business runs on
+          </span>
+        </h1>
+
+        <p
+          data-animate="sub"
+          className="mt-7 max-w-xl translate-y-5 text-lg leading-relaxed text-[var(--color-muted)] opacity-0 md:text-xl"
+        >
+          Tell us what you need in two minutes. We reply with a plan and a fixed
+          price, usually the same day.
+        </p>
+
+        <div
+          data-animate="cta"
+          className="mt-10 flex translate-y-5 flex-col gap-3 opacity-0 sm:flex-row sm:items-center"
+        >
+          <Button href="/request" size="lg">
+            Request a service
+            <ArrowRight className="h-4.5 w-4.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </Button>
+          <Button
+            href={whatsappHref({ service: "a project" })}
+            external
+            variant="ghost"
+            size="lg"
+          >
+            <MessageCircle className="h-4.5 w-4.5 text-[#25D366]" />
+            Or just WhatsApp us
+          </Button>
+        </div>
+
+        <dl
+          data-animate="stats"
+          className="mt-16 flex translate-y-5 flex-wrap gap-x-12 gap-y-6 opacity-0"
+        >
+          {siteConfig.stats.map((s) => (
+            <div key={s.label}>
+              <dt className="font-display text-3xl font-bold text-[var(--color-text)] md:text-4xl">
+                {s.value}
+              </dt>
+              <dd className="mt-1 text-sm text-[var(--color-dim)]">{s.label}</dd>
+            </div>
+          ))}
+        </dl>
+        </div>
+
+        <HeroVisual />
+      </div>
+    </section>
+  );
+}

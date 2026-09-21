@@ -1,1 +1,53 @@
-@AGENTS.md
+# Working in this repo
+
+A marketing site for Kodexa, read once by strangers on phones, usually arriving
+from a Facebook post or an ad. They are not technical and they are not patient.
+
+**The whole site has one job: get a service request sent.** Every change should
+make that faster or clearer. Anything that makes it slower needs a reason.
+
+## Ground rules
+
+- **Plain JavaScript, App Router, Tailwind v4.** No TypeScript, no UI kit.
+- **Every read lives in `app/_lib/data-service.js`, every write in
+  `app/_lib/actions.js`.** There are no reads yet; the content is static data.
+- **Actions return `{ ok, message, ... }`**, always, so one renderer handles
+  every form.
+- **`app/_components/ui/` knows nothing about Kodexa.** If a component mentions
+  services or WhatsApp, it belongs in a domain folder.
+- **Identity is data.** Name, number, email and stats live in `siteConfig.js`.
+  Changing the number is one edit.
+- **Content is data.** Services, process and work live in `services-data.js`.
+  Never write a service's copy into a component.
+
+## Motion
+
+GSAP for anything tied to the scroll or a timeline, Motion (Framer) for
+component entrances and exits, Lenis for the scroll itself.
+
+- The shared entrance is `_components/ui/Reveal.js`. Reach for that before
+  writing a new tween, so the page keeps one rhythm.
+- **Anything hidden by `[data-animate]` must be animated back by GSAP.** The
+  global CSS sets `opacity: 0` on that attribute. A heading that carries
+  `data-animate` but whose *children* get animated stays invisible forever.
+  That bug shipped once already; the hero now uses `data-lines` for exactly
+  this reason.
+- `prefers-reduced-motion` is honoured in `globals.css` and checked again in
+  every GSAP effect. Test it: DevTools > Rendering > Emulate CSS media.
+
+## Verifying a change
+
+`npm run build` catches imports and typos. It does not catch a page that looks
+wrong, so **look at it**:
+
+- A real browser at 1440px and at ~390px.
+- Scroll the whole page. Reveals that never fire are the usual failure.
+- The request flow end to end, including stepping **back** a step: the form is
+  controlled, and losing a typed value on Back is a regression.
+
+## Things already tried
+
+- **`lucide-react` has no `Github` icon** in v1. Brand icons were dropped. Use
+  `GitBranch` or an inline SVG.
+- **`INSERT ... RETURNING` on `service_requests` fails under RLS.** The table
+  has no SELECT policy on purpose. Generate values app-side instead.
