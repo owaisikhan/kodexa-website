@@ -5,78 +5,84 @@ import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 
 import { services } from "@/app/_lib/services-data";
-import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
+import ServiceIcon from "@/app/_components/ui/ServiceIcon";
 import Section, { SectionHeader } from "@/app/_components/ui/Section";
 
-// Nine cards is the whole offer on one screen. A visitor from Facebook should
-// be able to point at the one they want without reading a paragraph.
+// The whole offer as an index, not a wall of cards. Nine rows, each one a
+// number, a name, one line, a timeline and a link. A visitor from an ad can
+// run their eye down one column and stop at the thing they came for, which a
+// three-by-three grid of identical boxes makes harder, not easier.
 
 export default function ServicesGrid() {
   return (
     <Section id="services">
       <div className="container-x">
         <SectionHeader
-          kicker="What we build"
+          index="01"
+          kicker="Services"
+          note={`${services.length} things we ship`}
           title={
             <>
-              Pick the one you need.
-              <br />
-              <span className="text-[var(--color-dim)]">We quote the rest.</span>
+              Pick the one you need. <span className="em">We quote the rest.</span>
             </>
           }
-          body="Nine things we actually ship. Every card opens the detail, and every detail page ends in one button."
+          body="Every row opens the detail, and every detail page ends in one button."
         />
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ol className="mt-12 border-t border-[var(--color-ink)] md:mt-16">
           {services.map((s, i) => (
-            <Card key={s.slug} service={s} index={i} />
+            <Row key={s.slug} service={s} index={i} />
           ))}
-        </div>
+        </ol>
       </div>
     </Section>
   );
 }
 
-function Card({ service, index }) {
-  // The card used to track the cursor with a radial spotlight. That is the
-  // same trick as the accent glow, so it went with it: the whole card now
-  // presses into its shadow instead, which is one honest movement rather than
-  // a light source that is not there.
-  const accent = accentVar[service.accent] ?? accentVar.primary;
-  const ink = accentInk[service.accent] ?? accentInk.primary;
-
+function Row({ service, index }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 26 }}
+    <motion.li
+      initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.6, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, amount: 0.4 }}
+      transition={{ duration: 0.5, delay: (index % 3) * 0.05, ease: [0.16, 1, 0.3, 1] }}
+      className="border-b border-[var(--color-ink)]"
     >
       <Link
         href={`/services/${service.slug}`}
-        className="panel panel-hover group relative block h-full p-6"
+        className="group relative grid grid-cols-[2.25rem_1fr_auto] items-baseline gap-x-4 gap-y-2 overflow-hidden px-3 py-6 md:grid-cols-[3rem_2rem_minmax(0,1.1fr)_minmax(0,1fr)_8rem_1.5rem] md:items-center md:gap-x-6 md:px-5 md:py-7"
       >
-        <div className="relative flex h-full flex-col">
-          <span
-            className="grid h-12 w-12 place-items-center rounded-[4px] border-2 border-[var(--color-ink)]"
-            style={{ color: ink, background: accent }}
-          >
-            <ServiceIcon name={service.icon} />
-          </span>
+        {/* The hover is a fill that wipes in from the left, turning the row
+            to ink. It is the one strong movement in the list, so it lands. */}
+        <span
+          className="absolute inset-0 origin-left scale-x-0 bg-[var(--color-ink)] transition-transform duration-500 ease-[cubic-bezier(0.2,0.7,0.2,1)] group-hover:scale-x-100 group-focus-visible:scale-x-100"
+          aria-hidden
+        />
 
-          <h3 className="mt-5 text-xl">{service.title}</h3>
-          <p className="mt-2.5 text-[0.95rem] leading-relaxed text-[var(--color-muted)]">
-            {service.short}
-          </p>
+        <span className="relative font-mono text-sm text-[var(--color-red)] transition-colors group-hover:text-[var(--color-primary)]">
+          {String(index + 1).padStart(2, "0")}
+        </span>
 
-          <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-ink)] underline decoration-2 underline-offset-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-            See what you get
-            <ArrowUpRight className="h-4 w-4" />
-          </span>
+        <span className="relative hidden text-[var(--color-muted)] transition-colors group-hover:text-[var(--color-on-dark)] md:block">
+          <ServiceIcon name={service.icon} className="h-5 w-5" />
+        </span>
 
-          <span className="kicker mt-auto pt-4">{service.timeline}</span>
-        </div>
+        <h3 className="relative text-[1.85rem] leading-[1.05] transition-[color,transform] duration-300 group-hover:translate-x-1 group-hover:text-[var(--color-on-dark)] md:text-[2.4rem]">
+          {service.title}
+        </h3>
+
+        <ArrowUpRight className="relative h-5 w-5 self-center text-[var(--color-muted)] transition-colors group-hover:text-[var(--color-primary)] md:hidden" />
+
+        <p className="relative col-start-2 col-end-4 text-[0.98rem] leading-relaxed text-[var(--color-muted)] transition-colors group-hover:text-[var(--color-on-dark-muted)] md:col-auto">
+          {service.short}
+        </p>
+
+        <span className="relative col-start-2 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-[var(--color-muted)] transition-colors group-hover:text-[var(--color-on-dark-muted)] md:col-auto md:text-right">
+          {service.timeline}
+        </span>
+
+        <ArrowUpRight className="relative hidden h-5 w-5 justify-self-end text-[var(--color-ink)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[var(--color-primary)] md:block" />
       </Link>
-    </motion.div>
+    </motion.li>
   );
 }

@@ -46,14 +46,14 @@ export default async function AdminPage({ searchParams }) {
               key={key}
               href={key === "all" ? "/admin" : `/admin?status=${key}`}
               aria-current={active ? "page" : undefined}
-              className={`inline-flex items-center gap-2 rounded-[4px] border px-4 py-2 text-sm transition-colors ${
+              className={`inline-flex items-center gap-2 border px-4 py-2 text-sm transition-colors ${
                 active
                   ? "border-[var(--color-ink)] bg-[var(--color-primary)] text-[var(--color-text)]"
                   : "border-[var(--color-border)] text-[var(--color-muted)] hover:border-[var(--color-dim)]"
               }`}
             >
               {LABELS[key]}
-              <span className="rounded-[4px] bg-[var(--color-surface-2)] px-2 py-0.5 text-xs tabular-nums">
+              <span className=" bg-[var(--color-surface-2)] px-2 py-0.5 text-xs tabular-nums">
                 {count}
               </span>
             </Link>
@@ -110,7 +110,7 @@ function PageLink({ status, page, disabled, children }) {
 
   if (disabled) {
     return (
-      <span className="rounded-[4px] border border-[var(--color-border-soft)] px-4 py-2 text-sm text-[var(--color-dim)] opacity-50">
+      <span className=" border border-[var(--color-border-soft)] px-4 py-2 text-sm text-[var(--color-dim)] opacity-50">
         {children}
       </span>
     );
@@ -119,7 +119,7 @@ function PageLink({ status, page, disabled, children }) {
   return (
     <Link
       href={href}
-      className="rounded-[4px] border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-muted)] transition-colors hover:border-[var(--color-ink)] hover:text-[var(--color-text)]"
+      className=" border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-muted)] transition-colors hover:border-[var(--color-ink)] hover:text-[var(--color-text)]"
     >
       {children}
     </Link>

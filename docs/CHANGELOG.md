@@ -1,5 +1,45 @@
 # Changelog
 
+## Editorial redesign
+
+A new design from the ground up, not a palette swap. Every earlier version
+of the site was built from cards and effects: glass and glow, then hard
+shadows. This one is built from type, rules and white space, set like a
+newspaper or a Swiss poster. See `docs/UI_CONVENTIONS.md`.
+
+- **Instrument Serif** set large for headlines, **IBM Plex Sans** for body,
+  **IBM Plex Mono** for running heads, numbers and small print.
+- One paper, one ink, one red. The red comes in two weights: `--color-primary`
+  as a fill, `--color-red` as text, because a fill red is too light to set
+  words in.
+- **Services are an index, not a grid of cards.** Nine numbered rows; the row
+  wipes to ink on hover.
+- **Work is a run of magazine spreads** (`ui/WorkFeature.js`), shared by the
+  home page and `/work`. Plates are drawn as line art with one red element.
+- Every section opens with a numbered **running head** (`RunningHead` in
+  `ui/Section.js`).
+- The logo is a **wordmark** with a red full stop, and the footer signs off
+  with the name set across the full measure.
+- The stack strip is a slow italic serif ticker between two rules.
+
+**Decisions worth keeping:**
+
+- **The hero has no illustration.** The headline is the picture, so the only
+  motion on the first screen is the type arriving: each word rises out of its
+  own line box, which is a mask made from `overflow-hidden` on the line.
+
+- **`HeroVisual.js` was deleted, and `accentVar` / `accentInk` were removed
+  from `ServiceIcon.js`.** Nothing paints a service in its own colour any
+  more; icons are line drawings in ink. The `accent` field on each service in
+  `services-data.js` is now unused by the UI but left in place, since it is
+  data and costs nothing.
+
+- **The chat panel moved up to clear the WhatsApp button** (`bottom-36`). It
+  used to sit over it, and a strip of green showed underneath the panel.
+
+- **Two tap targets were under 44px and are fixed**: the "Services" link in a
+  service page's running head (15px tall) and the form's "Back" button (20px).
+
 ## Muted pigments
 
 The brutalist structure kept, the accents turned down: acid lime, cobalt and

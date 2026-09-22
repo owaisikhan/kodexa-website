@@ -9,27 +9,31 @@ const items = [
   "Tailwind",
   "GSAP",
   "Vercel",
-  "AI Agents",
+  "AI agents",
   "pgvector",
 ];
 
-// A single strip of what we build with. Duplicated once so the loop has
-// something to scroll into; aria-hidden on the copy so it is not read twice.
+// What we build with, as a slow line of italic serif between two rules. Set
+// like a ticker on a masthead rather than a strip of logos, because a logo
+// wall is what every agency site uses to borrow credibility, and these are
+// tools, not clients.
+//
+// Duplicated once so the loop has something to scroll into; aria-hidden on
+// the copy so a screen reader hears the list once.
 export default function Marquee() {
   return (
-    <div className="relative flex overflow-hidden border-y border-[var(--color-border-soft)] bg-[var(--color-bg-2)] py-5">
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-[var(--color-bg-2)] to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-[var(--color-bg-2)] to-transparent" />
-
-      <div className="marquee-track flex shrink-0 items-center gap-10 pr-10">
-        {items.map((t) => (
-          <Item key={t} label={t} />
-        ))}
-      </div>
-      <div className="marquee-track flex shrink-0 items-center gap-10 pr-10" aria-hidden>
-        {items.map((t) => (
-          <Item key={t} label={t} />
-        ))}
+    <div className="container-x">
+      <div className="relative flex overflow-hidden border-y border-[var(--color-ink)] py-4">
+        <div className="marquee-track flex shrink-0 items-center">
+          {items.map((t) => (
+            <Item key={t} label={t} />
+          ))}
+        </div>
+        <div className="marquee-track flex shrink-0 items-center" aria-hidden>
+          {items.map((t) => (
+            <Item key={t} label={t} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -37,9 +41,11 @@ export default function Marquee() {
 
 function Item({ label }) {
   return (
-    <span className="flex items-center gap-10 whitespace-nowrap font-display text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-dim)]">
+    <span className="flex items-center whitespace-nowrap font-display text-2xl italic text-[var(--color-text)] md:text-3xl">
       {label}
-      <span className="h-1 w-1 rounded-full bg-[var(--color-primary)]" />
+      <span className="mx-7 font-mono text-sm not-italic text-[var(--color-red)] md:mx-10" aria-hidden>
+        /
+      </span>
     </span>
   );
 }

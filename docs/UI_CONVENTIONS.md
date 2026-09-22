@@ -1,140 +1,154 @@
 # UI conventions
 
+The site is set as **editorial print**: one paper, one ink, one red, a serif
+display face set large, and hairline rules instead of cards. Every rule below
+follows from that. If a change needs a shadow, a blur, a gradient, a second
+accent colour or a rounded card to work, it's the wrong change.
+
 ## Tokens
 
 Defined in `app/_styles/globals.css` under `@theme`, named by role rather than
-hue, so a rebrand is a token swap rather than a search for `cyan`.
+hue, so a rebrand is a token swap.
 
-| Token | Use |
-|---|---|
-| `--color-bg`, `--color-bg-2` | page background, alternating bands |
-| `--color-surface`, `--color-surface-2` | inputs and inner panels |
-| `--color-border`, `--color-border-soft` | panel edges, hairlines |
-| `--color-text`, `--color-muted`, `--color-dim` | the three text weights |
-| `--color-primary` | the one action colour, ochre |
-| `--color-secondary` | the structural colour, slate |
-| `--color-accent` | the interruption colour, terracotta. Decoration only |
-| `--color-neutral` | the inert chip, stone. Used for a status with no state |
-| `--color-ink` | the colour of every rule, shadow and border |
-| `--color-on-dark` | text that sits on cobalt or green |
-| `--color-success` / `--warning` / `--danger` | states, and service accents |
+| Token | Value | Use |
+|---|---|---|
+| `--color-bg` | `#f3f1ec` | the paper |
+| `--color-bg-2` | `#ebe8e1` | the alternate band (process, service lists) |
+| `--color-surface` | `#faf9f6` | inputs, the form, the chat panel's answers |
+| `--color-ink`, `--color-text`, `--color-border` | `#141414` | type, and every rule between blocks |
+| `--color-border-soft` | `#d3cfc5` | rules *inside* a block (between list rows) |
+| `--color-muted` | `#55524b` | body copy |
+| `--color-dim` | `#66625a` | labels and metadata only, never a sentence someone has to read |
+| `--color-primary` | `#e4572e` | the red as a **fill**. Ink reads on it |
+| `--color-red` | `#b8391a` | the red as **text** on paper. Same hue, darkened to 5.1:1 |
+| `--color-on-dark`, `--color-on-dark-muted` | `#f3f1ec`, `#b5b1a8` | type on the ink band |
+| `--color-success` / `--warning` / `--danger` / `--neutral` | muted | admin statuses only, always beside a word |
 
-Three text weights, not five. Body copy is `--color-muted`; `--color-dim` is
-for labels and metadata only, never a sentence someone has to read.
+`--color-secondary` is ink, on purpose. There's no second accent: two accents
+invite a gradient between them, and one can't produce it.
 
-## Recurring classes
+The red comes in two weights because a fill red is too light to set words in.
+Anything that's *text* uses `--color-red`; anything that's a *surface* uses
+`--color-primary`. Mixing them up is the commonest way to break contrast here.
 
-- **`.panel`** is the card: a solid fill, a 2px ink rule and square-ish
-  corners. Add `.panel-raised` for a static offset shadow, or `.panel-hover`
-  to make it press into that shadow when the cursor is on it.
-- **`.container-x`** is the page gutter. Sections never set their own.
-- **`.grid-bg`** is diagonal ink hatching, and `.dot-bg` is a dot screen. Both
-  are background texture behind the hero, the CTA band and page headers.
-- **`.block-shape`** is a flat rectangle of accent colour with an ink outline,
-  used as hero decoration. Always `pointer-events: none` and `aria-hidden`.
-- **`.glow`** is retired and renders nothing. It is kept as a no-op so an old
-  usage degrades to invisible rather than to a hard rectangle across a page.
-- **`.text-mark`** is the marker stroke behind a phrase. It paints the
-  highlight with a box-shadow so the text keeps its own colour, which is what
-  keeps its contrast ratio measurable.
-- **`.field`** is every input, select and textarea.
-- **`.kicker`** is the small uppercase label above a heading.
+## Type
+
+- **Instrument Serif** (`font-display`) for every heading, at weight 400. It
+  carries emphasis through size, never through bold.
+- **IBM Plex Sans** for body copy.
+- **IBM Plex Mono** (`font-mono`) for running heads, index numbers, timelines,
+  captions and small print. Always uppercase with `tracking-[0.12em]` or wider.
+- Emphasis is **italic and red** (`.em`), the way a magazine sets a pull word.
+  One emphasised phrase per heading at most.
+- A `<legend>` isn't a heading tag, so it doesn't pick up the serif from the
+  base styles. Give it `font-display` explicitly.
+
+## Recurring pieces
+
+- **`RunningHead`** (in `ui/Section.js`) opens every section: a full-width ink
+  rule, then a mono line with the section number in red on the left and a
+  note on the right. It does the job a coloured card border used to do.
+- **`SectionHeader`** is a running head, then the serif title, with an
+  optional standfirst beside it on large screens.
+- **Numbered lists instead of cards.** Services, outcomes, inclusions, terms
+  and related links are all ruled rows with a mono number. A row that links
+  somewhere either wipes to ink on hover (the services index) or nudges its
+  title right by 4px (the smaller lists).
+- **`WorkFeature`** (in `ui/WorkFeature.js`) is one project as a magazine
+  spread: a plate on one side, the caption on the other, alternating sides
+  down the page, with a "Fig. n" caption under the plate. Home and `/work`
+  both use it, so they can't drift apart.
+- **`Wordmark`** (exported from `layout/Navbar.js`) is the logo: the name in
+  the serif with a red full stop. There's no letter-in-a-square mark.
+- **`.panel`** is a 1px ink rule round a surface fill. No shadow, no radius.
+  Use it sparingly: the form and the login box, not the content.
+- **`.link-draw`** underlines a link from the left on hover.
+- **`.kicker`** is the mono label.
+- **`.field`** is every input. Focus shows a 2px red rule on its bottom edge.
+- **`.glow`, `.block-shape`, `.grid-bg`, `.dot-bg`** are retired effects from
+  earlier builds, kept as no-ops so a stray usage renders nothing.
+
+## Buttons
+
+Square rectangles. Ink at rest, red on hover; that's the whole interaction. The
+red is the site's one accent, so it's earned by pointing at something rather
+than spent on every button at rest.
+
+| Variant | Rest | Hover |
+|---|---|---|
+| `primary` | ink fill, paper text | red fill, ink text |
+| `ghost` | ink outline | ink fill, paper text |
+| `paper` | paper fill (for the ink band) | red fill |
+| `whatsapp` | WhatsApp green, ink text | slightly darker |
 
 ## Layout
 
-- `Section` owns vertical rhythm: `py-24 md:py-32`, or `tight` for `py-16
-  md:py-20`. Do not set section padding by hand.
-- `SectionHeader` owns the kicker + title + body block.
-- Pages that start under the fixed navbar need `pt-[136px]`; the navbar is
-  72px and the rest is breathing room.
+- `Section` owns vertical rhythm: `py-20 md:py-28`, or `tight` for
+  `py-14 md:py-20`. Don't set section padding by hand.
+- The grid is 12 columns at `lg`. Headlines take 8, the index or the facts
+  box takes 4.
+- The navbar is 72px. Inner pages start at `pt-[104px] md:pt-[120px]`.
+- **One inverted block per page**: the `CtaBand`, ink ground and paper type,
+  directly above the footer. A second one would stop it reading as the end.
+- The footer signs off with the name set as large as the measure allows
+  (`clamp(5rem, 24.5vw, 22rem)`), `aria-hidden` because it's already in the
+  header.
 
 ## Motion rules
 
-- Entrances: `Reveal`, 0.7s, `[0.16, 1, 0.3, 1]`, staggered by 0.06 to 0.1.
-- Scroll-linked: GSAP ScrollTrigger, `scrub` only for things that should track
-  the scroll exactly (the process rail). Everything else fires once.
-- Hover: 0.3 to 0.35s. Anything slower feels broken on a trackpad.
-- Nothing animates on a value a user needs to read before it settles.
+- **The type is the picture, so the type is what moves.** The hero headline
+  rises word by word out of its own line box (`overflow-hidden` on each line
+  is the mask), after the masthead rules draw in from the left.
+- Entrances: `Reveal`, 0.7s, `[0.16, 1, 0.3, 1]`, staggered 0.05 to 0.1.
+- Scroll-linked: the process rule draws across with ScrollTrigger `scrub`.
+  Everything else fires once.
+- The stack ticker is a 60-second loop of italic serif. Slow on purpose.
+- Hover: 0.2 to 0.5s. The services row wipe is the longest at 0.5s because
+  it's the one strong movement in the list.
+- Nothing animates on a value someone needs to read before it settles.
 
-## Work cards
+## Work plates
 
-Every card leads with a 16:10 image area, whether that is a real screenshot or
-a drawn mock, so the grid keeps one rhythm no matter which it is.
+Every plate is 16:10, whether it's a real screenshot or a drawing, so the
+spreads keep one rhythm.
 
-- Screenshots are `object-cover object-top`: the **top** of a screenshot is the
-  part that explains the product, so a tall image loses its bottom, not its
-  header.
-- A screenshot gets a short fade at its bottom edge, only so a bright screen
-  does not fight the dark panel border.
-- Mocks are drawn in `_components/ui/WorkMock.js`: `store`, `dashboard` and
-  `phone`. Add a kind there rather than reaching for an image.
-- Hover scales a screenshot by 1.03 over 700ms. Mocks do not scale; their
-  contents animate in on scroll instead.
+- Screenshots are `object-cover object-top`: the top of a screenshot is the
+  part that explains the product.
+- Drawings live in `_components/ui/WorkMock.js` (`store`, `dashboard`,
+  `phone`) and are line art: ink hairlines on paper, with exactly one element
+  in red to show where the eye should go. A product image is a box with a
+  cross through it, the draughtsman's convention for "image goes here".
+- The caption says "Screenshot" or "Drawn from the build", so a drawing never
+  pretends to be a photo.
 
 ## Responsive rules
 
-- **Hero type is sized by whichever dimension is tighter**, not by width alone:
-  `clamp(2.5rem, min(7vw, 8.5vh), 5.4rem)`. Width alone hands a 1366x768 laptop
-  the same 90px headline as a 27-inch monitor, and the hero's button falls off
-  the bottom of the screen on the commonest laptop resolution there is.
-- **Hero spacing is viewport-relative** (`hero-pad`, `hero-gap-sm`,
-  `hero-gap-lg`), so a short screen closes the gaps instead of holding a
-  desktop rhythm open.
-- **`.tap` on any inline link.** Under `pointer: coarse` it grows the hit area
-  to 44x44 without changing anything on a mouse-driven screen. A 17px-tall
-  footer link is a miserable thing to hit with a thumb.
-- **The glow orbs shrink on phones**, and the hero carries a scrim below `sm`.
-  At 390px wide a 420px orb sits directly behind the body copy; measured, the
-  paragraph now reads at 6.2:1 against what is actually painted behind it.
+- **Hero type is sized by whichever dimension is tighter**:
+  `clamp(3.3rem, min(8.6vw, 11.5vh), 8.25rem)`. Width alone hands a 1366x768
+  laptop a 27-inch monitor's headline and pushes the button below the fold.
+- **The services index collapses** from six columns to number, title and
+  arrow, with the description and timeline beneath. The hero's side index is
+  hidden below `lg` because the services section follows immediately.
+- **`.tap` on every inline link.** Under `pointer: coarse` it grows the hit
+  area to 44x44 without changing anything on a mouse-driven screen.
+- **The chat panel sits above the WhatsApp button**, not over it
+  (`bottom-36`), and its height is capped by `100svh - 15rem` so it never runs
+  under the navbar on a short screen.
 
-The checks that keep this honest are not eyeball work: render every page at
-360, 390, 414, 768, 1024, 1280, 1440 and 1920, then assert no horizontal
-overflow, nothing past the right edge, no text under 12px, no tap target under
-36px, and the hero's call to action above the fold.
+The checks that keep this honest: the hero call to action is above the fold
+at 1366x768, 1280x720, 1440x900, 1920x1080, 768x1024, 390x844 and 360x740; no
+page scrolls sideways at 320, 390, 768, 1024 or 1366; and no link or button on
+a touch phone is under 44px.
 
 ## Accessibility
 
-- Decoration is `aria-hidden`. Every glow, grid and mock.
-- Focus rings are visible for keyboard users, suppressed for mouse users.
-- Colour is never the only signal: the selected service card gets a tick as
-  well as a border, and buttons carry words rather than icons alone.
+- Every colour pairing in use passes WCAG AA. Measured: ink on paper 16.3:1,
+  muted 6.9:1, dim 5.4:1, red text on paper 5.1:1, paper on ink 16.3:1, ink on
+  the red fill 5.0:1, and every admin status chip 5.4:1 or better.
+- Colour is never the only signal: statuses carry a word, the selected
+  service in the form carries a tick, and buttons carry words, not just icons.
+- Decoration is `aria-hidden`: the ticker's duplicate, the footer wordmark,
+  the row-wipe fill, the drawn plates (which carry an `sr-only` label).
+- The hero `h1` has an `aria-label` with the whole sentence, because its words
+  are split into spans for the animation.
 - Reduced motion is honoured globally and re-checked in each GSAP effect.
-
-## Why the palette looks like this
-
-The first build was dark by default, with a cyan-to-violet gradient, frosted
-glass panels, blurred accent orbs and Inter. Every one of those is a
-documented tell of a generated interface, and together they made a studio that
-builds software for a living look like it had ordered its own site from a
-prompt.
-
-What replaced it:
-
-- **Paper, not a dark canvas.** A warm bone sheet reads as printed matter and
-  is what a small-business owner is used to reading a quote on.
-- **Ink rules and hard offset shadows instead of blur.** A card sits on the
-  page rather than floating over it. Hover presses it into its own shadow;
-  nothing lifts and nothing glows.
-- **Three muted pigments**: ochre for every action, slate for structure,
-  terracotta as an interruption. No gradient anywhere between two accents.
-  Hard 2px rules and offset shadows are already loud, and three screen-bright
-  accents on top of them made the page shout at somebody who is only trying to
-  price a website. These hold the same structure at a readable volume.
-- **Type as the layout.** Bricolage Grotesque set solid at 0.95 line-height
-  carries the page; DM Sans reads underneath it; JetBrains Mono handles labels,
-  stats and timelines so the small print looks like a spec sheet.
-
-Accents are painted as solid blocks, not a 10% wash, so every accent needs a
-stated foreground. That pairing lives in `accentInk` next to `accentVar` in
-`_components/ui/ServiceIcon.js`, and in the `ink` field on each entry of
-`STATUS_STYLE` in `_lib/requests-data.js`. Ochre and terracotta take ink,
-slate and forest take paper.
-
-The status chip in the admin list used to print its colour as text over a 14%
-wash of itself. That reads for a bright screen colour and fails completely for
-a pigment: ochre text on near-white paper is not readable. The chip is a solid
-fill with an ink rule now, which is what every other coloured thing on the
-site already is.
-
-Measured: ink on paper 15.35:1, muted 6.84:1, dim 5.32:1, ink on ochre 8.98:1,
-paper on slate 10.62:1, paper on forest 6.20:1, ink on terracotta 5.01:1.

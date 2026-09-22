@@ -10,12 +10,13 @@ export const metadata = {
 export default function AdminLoginPage() {
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden">
-      <div className="absolute inset-0 grid-bg" aria-hidden />
 
       <div className="container-x relative">
         <div className="panel mx-auto max-w-md p-8 md:p-10">
-          <p className="kicker mb-3">Kodexa</p>
-          <h1 className="text-3xl">Admin sign in</h1>
+          <p className="kicker border-b border-[var(--color-ink)] pb-2">
+            <span className="text-[var(--color-red)]">Kodexa</span> / Admin
+          </p>
+          <h1 className="mt-6 text-5xl">Sign in.</h1>
           <p className="mt-3 text-[var(--color-muted)]">
             Requests from the site land here.
           </p>

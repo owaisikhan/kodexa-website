@@ -1,29 +1,24 @@
-import { Clock, Code2, Eye, Wallet } from "lucide-react";
-
 import Section, { SectionHeader } from "@/app/_components/ui/Section";
 import Reveal from "@/app/_components/ui/Reveal";
 
-// Four objections, answered before they are raised. Deliberately the only
-// text-heavy block on the page, and still only a sentence each.
+// Four objections, answered before they are raised. Set as a ruled table of
+// numbered clauses rather than four icon cards, because these are promises
+// and a promise reads better as a clause than as a feature tile.
 
 const points = [
   {
-    icon: Clock,
     title: "You see it early",
     body: "A working link in the first week, not a reveal at the end you cannot change.",
   },
   {
-    icon: Wallet,
     title: "A fixed price, first",
     body: "You approve the number before anything is built. No hourly surprises.",
   },
   {
-    icon: Code2,
     title: "You own everything",
     body: "The code, the domain, the database, the accounts. Nothing is rented from us.",
   },
   {
-    icon: Eye,
     title: "Built to be handed over",
     body: "Documented and deployed properly, so another developer could pick it up.",
   },
@@ -33,30 +28,38 @@ export default function WhyUs() {
   return (
     <Section>
       <div className="container-x">
-        <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-          <SectionHeader
-            kicker="Why us"
-            title="The boring promises that actually matter"
-            body="Most of what goes wrong on a software project is not technical. These four are how we stop it."
-          />
+        <SectionHeader
+          index="04"
+          kicker="Terms"
+          note="The boring part"
+          title={
+            <>
+              The promises that <span className="em">actually</span> matter.
+            </>
+          }
+          body="Most of what goes wrong on a software project is not technical. These four are how we stop it."
+        />
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {points.map((p, i) => (
-              <Reveal key={p.title} delay={i * 0.08}>
-                <div className="panel panel-hover h-full p-6">
-                  <p.icon
-                    className="h-6 w-6 text-[var(--color-ink)]"
-                    strokeWidth={1.6}
-                  />
-                  <h3 className="mt-4 text-lg">{p.title}</h3>
-                  <p className="mt-2 text-[0.95rem] leading-relaxed text-[var(--color-muted)]">
-                    {p.body}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
+        <ol className="mt-12 grid border-t border-[var(--color-ink)] md:mt-16 md:grid-cols-2">
+          {points.map((p, i) => (
+            <Reveal
+              key={p.title}
+              as="li"
+              delay={(i % 2) * 0.08}
+              className={`grid grid-cols-[3rem_1fr] gap-x-4 border-b border-[var(--color-ink)] py-8 md:py-10 ${
+                i % 2 === 1 ? "md:border-l md:pl-10" : "md:pr-10"
+              }`}
+            >
+              <span className="font-mono text-sm text-[var(--color-red)]">
+                {["i", "ii", "iii", "iv"][i]}.
+              </span>
+              <div>
+                <h3 className="text-[2rem] leading-[1.05] md:text-[2.4rem]">{p.title}</h3>
+                <p className="mt-3 max-w-sm text-lg leading-relaxed text-[var(--color-muted)]">{p.body}</p>
+              </div>
+            </Reveal>
+          ))}
+        </ol>
       </div>
     </Section>
   );

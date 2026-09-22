@@ -7,8 +7,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { process } from "@/app/_lib/services-data";
 import Section, { SectionHeader } from "@/app/_components/ui/Section";
 
-// The four steps, drawn as a line that fills as you scroll. The point is to
-// answer "what actually happens if I send this form" before it is asked.
+// The four steps, set as four columns under one rule. The rule draws across as
+// you scroll, and each step's numeral lands as the rule reaches it, so the
+// page reads left to right in the order the work actually happens.
 
 export default function ProcessTimeline() {
   const root = useRef(null);
@@ -21,89 +22,72 @@ export default function ProcessTimeline() {
 
       if (reduced) {
         gsap.set(steps, { opacity: 1, y: 0 });
-        gsap.set("[data-line-fill]", { scaleY: 1 });
+        gsap.set("[data-rail-fill]", { scaleX: 1 });
         return;
       }
 
       gsap.registerPlugin(ScrollTrigger);
 
-      // The rail fills across the whole section rather than per step, so the
-      // line and the steps cannot disagree about progress.
       gsap.fromTo(
-        "[data-line-fill]",
-        { scaleY: 0 },
+        "[data-rail-fill]",
+        { scaleX: 0 },
         {
-          scaleY: 1,
+          scaleX: 1,
           ease: "none",
-          scrollTrigger: {
-            trigger: "[data-rail]",
-            start: "top 72%",
-            end: "bottom 60%",
-            scrub: 0.4,
-          },
+          scrollTrigger: { trigger: "[data-rail]", start: "top 80%", end: "top 35%", scrub: 0.5 },
         }
       );
 
-      steps.forEach((step) => {
-        gsap.fromTo(
-          step,
-          { opacity: 0, y: 34 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: "power3.out",
-            scrollTrigger: { trigger: step, start: "top 82%" },
-          }
-        );
-
-        gsap.fromTo(
-          step.querySelector("[data-dot]"),
-          { scale: 0.4, opacity: 0.3 },
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 0.5,
-            ease: "back.out(2)",
-            scrollTrigger: { trigger: step, start: "top 76%" },
-          }
-        );
-      });
+      gsap.fromTo(
+        steps,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          stagger: 0.12,
+          scrollTrigger: { trigger: "[data-rail]", start: "top 78%" },
+        }
+      );
     }, root);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <Section id="process">
+    <Section id="process" className="bg-[var(--color-bg-2)]">
       <div ref={root} className="container-x">
         <SectionHeader
-          kicker="How it works"
-          title="Four steps, no meetings to get started"
-          body="You never pay to find out what something costs, and nothing starts until you say yes."
+          index="02"
+          kicker="Process"
+          note="No meeting to start"
+          title={
+            <>
+              Four steps. <span className="em">Nothing starts</span> until you say yes.
+            </>
+          }
+          body="You never pay to find out what something costs, and you see a working link early, not a reveal at the end."
         />
 
-        <div data-rail className="relative mt-16 pl-12 md:pl-20">
-          <div className="absolute left-[18px] top-2 bottom-2 w-px bg-[var(--color-border)] md:left-[26px]" aria-hidden />
-          <div
-            data-line-fill
-            className="absolute left-[18px] top-2 bottom-2 w-0.5 origin-top bg-[var(--color-ink)] md:left-[26px]"
-            aria-hidden
-          />
+        <div data-rail className="relative mt-14 md:mt-20">
+          <div className="rule-soft" aria-hidden />
+          <div data-rail-fill className="absolute inset-x-0 top-0 h-[2px] origin-left bg-[var(--color-ink)]" aria-hidden />
 
-          <ol className="space-y-12 md:space-y-16">
-            {process.map((step) => (
-              <li key={step.n} data-step className="relative">
-                <span
-                  data-dot
-                  className="absolute -left-12 top-1 grid h-9 w-9 place-items-center rounded-[4px] border-2 border-[var(--color-ink)] bg-[var(--color-primary)] font-mono text-xs font-bold text-[var(--color-ink)] md:-left-20 md:h-[52px] md:w-[52px] md:text-sm"
-                >
+          <ol className="grid md:grid-cols-2 lg:grid-cols-4">
+            {process.map((step, i) => (
+              <li
+                key={step.n}
+                data-step
+                className={`border-b border-[var(--color-border-soft)] py-8 md:pr-8 lg:border-b-0 lg:py-10 ${
+                  i > 0 ? "lg:border-l lg:pl-8" : ""
+                } ${i % 2 === 1 ? "md:border-l md:pl-8" : ""}`}
+              >
+                <span className="block font-display text-[5.5rem] leading-[0.8] text-[var(--color-red)] md:text-[7rem]">
                   {step.n}
                 </span>
-                <h3 className="text-2xl md:text-3xl">{step.title}</h3>
-                <p className="mt-3 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]">
-                  {step.body}
-                </p>
+                <h3 className="mt-6 text-[1.75rem] leading-[1.1]">{step.title}</h3>
+                <p className="mt-3 max-w-xs leading-relaxed text-[var(--color-muted)]">{step.body}</p>
               </li>
             ))}
           </ol>

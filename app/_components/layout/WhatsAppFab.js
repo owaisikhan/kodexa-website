@@ -30,7 +30,7 @@ export default function WhatsAppFab() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.7, y: 16 }}
           transition={{ type: "spring", stiffness: 380, damping: 26 }}
-          className="group fixed bottom-24 right-4 z-40 sm:right-5 flex items-center gap-2 rounded-[4px] border-2 border-[var(--color-ink)] bg-[#25D366] px-4 py-3.5 font-semibold text-[var(--color-ink)] shadow-[4px_4px_0_var(--color-ink)] transition-transform hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_var(--color-ink)]"
+          className="group fixed bottom-[5.25rem] right-4 z-40 flex h-12 items-center gap-2 bg-[#25D366] px-4 font-medium text-[var(--color-ink)] transition-[filter] hover:brightness-95 sm:right-5"
           aria-label={`Message ${siteConfig.name} on WhatsApp`}
         >
           <MessageCircle className="h-5 w-5" />

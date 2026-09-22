@@ -3,74 +3,74 @@
 /* ---------------------------------------------------------------------------
    Tokens. Named by role, never by hue, so a rebrand is a token swap.
 
-   The palette is deliberately not the one every AI-generated site ships with.
-   No dark-by-default canvas, no cyan-to-violet gradient, no frosted glass and
-   no glowing orbs. This is paper: an off-white sheet, hard ink rules, type
-   doing the heavy lifting, and three muted pigments.
+   Editorial print. Every earlier version of this site was built from cards
+   and effects: glass and glow, then hard shadows. This one is built from type,
+   rules and white space, the way a newspaper or a Swiss poster is.
 
-   The accents used to be acid lime, cobalt and coral. Hard 2px rules and
-   offset shadows are already loud, and three screen-bright accents on top of
-   them made the page shout at somebody who is only trying to price a website.
-   Ochre, slate and terracotta hold the same structure at a volume a business
-   owner can read.
+   - One paper, one ink, one red. The red is used the way print uses it: a
+     word, a number, a rule. Never a background wash, never a gradient.
+   - Hairlines instead of containers. Sections are separated by a 1px ink
+     rule and a numbered running head, not by a card with a border.
+   - A serif display face set large. The headline is the image.
    --------------------------------------------------------------------------- */
 @theme {
   /* Paper */
-  --color-bg: #f4f2ea;
-  --color-bg-2: #eae7dc;
-  --color-surface: #fffefa;
-  --color-surface-2: #ece9df;
+  --color-bg: #f3f1ec;
+  --color-bg-2: #ebe8e1;
+  --color-surface: #faf9f6;
+  --color-surface-2: #e7e4dc;
 
-  /* Rules are ink, not a faint grey line. Brutalism draws, it does not hint. */
-  --color-border: #1c1b19;
-  --color-border-soft: #ccc7ba;
+  /* Rules are ink. The soft rule is for inside a block, the ink rule is for
+     between blocks. */
+  --color-border: #141414;
+  --color-border-soft: #d3cfc5;
 
   /* Ink */
-  --color-text: #1c1b19;
-  --color-ink: #1c1b19;
-  --color-muted: #56534c;
-  --color-dim: #68635a;
-  --color-on-accent: #1c1b19;
-  --color-on-dark: #fffefa;
+  --color-text: #141414;
+  --color-ink: #141414;
+  --color-muted: #55524b;
+  --color-dim: #66625a;
+  --color-on-accent: #141414;
+  --color-on-dark: #f3f1ec;
+  --color-on-dark-muted: #b5b1a8;
 
-  /* Accents, desaturated on purpose. Ochre carries the action, slate carries
-     the structure, terracotta is the interruption. Each one is a pigment
-     rather than a screen colour, which is what stops a hard-edged layout from
-     reading as a warning label. */
-  --color-primary: #e0b64a;
-  --color-primary-dim: #9c7a1c;
-  --color-secondary: #23405c;
-  --color-secondary-dim: #16293c;
-  --color-accent: #c2674a;
-  --color-success: #356b4c;
-  --color-warning: #cb7351;
-  --color-danger: #8f3226;
-  --color-neutral: #b8b2a4;
+  /* The red, in two weights. --color-primary is the fill (ink reads on it
+     at 5.0:1). --color-red is the same hue darkened for use as text on
+     paper (5.1:1), because a fill red is too light to set words in. */
+  --color-primary: #e4572e;
+  --color-primary-dim: #b8391a;
+  --color-red: #b8391a;
 
-  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  /* Structure is ink. There is no second accent on purpose: two accents
+     invite a gradient between them, and one cannot produce it. */
+  --color-secondary: #141414;
+  --color-secondary-dim: #2a2a28;
+  --color-accent: #e4572e;
+
+  /* States. Muted, and only ever used with a word beside them. */
+  --color-success: #3d6b4f;
+  --color-warning: #c9962e;
+  --color-danger: #a3321f;
+  --color-neutral: #bdb8ac;
+
+  --font-display: var(--font-display), ui-serif, Georgia, serif;
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
 
-  /* Corners are nearly square. Overriding Tailwind's own radius scale means
-     every existing rounded-lg / rounded-2xl in the codebase flattens with it
-     instead of needing a sweep. */
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 4px;
-  --radius-xl: 4px;
-  --radius-2xl: 6px;
-  --radius-3xl: 8px;
-  --radius-card: 6px;
+  /* Square corners throughout. Overriding the scale flattens every existing
+     rounded-lg in the codebase without a sweep. rounded-full is left alone
+     for true dots. */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-card: 0px;
 }
 
 :root {
   color-scheme: light;
-
-  /* The offset shadow that replaces every blur. Hard edge, no alpha, so it
-     reads as a printed second impression rather than a glow. */
-  --shadow-hard: 5px 5px 0 var(--color-ink);
-  --shadow-hard-sm: 3px 3px 0 var(--color-ink);
-  --shadow-hard-lg: 8px 8px 0 var(--color-ink);
 }
 
 /* ---------------------------------------------------------------------------
@@ -91,17 +91,19 @@
     font-family: var(--font-sans);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "ss02";
   }
 
+  /* The serif is a display face. It carries weight through size, not
+     through bold, so headings stay at 400 and get large instead. */
   h1,
   h2,
   h3,
   h4 {
     font-family: var(--font-display);
-    font-weight: 800;
-    /* Tight, not airy. The type is the layout here, so it is set solid. */
-    letter-spacing: -0.035em;
-    line-height: 0.95;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1;
     text-wrap: balance;
   }
 
@@ -114,11 +116,9 @@
     color: var(--color-ink);
   }
 
-  /* Keyboard users get a visible ring; mouse users do not. */
   :focus-visible {
-    outline: 3px solid var(--color-secondary);
-    outline-offset: 2px;
-    border-radius: 2px;
+    outline: 2px solid var(--color-red);
+    outline-offset: 3px;
   }
 
   input,
@@ -136,118 +136,102 @@
 @layer components {
   .container-x {
     width: 100%;
-    max-width: 78rem;
+    max-width: 84rem;
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
 
   @media (min-width: 768px) {
     .container-x {
-      padding-inline: 2rem;
+      padding-inline: 2.5rem;
     }
   }
 
-  /* The recurring card. Solid fill, a 2px ink rule and a hard offset shadow.
-     Nothing translucent: a card sits on the page, it does not float over it. */
+  /* A block on the page. Paper on paper, separated by a hairline. No
+     shadow and no lift: it sits in the layout, it does not hover over it. */
   .panel {
     position: relative;
-    border: 2px solid var(--color-border);
-    border-radius: var(--radius-card);
+    border: 1px solid var(--color-border);
     background: var(--color-surface);
   }
 
-  .panel-flat {
-    box-shadow: none;
-  }
-
-  .panel-raised {
-    box-shadow: var(--shadow-hard);
-  }
-
-  /* Hover presses the card into its own shadow rather than lifting it into a
-     glow. Same distance travelled, opposite metaphor. */
   .panel-hover {
-    box-shadow: var(--shadow-hard);
-    transition:
-      transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
-      box-shadow 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
-      background 0.18s ease;
+    transition: background 0.2s ease;
   }
 
   .panel-hover:hover {
-    transform: translate(3px, 3px);
-    box-shadow: var(--shadow-hard-sm);
-    background: var(--color-surface-2);
+    background: var(--color-bg-2);
   }
 
-  /* Emphasis is a marker stroke behind the words, not a gradient inside them.
-     Painted with a shadow so the highlight sits outside the glyphs and the
-     text keeps its own colour and its contrast ratio. */
-  .text-mark {
-    background: var(--color-primary);
-    box-shadow:
-      0.18em 0 0 var(--color-primary),
-      -0.18em 0 0 var(--color-primary);
-    color: var(--color-ink);
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
+  /* Kept as aliases from the previous build so nothing that still names them
+     renders oddly. */
+  .panel-flat,
+  .panel-raised {
+    box-shadow: none;
   }
 
+  /* Emphasis is italic and red, the way a magazine sets a pull word. */
+  .text-mark,
+  .em {
+    font-style: italic;
+    color: var(--color-red);
+  }
+
+  /* The small label that runs above things. Mono, uppercase, loose. */
   .kicker {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-muted);
   }
 
-  .hairline {
-    height: 2px;
+  .hairline,
+  .rule {
+    height: 1px;
     background: var(--color-border);
   }
 
-  /* Diagonal ink hatching. Used behind hero and CTA bands where the old build
-     used a vanishing engineering grid. */
-  .grid-bg {
-    background-image: repeating-linear-gradient(
-      45deg,
-      rgb(28 27 25 / 0.07) 0,
-      rgb(28 27 25 / 0.07) 1px,
-      transparent 1px,
-      transparent 9px
-    );
+  .rule-soft {
+    height: 1px;
+    background: var(--color-border-soft);
   }
 
-  .dot-bg {
-    background-image: radial-gradient(rgb(28 27 25 / 0.16) 1.4px, transparent 1.4px);
-    background-size: 18px 18px;
+  /* A link that underlines from the left on hover. The underline is a
+     background image so it can animate without layout shift. */
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
-  /* A flat block of colour with a hard edge, used as hero decoration. It
-     replaces the blurred accent orb, which was the single most recognisable
-     tell of a generated landing page. */
+  .link-draw:hover,
+  .link-draw:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Retired effects from earlier builds. Defined as no-ops so a stray usage
+     renders nothing rather than something broken. */
+  .glow,
   .block-shape {
-    position: absolute;
-    border-radius: 4px;
-    border: 2px solid var(--color-ink);
-    pointer-events: none;
+    display: none;
   }
 
-  /* The old blurred orb. Kept as a no-op so any stray usage renders nothing
-     rather than a giant hard rectangle across a section. */
-  .glow {
-    display: none;
+  .grid-bg,
+  .dot-bg {
+    background-image: none;
   }
 
   .field {
     width: 100%;
     background: var(--color-surface);
-    border: 2px solid var(--color-border);
-    border-radius: 4px;
+    border: 1px solid var(--color-border);
     padding: 0.8rem 1rem;
     color: var(--color-text);
-    transition: box-shadow 0.15s ease, background 0.15s ease;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
 
   .field::placeholder {
@@ -256,52 +240,45 @@
 
   .field:focus {
     outline: none;
-    background: var(--color-surface);
-    box-shadow: var(--shadow-hard-sm);
+    box-shadow: inset 0 -2px 0 var(--color-red);
   }
 
   /* An inline link is about 17px tall, which is a fiddly thing to hit with a
      thumb. On touch screens this grows the hit area to 44px without changing
-     how anything looks on a mouse-driven screen, so the footer does not turn
-     into a ladder on desktop. Keyed to pointer: coarse rather than a width
-     breakpoint, because the question is what you are pointing with, not how
-     wide the window is. */
+     how anything looks on a mouse-driven screen. Keyed to pointer: coarse
+     rather than a width breakpoint, because the question is what you are
+     pointing with, not how wide the window is. */
   @media (pointer: coarse) {
     .tap {
       display: inline-flex;
       align-items: center;
       min-height: 44px;
-      /* A short word like "Work" is only 35px wide, so height alone is not
-         enough to make it comfortable to hit. */
       min-width: 44px;
     }
   }
 
-  /* Sized by whichever dimension is tighter. 7vw alone gives a 1366x768
-     laptop the same headline as a 27-inch monitor, which pushed the hero's
-     button off the bottom of the screen on the single most common laptop
-     resolution there is. */
+  /* Sized by whichever dimension is tighter, so a 1366x768 laptop does not
+     get a 27-inch monitor's headline and push the button below the fold. */
   .hero-title {
-    font-size: clamp(2.5rem, min(7.4vw, 8.5vh), 5.6rem);
-    text-transform: uppercase;
+    font-size: clamp(3.3rem, min(8.6vw, 11.5vh), 8.25rem);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
   }
 
-  /* Hero spacing that shrinks on a short screen instead of holding a desktop
-     gap open on a laptop. */
   .hero-pad {
-    padding-block: clamp(2rem, 6vh, 5rem);
+    padding-block: clamp(1.5rem, 4.5vh, 3.5rem);
   }
 
   .hero-gap-sm {
-    margin-top: clamp(1rem, 3.2vh, 1.75rem);
+    margin-top: clamp(1rem, 3vh, 1.75rem);
   }
 
   .hero-gap-lg {
-    margin-top: clamp(1.5rem, 4.5vh, 4rem);
+    margin-top: clamp(1.25rem, 4vh, 2.75rem);
   }
 
   .marquee-track {
-    animation: marquee 38s linear infinite;
+    animation: marquee 60s linear infinite;
   }
 
   @keyframes marquee {
@@ -320,7 +297,6 @@
   opacity: 0;
 }
 
-/* One switch for everyone who asked the OS to calm motion down. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

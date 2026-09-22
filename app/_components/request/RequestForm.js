@@ -9,13 +9,12 @@ import {
   Check,
   Loader2,
   MessageCircle,
-  PartyPopper,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { services } from "@/app/_lib/services-data";
 import { submitRequest } from "@/app/_lib/actions";
-import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
+import ServiceIcon from "@/app/_components/ui/ServiceIcon";
 import Button from "@/app/_components/ui/Button";
 
 // Three steps, one question each.
@@ -123,7 +122,7 @@ export default function RequestForm() {
             type="button"
             onClick={() => setStep((s) => Math.max(0, s - 1))}
             disabled={step === 0}
-            className="inline-flex items-center gap-2 text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)] disabled:opacity-0"
+            className="inline-flex min-h-11 items-center gap-2 pr-3 text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)] disabled:opacity-0"
           >
             <ArrowLeft className="h-4 w-4" />
             Back
@@ -164,19 +163,20 @@ function Progress({ step }) {
     <ol className="flex items-start gap-3">
       {STEPS.map((label, i) => (
         <li key={label} className="flex-1">
-          <div className="h-1 overflow-hidden rounded-full bg-[var(--color-border)]">
+          <div className="h-px bg-[var(--color-border-soft)]">
             <motion.div
-              className="h-full rounded-full bg-[var(--color-primary)]"
+              className="h-[2px] -translate-y-[0.5px] bg-[var(--color-ink)]"
               initial={false}
               animate={{ width: i <= step ? "100%" : "0%" }}
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             />
           </div>
           <p
-            className={`mt-2.5 text-xs transition-colors sm:text-sm ${
+            className={`mt-2.5 font-mono text-[0.7rem] uppercase tracking-[0.12em] transition-colors ${
               i <= step ? "text-[var(--color-text)]" : "text-[var(--color-dim)]"
             }`}
           >
+            <span className="mr-1.5 text-[var(--color-red)]">{String(i + 1).padStart(2, "0")}</span>
             <span className="hidden sm:inline">{label}</span>
             <span className="sm:hidden">Step {i + 1}</span>
           </p>
@@ -189,7 +189,7 @@ function Progress({ step }) {
 function StepService({ service, onPick }) {
   return (
     <fieldset>
-      <legend className="text-2xl md:text-3xl">What do you need?</legend>
+      <legend className="font-display text-[2.2rem] leading-none md:text-[2.8rem]">What do you need?</legend>
       <p className="mt-3 text-[var(--color-muted)]">
         Pick the closest one. We will sort the details out together.
       </p>
@@ -197,32 +197,32 @@ function StepService({ service, onPick }) {
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {services.map((s) => {
           const active = service === s.slug;
-          const accent = accentVar[s.accent] ?? accentVar.primary;
-          const ink = accentInk[s.accent] ?? accentInk.primary;
           return (
             <button
               key={s.slug}
               type="button"
               onClick={() => onPick(s.slug)}
               aria-pressed={active}
-              className={`flex items-start gap-3 rounded-[4px] border-2 p-4 text-left transition-all duration-200 ${
+              className={`group flex items-start gap-3 border p-4 text-left transition-colors duration-200 ${
                 active
-                  ? "border-[var(--color-ink)] bg-[var(--color-primary)]"
-                  : "border-[var(--color-border)] hover:border-[var(--color-dim)] hover:bg-[var(--color-surface-2)]"
+                  ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-on-dark)]"
+                  : "border-[var(--color-border-soft)] hover:border-[var(--color-ink)]"
               }`}
             >
-              <span
-                className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-[4px] border-2 border-[var(--color-ink)]"
-                style={{ color: ink, background: accent }}
-              >
-                <ServiceIcon name={s.icon} className="h-5 w-5" />
-              </span>
+              <ServiceIcon
+                name={s.icon}
+                className={`mt-0.5 h-5 w-5 shrink-0 ${active ? "text-[var(--color-primary)]" : "text-[var(--color-muted)]"}`}
+              />
               <span className="min-w-0">
-                <span className="flex items-center gap-2 font-semibold">
+                <span className="flex items-center gap-2 font-medium">
                   {s.title}
-                  {active ? <Check className="h-4 w-4 text-[var(--color-ink)]" /> : null}
+                  {active ? <Check className="h-4 w-4 text-[var(--color-primary)]" /> : null}
                 </span>
-                <span className="mt-1 block text-sm leading-snug text-[var(--color-muted)]">
+                <span
+                  className={`mt-1 block text-sm leading-snug ${
+                    active ? "text-[var(--color-on-dark-muted)]" : "text-[var(--color-muted)]"
+                  }`}
+                >
                   {s.short}
                 </span>
               </span>
@@ -249,7 +249,7 @@ function Field({ label, hint, children }) {
 function StepProject({ chosen, values, set }) {
   return (
     <fieldset>
-      <legend className="text-2xl md:text-3xl">Tell us about it</legend>
+      <legend className="font-display text-[2.2rem] leading-none md:text-[2.8rem]">Tell us about it</legend>
       <p className="mt-3 text-[var(--color-muted)]">
         A few lines is plenty.
         {chosen ? ` You picked ${chosen.title}.` : ""} What are you trying to fix?
@@ -284,7 +284,7 @@ function StepProject({ chosen, values, set }) {
 function StepContact({ values, set }) {
   return (
     <fieldset>
-      <legend className="text-2xl md:text-3xl">How should we reply?</legend>
+      <legend className="font-display text-[2.2rem] leading-none md:text-[2.8rem]">How should we reply?</legend>
       <p className="mt-3 text-[var(--color-muted)]">
         We answer on WhatsApp, usually within a few hours.
       </p>
@@ -324,18 +324,20 @@ function Success({ state }) {
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className="panel mx-auto max-w-2xl p-8 text-center md:p-12"
     >
-      <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-[var(--color-success)]/12 text-[var(--color-success)]">
-        <PartyPopper className="h-8 w-8" strokeWidth={1.6} />
-      </span>
+      <p className="kicker">
+        <span className="text-[var(--color-red)]">Sent</span> / Step 3 of 3
+      </p>
 
-      <h2 className="mt-7 text-3xl">Request received</h2>
+      <h2 className="mt-6 text-[clamp(2.6rem,6vw,4rem)] leading-[0.95]">
+        Request <span className="em">received.</span>
+      </h2>
       <p className="mx-auto mt-4 max-w-md text-lg leading-relaxed text-[var(--color-muted)]">
         {state.message}
       </p>
 
       {state.reference ? (
-        <p className="mt-5 inline-block rounded-[4px] border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-muted)]">
-          Reference {state.reference}
+        <p className="mt-6 inline-block border-y border-[var(--color-ink)] px-4 py-2 font-mono text-sm uppercase tracking-[0.12em]">
+          Ref. {state.reference}
         </p>
       ) : null}
 

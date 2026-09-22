@@ -45,7 +45,7 @@ export default function RequestCard({ request }) {
           <div className="flex flex-wrap items-center gap-2.5">
             <h2 className="text-xl">{request.name}</h2>
             <span
-              className="inline-flex items-center gap-1.5 rounded-[4px] border-2 border-[var(--color-ink)] px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide"
+              className="inline-flex items-center gap-1.5 border-2 border-[var(--color-ink)] px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide"
               style={{ color: style.ink, background: style.color }}
             >
               {/* Colour is never the only cue: the word is always there too. */}
@@ -89,7 +89,7 @@ export default function RequestCard({ request }) {
             }).replace(/^https:\/\/wa\.me\/\d+/, `https://wa.me/${digits}`)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-[4px] bg-[#25D366]/15 px-3.5 py-1.5 text-sm font-semibold text-[#25D366] transition-colors hover:bg-[#25D366]/25"
+            className="inline-flex items-center gap-2 bg-[#25D366]/15 px-3.5 py-1.5 text-sm font-semibold text-[#25D366] transition-colors hover:bg-[#25D366]/25"
           >
             <MessageCircle className="h-4 w-4" />
             Reply on WhatsApp
@@ -113,7 +113,7 @@ export default function RequestCard({ request }) {
                   type="submit"
                   disabled={statusPending || active}
                   aria-pressed={active}
-                  className={`inline-flex items-center gap-1.5 rounded-[4px] border px-3.5 py-1.5 text-sm transition-colors disabled:cursor-default ${
+                  className={`inline-flex items-center gap-1.5 border px-3.5 py-1.5 text-sm transition-colors disabled:cursor-default ${
                     active
                       ? "border-[var(--color-ink)] font-semibold"
                       : "border-[var(--color-border)] text-[var(--color-muted)] hover:border-[var(--color-dim)] hover:text-[var(--color-text)]"
@@ -174,7 +174,7 @@ function Notes({ request }) {
       <button
         type="submit"
         disabled={pending}
-        className="mt-2.5 inline-flex items-center gap-2 rounded-[4px] border border-[var(--color-border)] px-4 py-1.5 text-sm text-[var(--color-muted)] transition-colors hover:border-[var(--color-ink)] hover:text-[var(--color-text)]"
+        className="mt-2.5 inline-flex items-center gap-2 border border-[var(--color-border)] px-4 py-1.5 text-sm text-[var(--color-muted)] transition-colors hover:border-[var(--color-ink)] hover:text-[var(--color-text)]"
       >
         {pending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
         Save note

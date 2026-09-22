@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight, Bot, MessageCircle, Send, Sparkles, X } from "lucide-react";
+import { ArrowUpRight, MessageCircle, Send, X } from "lucide-react";
 
 import Link from "next/link";
 
@@ -146,24 +146,22 @@ export default function ChatWidget() {
             transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
             role="dialog"
             aria-label="Ask Kodexa"
-            className="panel fixed bottom-24 right-4 z-50 flex h-[min(560px,70vh)] w-[min(400px,calc(100vw-2rem))] flex-col overflow-hidden bg-[var(--color-surface)]/95 sm:right-5"
+            className="fixed bottom-36 right-4 z-50 flex h-[min(560px,calc(100svh-15rem))] w-[min(400px,calc(100vw-2rem))] flex-col overflow-hidden border border-[var(--color-ink)] bg-[var(--color-bg)] sm:right-5"
           >
-            <header className="flex items-center justify-between gap-3 border-b border-[var(--color-border)] px-4 py-3">
-              <div className="flex items-center gap-2.5">
-                <span className="grid h-8 w-8 place-items-center rounded-lg bg-[var(--color-primary)] text-[var(--color-ink)]">
-                  <Bot className="h-4 w-4" strokeWidth={2} />
-                </span>
-                <div>
-                  <p className="text-sm font-semibold">Ask {siteConfig.name}</p>
-                  <p className="text-xs text-[var(--color-dim)]">
-                    Answers about what we build
-                  </p>
-                </div>
+            <header className="flex items-center justify-between gap-3 border-b border-[var(--color-ink)] bg-[var(--color-ink)] px-4 py-3 text-[var(--color-on-dark)]">
+              <div>
+                <p className="font-display text-2xl leading-none">
+                  Ask {siteConfig.name}
+                  <span className="text-[var(--color-primary)]">.</span>
+                </p>
+                <p className="mt-1 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-[var(--color-on-dark-muted)]">
+                  Answers about what we build
+                </p>
               </div>
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close chat"
-                className="grid h-8 w-8 place-items-center rounded-lg text-[var(--color-muted)] transition-colors hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text)]"
+                className="grid h-9 w-9 place-items-center text-[var(--color-on-dark-muted)] transition-colors hover:text-[var(--color-primary)]"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -188,9 +186,9 @@ export default function ChatWidget() {
                     <button
                       key={s}
                       onClick={() => ask(s)}
-                      className="flex w-full items-center gap-2 rounded-xl border border-[var(--color-border)] px-3 py-2 text-left text-sm text-[var(--color-muted)] transition-colors hover:border-[var(--color-ink)] hover:text-[var(--color-text)]"
+                      className="group flex w-full items-baseline gap-3 border-b border-[var(--color-border-soft)] py-2.5 text-left text-sm text-[var(--color-muted)] transition-colors hover:border-[var(--color-ink)] hover:text-[var(--color-text)]"
                     >
-                      <Sparkles className="h-3.5 w-3.5 shrink-0 text-[var(--color-ink)]" />
+                      <ArrowUpRight className="h-3.5 w-3.5 shrink-0 translate-y-0.5 text-[var(--color-red)]" />
                       {s}
                     </button>
                   ))}
@@ -203,7 +201,7 @@ export default function ChatWidget() {
                 e.preventDefault();
                 ask(input);
               }}
-              className="flex items-center gap-2 border-t border-[var(--color-border)] p-3"
+              className="flex items-center gap-2 border-t border-[var(--color-ink)] p-3"
             >
               <input
                 ref={inputRef}
@@ -218,7 +216,7 @@ export default function ChatWidget() {
                 type="submit"
                 disabled={busy || !input.trim()}
                 aria-label="Send"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--color-primary)] text-[var(--color-ink)] transition-opacity disabled:opacity-40"
+                className="grid h-[46px] w-[46px] shrink-0 place-items-center bg-[var(--color-ink)] text-[var(--color-on-dark)] transition-colors hover:bg-[var(--color-primary)] hover:text-[var(--color-ink)] disabled:opacity-40"
               >
                 <Send className="h-4 w-4" />
               </button>
@@ -232,7 +230,7 @@ export default function ChatWidget() {
         aria-label={open ? "Close chat" : "Ask Kodexa a question"}
         aria-expanded={open}
         whileTap={{ scale: 0.94 }}
-        className="fixed bottom-5 right-4 z-50 grid h-14 w-14 place-items-center rounded-[4px] border-2 border-[var(--color-ink)] bg-[var(--color-primary)] text-[var(--color-ink)] shadow-[4px_4px_0_var(--color-ink)] transition-transform hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_var(--color-ink)] sm:right-5"
+        className="fixed bottom-5 right-4 z-50 grid h-14 w-14 place-items-center bg-[var(--color-ink)] text-[var(--color-on-dark)] transition-colors hover:bg-[var(--color-primary)] hover:text-[var(--color-ink)] sm:right-5"
       >
         {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
       </motion.button>
@@ -251,10 +249,10 @@ function Bubble({ message }) {
       className={`flex ${mine ? "justify-end" : "justify-start"}`}
     >
       <p
-        className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
+        className={`max-w-[85%] whitespace-pre-wrap px-3.5 py-2.5 text-sm leading-relaxed ${
           mine
-            ? "border-2 border-[var(--color-ink)] bg-[var(--color-primary)] text-[var(--color-ink)]"
-            : "border-2 border-[var(--color-ink)] bg-[var(--color-surface)] text-[var(--color-text)]"
+            ? "bg-[var(--color-ink)] text-[var(--color-on-dark)]"
+            : "border-l-2 border-[var(--color-red)] bg-[var(--color-surface)] text-[var(--color-text)]"
         }`}
       >
         {message.content ? (
@@ -280,7 +278,7 @@ function Linked({ text }) {
         <Link
           key={i}
           href={part.href}
-          className="mx-0.5 inline-flex items-center gap-1 rounded-[3px] border border-[var(--color-ink)] bg-[var(--color-primary)] px-1.5 py-0.5 font-semibold text-[var(--color-ink)] transition-colors hover:bg-[var(--color-surface-2)]"
+          className="mx-0.5 inline-flex items-center gap-0.5 font-medium text-[var(--color-red)] underline decoration-1 underline-offset-[3px] transition-colors hover:text-[var(--color-ink)]"
         >
           {part.label}
           <ArrowUpRight className="h-3 w-3" />
@@ -295,7 +293,7 @@ function Linked({ text }) {
           href={part.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-medium text-[var(--color-ink)] underline decoration-[var(--color-ink)] underline-offset-2 hover:decoration-[var(--color-ink)]"
+          className="font-medium text-[var(--color-red)] underline decoration-1 underline-offset-[3px] hover:text-[var(--color-ink)]"
         >
           {part.label}
         </a>
