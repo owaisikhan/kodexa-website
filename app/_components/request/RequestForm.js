@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 
 import { services } from "@/app/_lib/services-data";
 import { submitRequest } from "@/app/_lib/actions";
-import ServiceIcon, { accentVar } from "@/app/_components/ui/ServiceIcon";
+import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
 import Button from "@/app/_components/ui/Button";
 
 // Three steps, one question each.
@@ -166,7 +166,7 @@ function Progress({ step }) {
         <li key={label} className="flex-1">
           <div className="h-1 overflow-hidden rounded-full bg-[var(--color-border)]">
             <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]"
+              className="h-full rounded-full bg-[var(--color-primary)]"
               initial={false}
               animate={{ width: i <= step ? "100%" : "0%" }}
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
@@ -198,31 +198,29 @@ function StepService({ service, onPick }) {
         {services.map((s) => {
           const active = service === s.slug;
           const accent = accentVar[s.accent] ?? accentVar.primary;
+          const ink = accentInk[s.accent] ?? accentInk.primary;
           return (
             <button
               key={s.slug}
               type="button"
               onClick={() => onPick(s.slug)}
               aria-pressed={active}
-              className={`flex items-start gap-3 rounded-2xl border p-4 text-left transition-all duration-300 ${
+              className={`flex items-start gap-3 rounded-[4px] border-2 p-4 text-left transition-all duration-200 ${
                 active
-                  ? "border-[var(--color-primary)] bg-[var(--color-primary)]/[0.08]"
-                  : "border-[var(--color-border)] hover:border-[var(--color-dim)] hover:bg-white/[0.02]"
+                  ? "border-[var(--color-ink)] bg-[var(--color-primary)]"
+                  : "border-[var(--color-border)] hover:border-[var(--color-dim)] hover:bg-[var(--color-surface-2)]"
               }`}
             >
               <span
-                className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl"
-                style={{
-                  color: accent,
-                  background: `color-mix(in oklab, ${accent} 12%, transparent)`,
-                }}
+                className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-[4px] border-2 border-[var(--color-ink)]"
+                style={{ color: ink, background: accent }}
               >
                 <ServiceIcon name={s.icon} className="h-5 w-5" />
               </span>
               <span className="min-w-0">
                 <span className="flex items-center gap-2 font-semibold">
                   {s.title}
-                  {active ? <Check className="h-4 w-4 text-[var(--color-primary)]" /> : null}
+                  {active ? <Check className="h-4 w-4 text-[var(--color-ink)]" /> : null}
                 </span>
                 <span className="mt-1 block text-sm leading-snug text-[var(--color-muted)]">
                   {s.short}
@@ -336,7 +334,7 @@ function Success({ state }) {
       </p>
 
       {state.reference ? (
-        <p className="mt-5 inline-block rounded-full border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-muted)]">
+        <p className="mt-5 inline-block rounded-[4px] border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-muted)]">
           Reference {state.reference}
         </p>
       ) : null}

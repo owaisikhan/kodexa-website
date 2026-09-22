@@ -11,8 +11,11 @@ hue, so a rebrand is a token swap rather than a search for `cyan`.
 | `--color-surface`, `--color-surface-2` | inputs and inner panels |
 | `--color-border`, `--color-border-soft` | panel edges, hairlines |
 | `--color-text`, `--color-muted`, `--color-dim` | the three text weights |
-| `--color-primary` | the one action colour, cyan |
-| `--color-secondary` | the gradient partner, violet |
+| `--color-primary` | the one action colour, acid lime |
+| `--color-secondary` | the structural colour, cobalt |
+| `--color-accent` | the interruption colour, coral. Decoration only |
+| `--color-ink` | the colour of every rule, shadow and border |
+| `--color-on-dark` | text that sits on cobalt or green |
 | `--color-success` / `--warning` / `--danger` | states, and service accents |
 
 Three text weights, not five. Body copy is `--color-muted`; `--color-dim` is
@@ -20,13 +23,19 @@ for labels and metadata only, never a sentence someone has to read.
 
 ## Recurring classes
 
-- **`.panel`** is the glass card: border, faint fill, blur. Add `.panel-hover`
-  for the lift and glow on hover.
+- **`.panel`** is the card: a solid fill, a 2px ink rule and square-ish
+  corners. Add `.panel-raised` for a static offset shadow, or `.panel-hover`
+  to make it press into that shadow when the cursor is on it.
 - **`.container-x`** is the page gutter. Sections never set their own.
-- **`.grid-bg`** is the engineering grid, masked to fade at the edges. Used
-  behind the hero, the CTA bands and the page headers.
-- **`.glow`** is a blurred colour blob. Always `pointer-events: none` and
-  `aria-hidden`.
+- **`.grid-bg`** is diagonal ink hatching, and `.dot-bg` is a dot screen. Both
+  are background texture behind the hero, the CTA band and page headers.
+- **`.block-shape`** is a flat rectangle of accent colour with an ink outline,
+  used as hero decoration. Always `pointer-events: none` and `aria-hidden`.
+- **`.glow`** is retired and renders nothing. It is kept as a no-op so an old
+  usage degrades to invisible rather than to a hard rectangle across a page.
+- **`.text-mark`** is the marker stroke behind a phrase. It paints the
+  highlight with a box-shadow so the text keeps its own colour, which is what
+  keeps its contrast ratio measurable.
 - **`.field`** is every input, select and textarea.
 - **`.kicker`** is the small uppercase label above a heading.
 
@@ -89,3 +98,32 @@ overflow, nothing past the right edge, no text under 12px, no tap target under
 - Colour is never the only signal: the selected service card gets a tick as
   well as a border, and buttons carry words rather than icons alone.
 - Reduced motion is honoured globally and re-checked in each GSAP effect.
+
+## Why the palette looks like this
+
+The first build was dark by default, with a cyan-to-violet gradient, frosted
+glass panels, blurred accent orbs and Inter. Every one of those is a
+documented tell of a generated interface, and together they made a studio that
+builds software for a living look like it had ordered its own site from a
+prompt.
+
+What replaced it:
+
+- **Paper, not a dark canvas.** A warm bone sheet reads as printed matter and
+  is what a small-business owner is used to reading a quote on.
+- **Ink rules and hard offset shadows instead of blur.** A card sits on the
+  page rather than floating over it. Hover presses it into its own shadow;
+  nothing lifts and nothing glows.
+- **Three saturated accents that clash slightly on purpose**: acid lime for
+  every action, cobalt for structure, coral as an interruption. No gradient
+  anywhere between two accents.
+- **Type as the layout.** Bricolage Grotesque set solid at 0.95 line-height
+  carries the page; DM Sans reads underneath it; JetBrains Mono handles labels,
+  stats and timelines so the small print looks like a spec sheet.
+
+Accents are painted as solid blocks now, not a 10% wash, so every accent needs
+a stated foreground. That pairing lives in `accentInk` next to `accentVar` in
+`_components/ui/ServiceIcon.js`. Lime and amber take ink, cobalt and green take
+paper. Measured against their backgrounds, the lowest ratio in the palette is
+`--color-dim` on paper at 4.56:1, and `--color-success` was darkened from
+`#0f8a4d` to `#0a7340` specifically to clear 4.5:1 for paper-on-green.

@@ -9,17 +9,12 @@ export default function Footer() {
 
   return (
     <footer className="relative overflow-hidden border-t border-[var(--color-border-soft)] bg-[var(--color-bg-2)]">
-      <div
-        className="glow left-1/2 top-0 h-[300px] w-[600px] -translate-x-1/2 -translate-y-1/2 opacity-25"
-        style={{ background: "var(--color-primary)" }}
-        aria-hidden
-      />
 
       <div className="container-x relative py-16 md:py-20">
         <div className="grid gap-12 md:grid-cols-[1.3fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[#04121a]">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-[var(--color-primary)] text-[var(--color-ink)]">
                 <span className="font-display text-lg font-bold">K</span>
               </span>
               <span className="font-display text-lg font-bold">{siteConfig.name}</span>
@@ -62,7 +57,7 @@ export default function Footer() {
                 <li key={s.slug}>
                   <Link
                     href={`/services/${s.slug}`}
-                    className="tap text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+                    className="tap text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-ink)]"
                   >
                     {s.title}
                   </Link>
@@ -77,17 +72,17 @@ export default function Footer() {
             </h3>
             <ul className="mt-5 space-y-2.5">
               <li>
-                <Link href="/work" className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+                <Link href="/work" className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)]">
                   Work
                 </Link>
               </li>
               <li>
-                <Link href="/#process" className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+                <Link href="/#process" className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)]">
                   How it works
                 </Link>
               </li>
               <li>
-                <Link href="/request" className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]">
+                <Link href="/request" className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)]">
                   Request a service
                 </Link>
               </li>
@@ -96,7 +91,7 @@ export default function Footer() {
                   href={siteConfig.social.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="tap gap-1.5 text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]"
+                  className="tap gap-1.5 text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)]"
                 >
                   <GitBranch className="h-3.5 w-3.5" />
                   GitHub

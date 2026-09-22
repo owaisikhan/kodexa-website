@@ -13,11 +13,6 @@ export default function RequestPage() {
   return (
     <section className="relative min-h-screen overflow-hidden pb-24 pt-[152px]">
       <div className="absolute inset-0 grid-bg" aria-hidden />
-      <div
-        className="glow left-1/2 top-0 h-[360px] w-[620px] -translate-x-1/2 opacity-20"
-        style={{ background: "var(--color-primary)" }}
-        aria-hidden
-      />
 
       <div className="container-x relative">
         <Reveal className="mx-auto max-w-2xl text-center">

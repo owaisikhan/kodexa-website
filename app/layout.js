@@ -1,19 +1,28 @@
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Bricolage_Grotesque, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 
 import "@/app/_styles/globals.css";
 import { siteConfig } from "@/app/_lib/siteConfig";
 
-const sans = Inter({
+// Bricolage Grotesque does the shouting: a wide, slightly odd grotesk that
+// carries a headline on its own, which is the point of a type-led layout.
+// DM Sans reads quietly underneath it, and the mono is for labels and numbers
+// so the small print looks like a spec sheet rather than more marketing.
+const display = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const sans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const display = Space_Grotesk({
+const mono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-display",
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -35,12 +44,12 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#05070d",
+  themeColor: "#f2efe4",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable}`}>
+    <html lang="en" className={`${sans.variable} ${display.variable} ${mono.variable}`}>
       {/* The root layout carries the fonts, the tokens and the toaster only.
           Public chrome lives in (site)/layout.js so /admin does not inherit a
           marketing navbar over its own header. */}
@@ -50,10 +59,12 @@ export default function RootLayout({ children }) {
           position="bottom-center"
           toastOptions={{
             style: {
-              background: "#0c1220",
-              color: "#e9eefc",
-              border: "1px solid #1b2540",
-              borderRadius: "12px",
+              background: "#fffdf6",
+              color: "#15130e",
+              border: "2px solid #15130e",
+              borderRadius: "4px",
+              boxShadow: "4px 4px 0 #15130e",
+              fontWeight: 500,
             },
           }}
         />

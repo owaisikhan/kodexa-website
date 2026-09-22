@@ -87,7 +87,7 @@ export default function ProcessTimeline() {
           <div className="absolute left-[18px] top-2 bottom-2 w-px bg-[var(--color-border)] md:left-[26px]" aria-hidden />
           <div
             data-line-fill
-            className="absolute left-[18px] top-2 bottom-2 w-px origin-top bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-secondary)] md:left-[26px]"
+            className="absolute left-[18px] top-2 bottom-2 w-0.5 origin-top bg-[var(--color-ink)] md:left-[26px]"
             aria-hidden
           />
 
@@ -96,7 +96,7 @@ export default function ProcessTimeline() {
               <li key={step.n} data-step className="relative">
                 <span
                   data-dot
-                  className="absolute -left-12 top-1 grid h-9 w-9 place-items-center rounded-full border border-[var(--color-primary)] bg-[var(--color-bg)] font-display text-xs font-bold text-[var(--color-primary)] md:-left-20 md:h-[52px] md:w-[52px] md:text-sm"
+                  className="absolute -left-12 top-1 grid h-9 w-9 place-items-center rounded-[4px] border-2 border-[var(--color-ink)] bg-[var(--color-primary)] font-mono text-xs font-bold text-[var(--color-ink)] md:-left-20 md:h-[52px] md:w-[52px] md:text-sm"
                 >
                   {step.n}
                 </span>

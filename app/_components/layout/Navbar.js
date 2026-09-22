@@ -37,13 +37,13 @@ export default function Navbar() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "border-b border-[var(--color-border-soft)] bg-[#05070d]/80 backdrop-blur-xl"
+          ? "border-b border-[var(--color-border-soft)] bg-[var(--color-bg)]"
           : "border-b border-transparent"
       }`}
     >
       <nav className="container-x flex h-[88px] items-center justify-between gap-6">
         <Link href="/" className="flex items-center gap-2.5" aria-label={`${siteConfig.name} home`}>
-          <span className="relative grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[#04121a]">
+          <span className="relative grid h-11 w-11 place-items-center rounded-xl bg-[var(--color-primary)] text-[var(--color-ink)]">
             <span className="font-display text-xl font-bold">K</span>
           </span>
           <span className="font-display text-xl font-bold tracking-tight">
@@ -88,7 +88,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-0 top-[88px] z-50 border-b border-[var(--color-border)] bg-[#05070d]/98 backdrop-blur-xl md:hidden"
+            className="fixed inset-x-0 top-[88px] z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)] md:hidden"
           >
             <div className="container-x flex flex-col gap-1 py-6">
               {links.map((l) => (
@@ -96,7 +96,7 @@ export default function Navbar() {
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-xl px-2 py-3.5 text-lg text-[var(--color-text)] hover:bg-white/[0.04]"
+                  className="rounded-xl px-2 py-3.5 text-lg text-[var(--color-text)] hover:bg-[var(--color-surface-2)]"
                 >
                   {l.label}
                 </Link>

@@ -5,25 +5,25 @@ import clsx from "clsx";
 // that acts renders a <button>, so the keyboard and the browser both behave.
 
 const base =
-  "group relative inline-flex items-center justify-center gap-2 rounded-full font-semibold " +
-  "transition-[transform,box-shadow,background,border-color] duration-300 " +
-  "active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
+  "group relative inline-flex items-center justify-center gap-2 rounded-[4px] border-2 " +
+  "border-[var(--color-ink)] font-display font-extrabold uppercase tracking-tight " +
+  // The press is the whole interaction: the button travels into its own
+  // shadow instead of lifting off the page and glowing.
+  "shadow-[4px_4px_0_var(--color-ink)] transition-[transform,box-shadow,background] duration-150 " +
+  "hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_var(--color-ink)] " +
+  "active:translate-x-[4px] active:translate-y-[4px] active:shadow-none " +
+  "disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
 
 const sizes = {
   sm: "px-4 py-2 text-sm",
   md: "px-6 py-3 text-[0.95rem]",
-  lg: "px-8 py-4 text-base",
+  lg: "px-7 py-4 text-[1.05rem]",
 };
 
 const variants = {
-  primary:
-    "bg-[var(--color-primary)] text-[#04121a] shadow-[0_10px_40px_-12px_var(--color-primary)] " +
-    "hover:shadow-[0_16px_50px_-10px_var(--color-primary)] hover:brightness-110",
-  ghost:
-    "border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-primary)] " +
-    "hover:bg-white/[0.03]",
-  whatsapp:
-    "bg-[#25D366] text-[#04210f] shadow-[0_10px_40px_-12px_#25D366] hover:brightness-110",
+  primary: "bg-[var(--color-primary)] text-[var(--color-ink)]",
+  ghost: "bg-[var(--color-surface)] text-[var(--color-ink)] hover:bg-[var(--color-primary)]",
+  whatsapp: "bg-[#25D366] text-[var(--color-ink)]",
 };
 
 export default function Button({

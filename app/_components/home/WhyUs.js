@@ -45,7 +45,7 @@ export default function WhyUs() {
               <Reveal key={p.title} delay={i * 0.08}>
                 <div className="panel panel-hover h-full p-6">
                   <p.icon
-                    className="h-6 w-6 text-[var(--color-primary)]"
+                    className="h-6 w-6 text-[var(--color-ink)]"
                     strokeWidth={1.6}
                   />
                   <h3 className="mt-4 text-lg">{p.title}</h3>

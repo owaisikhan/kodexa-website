@@ -74,11 +74,12 @@ export default function HeroVisual() {
         icon={ShoppingBag}
         label="Online store"
         accent="var(--color-primary)"
+        ink="var(--color-ink)"
       >
         <div className="grid grid-cols-3 gap-2">
           {[0, 1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="rounded-lg border border-[var(--color-border)] p-1.5">
-              <div className="h-7 rounded bg-gradient-to-br from-[var(--color-primary)]/30 to-[var(--color-secondary)]/15" />
+            <div key={i} className="rounded-[3px] border-2 border-[var(--color-ink)] p-1.5">
+              <div className="h-7 rounded bg-[var(--color-primary)]" />
               <div className="mt-1.5 h-1 w-8 rounded-full bg-[var(--color-border)]" />
             </div>
           ))}
@@ -90,13 +91,14 @@ export default function HeroVisual() {
         icon={LayoutDashboard}
         label="Daily dashboard"
         accent="var(--color-secondary)"
+        ink="var(--color-on-dark)"
       >
         <div className="flex h-[74px] items-end gap-1.5">
           {[40, 68, 52, 84, 61, 92].map((h, i) => (
             <span
               key={i}
               style={{ height: `${h}%` }}
-              className="flex-1 rounded-sm bg-gradient-to-t from-[var(--color-secondary)]/30 to-[var(--color-secondary)]"
+              className="flex-1 rounded-sm bg-[var(--color-secondary)] border-2 border-[var(--color-ink)]"
             />
           ))}
         </div>
@@ -107,12 +109,13 @@ export default function HeroVisual() {
         icon={Bot}
         label="AI assistant"
         accent="var(--color-success)"
+        ink="var(--color-on-dark)"
       >
         <div className="space-y-2">
-          <p className="ml-auto w-fit max-w-[78%] rounded-2xl rounded-br-sm bg-[var(--color-success)]/15 px-3 py-1.5 text-[11px] text-[var(--color-text)]">
+          <p className="ml-auto w-fit max-w-[78%] rounded-[4px] border-2 border-[var(--color-ink)] bg-[var(--color-primary)] px-3 py-1.5 text-[11px] font-medium text-[var(--color-ink)]">
             Anything under $30?
           </p>
-          <p className="w-fit max-w-[86%] rounded-2xl rounded-bl-sm bg-white/[0.05] px-3 py-1.5 text-[11px] text-[var(--color-muted)]">
+          <p className="w-fit max-w-[86%] rounded-[4px] border-2 border-[var(--color-ink)] bg-[var(--color-surface-2)] px-3 py-1.5 text-[11px] text-[var(--color-text)]">
             Yes, four items. Shall I show you?
           </p>
         </div>
@@ -121,21 +124,20 @@ export default function HeroVisual() {
   );
 }
 
-function Card({ className, icon: Icon, label, accent, children }) {
+function Card({ className, icon: Icon, label, accent, ink, children }) {
   return (
     <div
       data-card
-      className={`panel absolute translate-y-8 scale-95 p-4 opacity-0 ${className}`}
-      style={{ boxShadow: `0 30px 80px -40px ${accent}` }}
+      className={`panel panel-raised absolute translate-y-8 scale-95 p-4 opacity-0 ${className}`}
     >
       <div className="mb-3 flex items-center gap-2">
         <span
-          className="grid h-7 w-7 place-items-center rounded-lg"
-          style={{ color: accent, background: `color-mix(in oklab, ${accent} 14%, transparent)` }}
+          className="grid h-7 w-7 place-items-center rounded-[3px] border-2 border-[var(--color-ink)]"
+          style={{ color: ink, background: accent }}
         >
-          <Icon className="h-4 w-4" strokeWidth={1.7} />
+          <Icon className="h-4 w-4" strokeWidth={2} />
         </span>
-        <span className="text-xs font-medium tracking-wide text-[var(--color-muted)]">
+        <span className="font-mono text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--color-muted)]">
           {label}
         </span>
       </div>
