@@ -41,9 +41,16 @@ export default function HeroVisual() {
 
       // quickTo keeps the pointer parallax on GSAP's ticker instead of firing a
       // tween per mousemove.
+      //
+      // The tilt is "rotation", GSAP's own transform component, not "rotate".
+      // "rotate" is the standalone CSS property, which GSAP writes directly and
+      // then cannot restore: every ctx.revert() logs "rotate not eligible for
+      // reset", once per card, and React remounts this in development. Using
+      // rotation puts the tilt in the same matrix as x, so one revert undoes
+      // both.
       const setters = gsap.utils.toArray("[data-card]").map((card, i) => ({
         x: gsap.quickTo(card, "x", { duration: 0.8, ease: "power3.out" }),
-        rot: gsap.quickTo(card, "rotate", { duration: 0.9, ease: "power3.out" }),
+        rot: gsap.quickTo(card, "rotation", { duration: 0.9, ease: "power3.out" }),
         depth: (i + 1) * 9,
       }));
 
