@@ -45,11 +45,8 @@ export default function RequestCard({ request }) {
           <div className="flex flex-wrap items-center gap-2.5">
             <h2 className="text-xl">{request.name}</h2>
             <span
-              className="inline-flex items-center gap-1.5 rounded-[4px] px-2.5 py-1 text-xs font-semibold"
-              style={{
-                color: style.color,
-                background: `color-mix(in oklab, ${style.color} 14%, transparent)`,
-              }}
+              className="inline-flex items-center gap-1.5 rounded-[4px] border-2 border-[var(--color-ink)] px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide"
+              style={{ color: style.ink, background: style.color }}
             >
               {/* Colour is never the only cue: the word is always there too. */}
               {style.label}
@@ -118,14 +115,14 @@ export default function RequestCard({ request }) {
                   aria-pressed={active}
                   className={`inline-flex items-center gap-1.5 rounded-[4px] border px-3.5 py-1.5 text-sm transition-colors disabled:cursor-default ${
                     active
-                      ? "border-transparent font-semibold"
+                      ? "border-[var(--color-ink)] font-semibold"
                       : "border-[var(--color-border)] text-[var(--color-muted)] hover:border-[var(--color-dim)] hover:text-[var(--color-text)]"
                   }`}
                   style={
                     active
                       ? {
-                          color: s.color,
-                          background: `color-mix(in oklab, ${s.color} 16%, transparent)`,
+                          color: s.ink,
+                          background: s.color,
                         }
                       : undefined
                   }

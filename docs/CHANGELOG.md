@@ -1,5 +1,18 @@
 # Changelog
 
+## Muted pigments
+
+The brutalist structure kept, the accents turned down: acid lime, cobalt and
+coral became ochre, slate and terracotta. Hard 2px rules and offset shadows
+are already loud, and three screen-bright accents on top of them made the page
+shout at somebody who is only trying to price a website.
+
+**Decision worth keeping:** the admin status chip is now a solid fill with a
+stated foreground, not `color` over a 14% wash of itself. That pattern only
+ever worked because the accents were bright; a light pigment like ochre is
+unreadable as text on near-white paper. Each `STATUS_STYLE` entry carries its
+own `ink`, the same contract `accentInk` already gives the service accents.
+
 ## Gen Z redesign
 
 The palette, the type and the surface treatment were replaced; the structure,

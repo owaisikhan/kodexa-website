@@ -11,9 +11,10 @@ hue, so a rebrand is a token swap rather than a search for `cyan`.
 | `--color-surface`, `--color-surface-2` | inputs and inner panels |
 | `--color-border`, `--color-border-soft` | panel edges, hairlines |
 | `--color-text`, `--color-muted`, `--color-dim` | the three text weights |
-| `--color-primary` | the one action colour, acid lime |
-| `--color-secondary` | the structural colour, cobalt |
-| `--color-accent` | the interruption colour, coral. Decoration only |
+| `--color-primary` | the one action colour, ochre |
+| `--color-secondary` | the structural colour, slate |
+| `--color-accent` | the interruption colour, terracotta. Decoration only |
+| `--color-neutral` | the inert chip, stone. Used for a status with no state |
 | `--color-ink` | the colour of every rule, shadow and border |
 | `--color-on-dark` | text that sits on cobalt or green |
 | `--color-success` / `--warning` / `--danger` | states, and service accents |
@@ -114,16 +115,26 @@ What replaced it:
 - **Ink rules and hard offset shadows instead of blur.** A card sits on the
   page rather than floating over it. Hover presses it into its own shadow;
   nothing lifts and nothing glows.
-- **Three saturated accents that clash slightly on purpose**: acid lime for
-  every action, cobalt for structure, coral as an interruption. No gradient
-  anywhere between two accents.
+- **Three muted pigments**: ochre for every action, slate for structure,
+  terracotta as an interruption. No gradient anywhere between two accents.
+  Hard 2px rules and offset shadows are already loud, and three screen-bright
+  accents on top of them made the page shout at somebody who is only trying to
+  price a website. These hold the same structure at a readable volume.
 - **Type as the layout.** Bricolage Grotesque set solid at 0.95 line-height
   carries the page; DM Sans reads underneath it; JetBrains Mono handles labels,
   stats and timelines so the small print looks like a spec sheet.
 
-Accents are painted as solid blocks now, not a 10% wash, so every accent needs
-a stated foreground. That pairing lives in `accentInk` next to `accentVar` in
-`_components/ui/ServiceIcon.js`. Lime and amber take ink, cobalt and green take
-paper. Measured against their backgrounds, the lowest ratio in the palette is
-`--color-dim` on paper at 4.56:1, and `--color-success` was darkened from
-`#0f8a4d` to `#0a7340` specifically to clear 4.5:1 for paper-on-green.
+Accents are painted as solid blocks, not a 10% wash, so every accent needs a
+stated foreground. That pairing lives in `accentInk` next to `accentVar` in
+`_components/ui/ServiceIcon.js`, and in the `ink` field on each entry of
+`STATUS_STYLE` in `_lib/requests-data.js`. Ochre and terracotta take ink,
+slate and forest take paper.
+
+The status chip in the admin list used to print its colour as text over a 14%
+wash of itself. That reads for a bright screen colour and fails completely for
+a pigment: ochre text on near-white paper is not readable. The chip is a solid
+fill with an ink rule now, which is what every other coloured thing on the
+site already is.
+
+Measured: ink on paper 15.35:1, muted 6.84:1, dim 5.32:1, ink on ochre 8.98:1,
+paper on slate 10.62:1, paper on forest 6.20:1, ink on terracotta 5.01:1.

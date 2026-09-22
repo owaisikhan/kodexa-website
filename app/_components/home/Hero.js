@@ -75,7 +75,7 @@ export default function Hero() {
       <div
         data-animate="orb"
         data-orb="1"
-        className="block-shape right-[1%] top-[48%] hidden h-[120px] w-[120px] rotate-[-9deg] opacity-0 lg:block xl:h-[160px] xl:w-[160px]"
+        className="block-shape right-[4%] top-[48%] hidden h-[120px] w-[120px] rotate-[-9deg] opacity-0 lg:block xl:h-[160px] xl:w-[160px]"
         style={{ background: "var(--color-primary)", transform: "scale(0.6)" }}
         aria-hidden
       />

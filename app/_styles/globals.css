@@ -5,39 +5,47 @@
 
    The palette is deliberately not the one every AI-generated site ships with.
    No dark-by-default canvas, no cyan-to-violet gradient, no frosted glass and
-   no glowing orbs. This is paper: a warm bone sheet, hard black rules, ink
-   type doing the heavy lifting, and three saturated accents that were picked
-   to clash a little on purpose.
+   no glowing orbs. This is paper: an off-white sheet, hard ink rules, type
+   doing the heavy lifting, and three muted pigments.
+
+   The accents used to be acid lime, cobalt and coral. Hard 2px rules and
+   offset shadows are already loud, and three screen-bright accents on top of
+   them made the page shout at somebody who is only trying to price a website.
+   Ochre, slate and terracotta hold the same structure at a volume a business
+   owner can read.
    --------------------------------------------------------------------------- */
 @theme {
   /* Paper */
-  --color-bg: #f2efe4;
-  --color-bg-2: #e8e3d3;
-  --color-surface: #fffdf6;
-  --color-surface-2: #eae5d6;
+  --color-bg: #f4f2ea;
+  --color-bg-2: #eae7dc;
+  --color-surface: #fffefa;
+  --color-surface-2: #ece9df;
 
   /* Rules are ink, not a faint grey line. Brutalism draws, it does not hint. */
-  --color-border: #15130e;
-  --color-border-soft: #c9c2ae;
+  --color-border: #1c1b19;
+  --color-border-soft: #ccc7ba;
 
   /* Ink */
-  --color-text: #15130e;
-  --color-ink: #15130e;
-  --color-muted: #55503f;
-  --color-dim: #726c58;
-  --color-on-accent: #15130e;
-  --color-on-dark: #fffdf6;
+  --color-text: #1c1b19;
+  --color-ink: #1c1b19;
+  --color-muted: #56534c;
+  --color-dim: #68635a;
+  --color-on-accent: #1c1b19;
+  --color-on-dark: #fffefa;
 
-  /* Accents. Acid lime carries the action, cobalt carries the structure,
-     coral carries the interruption. */
-  --color-primary: #c8f223;
-  --color-primary-dim: #9dc000;
-  --color-secondary: #2b3bf0;
-  --color-secondary-dim: #1b27ae;
-  --color-accent: #ff5b38;
-  --color-success: #0a7340;
-  --color-warning: #e08700;
-  --color-danger: #d7301f;
+  /* Accents, desaturated on purpose. Ochre carries the action, slate carries
+     the structure, terracotta is the interruption. Each one is a pigment
+     rather than a screen colour, which is what stops a hard-edged layout from
+     reading as a warning label. */
+  --color-primary: #e0b64a;
+  --color-primary-dim: #9c7a1c;
+  --color-secondary: #23405c;
+  --color-secondary-dim: #16293c;
+  --color-accent: #c2674a;
+  --color-success: #356b4c;
+  --color-warning: #cb7351;
+  --color-danger: #8f3226;
+  --color-neutral: #b8b2a4;
 
   --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
@@ -204,15 +212,15 @@
   .grid-bg {
     background-image: repeating-linear-gradient(
       45deg,
-      rgb(21 19 14 / 0.07) 0,
-      rgb(21 19 14 / 0.07) 1px,
+      rgb(28 27 25 / 0.07) 0,
+      rgb(28 27 25 / 0.07) 1px,
       transparent 1px,
       transparent 9px
     );
   }
 
   .dot-bg {
-    background-image: radial-gradient(rgb(21 19 14 / 0.16) 1.4px, transparent 1.4px);
+    background-image: radial-gradient(rgb(28 27 25 / 0.16) 1.4px, transparent 1.4px);
     background-size: 18px 18px;
   }
 
