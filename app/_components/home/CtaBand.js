@@ -12,23 +12,21 @@ export default function CtaBand({
   service,
 }) {
   return (
-    <section className="relative overflow-hidden py-24 md:py-32">
-      <div className="absolute inset-0 grid-bg" aria-hidden />
-      <div
-        className="glow left-1/2 top-1/2 h-[420px] w-[700px] -translate-x-1/2 -translate-y-1/2 opacity-25"
-        style={{ background: "var(--color-secondary)" }}
-        aria-hidden
-      />
+    // A solid band of cobalt with ink rules top and bottom. The old version
+    // centred a blurred accent wash behind the heading, which is the exact
+    // shape of every generated call to action on the internet.
+    <section className="relative overflow-hidden border-y-2 border-[var(--color-ink)] bg-[var(--color-secondary)] py-24 md:py-32">
+      <div className="absolute inset-0 dot-bg opacity-40" aria-hidden />
 
       <div className="container-x relative text-center">
         <Reveal>
-          <h2 className="mx-auto max-w-3xl text-[clamp(2.2rem,6vw,4rem)]">
+          <h2 className="mx-auto max-w-3xl text-[clamp(2.2rem,6vw,4rem)] uppercase text-[var(--color-on-dark)]">
             {title}
           </h2>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]">
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-[var(--color-on-dark)]">
             {body}
           </p>
         </Reveal>

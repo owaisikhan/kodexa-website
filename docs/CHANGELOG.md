@@ -1,5 +1,41 @@
 # Changelog
 
+## Muted pigments
+
+The brutalist structure kept, the accents turned down: acid lime, cobalt and
+coral became ochre, slate and terracotta. Hard 2px rules and offset shadows
+are already loud, and three screen-bright accents on top of them made the page
+shout at somebody who is only trying to price a website.
+
+**Decision worth keeping:** the admin status chip is now a solid fill with a
+stated foreground, not `color` over a 14% wash of itself. That pattern only
+ever worked because the accents were bright; a light pigment like ochre is
+unreadable as text on near-white paper. Each `STATUS_STYLE` entry carries its
+own `ink`, the same contract `accentInk` already gives the service accents.
+
+## Gen Z redesign
+
+The palette, the type and the surface treatment were replaced; the structure,
+the copy, the motion and every behaviour underneath were not. See "Why the
+palette looks like this" in `docs/UI_CONVENTIONS.md` for what changed and why.
+
+**Decisions worth keeping:**
+
+- **Tailwind's own radius scale was overridden rather than swept.** Setting
+  `--radius-lg`, `--radius-2xl` and friends to 2-8px in `@theme` flattened
+  every existing `rounded-xl` in the codebase at once. Only `rounded-full`,
+  which Tailwind hardcodes and does not read from a token, needed touching by
+  hand, and only where it was pill chrome rather than a dot.
+
+- **`.glow` is a no-op, not a deletion.** Redefining it as `display: none` and
+  removing its call sites is belt and braces: if one is ever missed, or comes
+  back in a merge, it renders nothing instead of a hard-edged rectangle across
+  a whole section.
+
+- **The cursor spotlight on the service cards went with the orbs.** It was the
+  same effect at a smaller scale, a light source that is not there. The card
+  presses into its shadow instead, which is one honest movement.
+
 ## Initial build
 
 The site: home, nine service pages, work, a three-step request flow, 404 and

@@ -11,8 +11,12 @@ hue, so a rebrand is a token swap rather than a search for `cyan`.
 | `--color-surface`, `--color-surface-2` | inputs and inner panels |
 | `--color-border`, `--color-border-soft` | panel edges, hairlines |
 | `--color-text`, `--color-muted`, `--color-dim` | the three text weights |
-| `--color-primary` | the one action colour, cyan |
-| `--color-secondary` | the gradient partner, violet |
+| `--color-primary` | the one action colour, ochre |
+| `--color-secondary` | the structural colour, slate |
+| `--color-accent` | the interruption colour, terracotta. Decoration only |
+| `--color-neutral` | the inert chip, stone. Used for a status with no state |
+| `--color-ink` | the colour of every rule, shadow and border |
+| `--color-on-dark` | text that sits on cobalt or green |
 | `--color-success` / `--warning` / `--danger` | states, and service accents |
 
 Three text weights, not five. Body copy is `--color-muted`; `--color-dim` is
@@ -20,13 +24,19 @@ for labels and metadata only, never a sentence someone has to read.
 
 ## Recurring classes
 
-- **`.panel`** is the glass card: border, faint fill, blur. Add `.panel-hover`
-  for the lift and glow on hover.
+- **`.panel`** is the card: a solid fill, a 2px ink rule and square-ish
+  corners. Add `.panel-raised` for a static offset shadow, or `.panel-hover`
+  to make it press into that shadow when the cursor is on it.
 - **`.container-x`** is the page gutter. Sections never set their own.
-- **`.grid-bg`** is the engineering grid, masked to fade at the edges. Used
-  behind the hero, the CTA bands and the page headers.
-- **`.glow`** is a blurred colour blob. Always `pointer-events: none` and
-  `aria-hidden`.
+- **`.grid-bg`** is diagonal ink hatching, and `.dot-bg` is a dot screen. Both
+  are background texture behind the hero, the CTA band and page headers.
+- **`.block-shape`** is a flat rectangle of accent colour with an ink outline,
+  used as hero decoration. Always `pointer-events: none` and `aria-hidden`.
+- **`.glow`** is retired and renders nothing. It is kept as a no-op so an old
+  usage degrades to invisible rather than to a hard rectangle across a page.
+- **`.text-mark`** is the marker stroke behind a phrase. It paints the
+  highlight with a box-shadow so the text keeps its own colour, which is what
+  keeps its contrast ratio measurable.
 - **`.field`** is every input, select and textarea.
 - **`.kicker`** is the small uppercase label above a heading.
 
@@ -89,3 +99,42 @@ overflow, nothing past the right edge, no text under 12px, no tap target under
 - Colour is never the only signal: the selected service card gets a tick as
   well as a border, and buttons carry words rather than icons alone.
 - Reduced motion is honoured globally and re-checked in each GSAP effect.
+
+## Why the palette looks like this
+
+The first build was dark by default, with a cyan-to-violet gradient, frosted
+glass panels, blurred accent orbs and Inter. Every one of those is a
+documented tell of a generated interface, and together they made a studio that
+builds software for a living look like it had ordered its own site from a
+prompt.
+
+What replaced it:
+
+- **Paper, not a dark canvas.** A warm bone sheet reads as printed matter and
+  is what a small-business owner is used to reading a quote on.
+- **Ink rules and hard offset shadows instead of blur.** A card sits on the
+  page rather than floating over it. Hover presses it into its own shadow;
+  nothing lifts and nothing glows.
+- **Three muted pigments**: ochre for every action, slate for structure,
+  terracotta as an interruption. No gradient anywhere between two accents.
+  Hard 2px rules and offset shadows are already loud, and three screen-bright
+  accents on top of them made the page shout at somebody who is only trying to
+  price a website. These hold the same structure at a readable volume.
+- **Type as the layout.** Bricolage Grotesque set solid at 0.95 line-height
+  carries the page; DM Sans reads underneath it; JetBrains Mono handles labels,
+  stats and timelines so the small print looks like a spec sheet.
+
+Accents are painted as solid blocks, not a 10% wash, so every accent needs a
+stated foreground. That pairing lives in `accentInk` next to `accentVar` in
+`_components/ui/ServiceIcon.js`, and in the `ink` field on each entry of
+`STATUS_STYLE` in `_lib/requests-data.js`. Ochre and terracotta take ink,
+slate and forest take paper.
+
+The status chip in the admin list used to print its colour as text over a 14%
+wash of itself. That reads for a bright screen colour and fails completely for
+a pigment: ochre text on near-white paper is not readable. The chip is a solid
+fill with an ink rule now, which is what every other coloured thing on the
+site already is.
+
+Measured: ink on paper 15.35:1, muted 6.84:1, dim 5.32:1, ink on ochre 8.98:1,
+paper on slate 10.62:1, paper on forest 6.20:1, ink on terracotta 5.01:1.

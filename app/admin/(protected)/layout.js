@@ -20,10 +20,10 @@ export default async function AdminLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)]">
-      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[#05070d]/85 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[var(--color-bg)]">
         <div className="container-x flex h-16 items-center justify-between gap-4">
           <Link href="/admin" className="flex items-center gap-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[#04121a]">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-[var(--color-primary)] text-[var(--color-ink)]">
               <LayoutDashboard className="h-4 w-4" strokeWidth={2} />
             </span>
             <span className="font-display font-bold">{siteConfig.name} admin</span>
@@ -36,7 +36,7 @@ export default async function AdminLayout({ children }) {
             <form action={signOutAction}>
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-muted)] transition-colors hover:border-[var(--color-danger)] hover:text-[var(--color-text)]"
+                className="inline-flex items-center gap-2 rounded-[4px] border border-[var(--color-border)] px-4 py-2 text-sm text-[var(--color-muted)] transition-colors hover:border-[var(--color-danger)] hover:text-[var(--color-text)]"
               >
                 <LogOut className="h-4 w-4" />
                 Sign out

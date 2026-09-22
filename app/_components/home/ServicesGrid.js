@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 
 import { services } from "@/app/_lib/services-data";
-import ServiceIcon, { accentVar } from "@/app/_components/ui/ServiceIcon";
+import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
 import Section, { SectionHeader } from "@/app/_components/ui/Section";
 
 // Nine cards is the whole offer on one screen. A visitor from Facebook should
@@ -39,20 +38,12 @@ export default function ServicesGrid() {
 }
 
 function Card({ service, index }) {
-  const ref = useRef(null);
-
-  // The glow follows the cursor across the card. Written straight to a CSS
-  // custom property rather than through React state, because this fires on
-  // every mousemove and a re-render per pixel is not worth a nicer API.
-  function onMove(e) {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    el.style.setProperty("--my", `${e.clientY - r.top}px`);
-  }
-
+  // The card used to track the cursor with a radial spotlight. That is the
+  // same trick as the accent glow, so it went with it: the whole card now
+  // presses into its shadow instead, which is one honest movement rather than
+  // a light source that is not there.
   const accent = accentVar[service.accent] ?? accentVar.primary;
+  const ink = accentInk[service.accent] ?? accentInk.primary;
 
   return (
     <motion.div
@@ -62,23 +53,13 @@ function Card({ service, index }) {
       transition={{ duration: 0.6, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
     >
       <Link
-        ref={ref}
         href={`/services/${service.slug}`}
-        onMouseMove={onMove}
-        className="panel panel-hover group relative block h-full overflow-hidden p-6"
+        className="panel panel-hover group relative block h-full p-6"
       >
-        <span
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{
-            background: `radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklab, ${accent} 16%, transparent), transparent 62%)`,
-          }}
-          aria-hidden
-        />
-
         <div className="relative flex h-full flex-col">
           <span
-            className="grid h-12 w-12 place-items-center rounded-2xl border border-[var(--color-border)] transition-colors duration-300"
-            style={{ color: accent, background: `color-mix(in oklab, ${accent} 10%, transparent)` }}
+            className="grid h-12 w-12 place-items-center rounded-[4px] border-2 border-[var(--color-ink)]"
+            style={{ color: ink, background: accent }}
           >
             <ServiceIcon name={service.icon} />
           </span>
@@ -88,14 +69,12 @@ function Card({ service, index }) {
             {service.short}
           </p>
 
-          <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-ink)] underline decoration-2 underline-offset-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
             See what you get
             <ArrowUpRight className="h-4 w-4" />
           </span>
 
-          <span className="mt-auto pt-4 text-xs uppercase tracking-[0.18em] text-[var(--color-dim)]">
-            {service.timeline}
-          </span>
+          <span className="kicker mt-auto pt-4">{service.timeline}</span>
         </div>
       </Link>
     </motion.div>

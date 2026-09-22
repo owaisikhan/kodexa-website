@@ -2,36 +2,75 @@
 
 /* ---------------------------------------------------------------------------
    Tokens. Named by role, never by hue, so a rebrand is a token swap.
+
+   The palette is deliberately not the one every AI-generated site ships with.
+   No dark-by-default canvas, no cyan-to-violet gradient, no frosted glass and
+   no glowing orbs. This is paper: an off-white sheet, hard ink rules, type
+   doing the heavy lifting, and three muted pigments.
+
+   The accents used to be acid lime, cobalt and coral. Hard 2px rules and
+   offset shadows are already loud, and three screen-bright accents on top of
+   them made the page shout at somebody who is only trying to price a website.
+   Ochre, slate and terracotta hold the same structure at a volume a business
+   owner can read.
    --------------------------------------------------------------------------- */
 @theme {
-  --color-bg: #05070d;
-  --color-bg-2: #080c16;
-  --color-surface: #0c1220;
-  --color-surface-2: #111a2c;
-  --color-border: #1b2540;
-  --color-border-soft: #141d33;
+  /* Paper */
+  --color-bg: #f4f2ea;
+  --color-bg-2: #eae7dc;
+  --color-surface: #fffefa;
+  --color-surface-2: #ece9df;
 
-  --color-text: #e9eefc;
-  --color-muted: #8d9bb8;
-  --color-dim: #5d6b8a;
+  /* Rules are ink, not a faint grey line. Brutalism draws, it does not hint. */
+  --color-border: #1c1b19;
+  --color-border-soft: #ccc7ba;
 
-  --color-primary: #22d3ee;
-  --color-primary-dim: #0e7490;
-  --color-secondary: #a78bfa;
-  --color-secondary-dim: #6d28d9;
-  --color-success: #34d399;
-  --color-warning: #fbbf24;
-  --color-danger: #fb7185;
+  /* Ink */
+  --color-text: #1c1b19;
+  --color-ink: #1c1b19;
+  --color-muted: #56534c;
+  --color-dim: #68635a;
+  --color-on-accent: #1c1b19;
+  --color-on-dark: #fffefa;
+
+  /* Accents, desaturated on purpose. Ochre carries the action, slate carries
+     the structure, terracotta is the interruption. Each one is a pigment
+     rather than a screen colour, which is what stops a hard-edged layout from
+     reading as a warning label. */
+  --color-primary: #e0b64a;
+  --color-primary-dim: #9c7a1c;
+  --color-secondary: #23405c;
+  --color-secondary-dim: #16293c;
+  --color-accent: #c2674a;
+  --color-success: #356b4c;
+  --color-warning: #cb7351;
+  --color-danger: #8f3226;
+  --color-neutral: #b8b2a4;
 
   --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
 
-  --radius-card: 1.25rem;
+  /* Corners are nearly square. Overriding Tailwind's own radius scale means
+     every existing rounded-lg / rounded-2xl in the codebase flattens with it
+     instead of needing a sweep. */
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
+  --radius-2xl: 6px;
+  --radius-3xl: 8px;
+  --radius-card: 6px;
 }
 
 :root {
-  --color-dim: #5d6b8a;
-  color-scheme: dark;
+  color-scheme: light;
+
+  /* The offset shadow that replaces every blur. Hard edge, no alpha, so it
+     reads as a printed second impression rather than a glow. */
+  --shadow-hard: 5px 5px 0 var(--color-ink);
+  --shadow-hard-sm: 3px 3px 0 var(--color-ink);
+  --shadow-hard-lg: 8px 8px 0 var(--color-ink);
 }
 
 /* ---------------------------------------------------------------------------
@@ -39,7 +78,7 @@
    --------------------------------------------------------------------------- */
 @layer base {
   * {
-    border-color: var(--color-border-soft);
+    border-color: var(--color-border);
   }
 
   html {
@@ -59,9 +98,10 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.06;
+    font-weight: 800;
+    /* Tight, not airy. The type is the layout here, so it is set solid. */
+    letter-spacing: -0.035em;
+    line-height: 0.95;
     text-wrap: balance;
   }
 
@@ -71,14 +111,14 @@
 
   ::selection {
     background: var(--color-primary);
-    color: #04121a;
+    color: var(--color-ink);
   }
 
   /* Keyboard users get a visible ring; mouse users do not. */
   :focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 3px;
-    border-radius: 6px;
+    outline: 3px solid var(--color-secondary);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
   input,
@@ -107,80 +147,107 @@
     }
   }
 
-  /* The recurring glass panel. Border first, then a very low-alpha fill, so
-     panels stay legible on top of the animated background. */
+  /* The recurring card. Solid fill, a 2px ink rule and a hard offset shadow.
+     Nothing translucent: a card sits on the page, it does not float over it. */
   .panel {
     position: relative;
-    border: 1px solid var(--color-border);
+    border: 2px solid var(--color-border);
     border-radius: var(--radius-card);
-    background:
-      linear-gradient(180deg, rgb(255 255 255 / 0.04), rgb(255 255 255 / 0.01));
-    backdrop-filter: blur(12px);
+    background: var(--color-surface);
   }
 
+  .panel-flat {
+    box-shadow: none;
+  }
+
+  .panel-raised {
+    box-shadow: var(--shadow-hard);
+  }
+
+  /* Hover presses the card into its own shadow rather than lifting it into a
+     glow. Same distance travelled, opposite metaphor. */
   .panel-hover {
+    box-shadow: var(--shadow-hard);
     transition:
-      border-color 0.35s ease,
-      transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
-      box-shadow 0.35s ease;
+      transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
+      background 0.18s ease;
   }
 
   .panel-hover:hover {
-    border-color: color-mix(in oklab, var(--color-primary) 45%, transparent);
-    transform: translateY(-4px);
-    box-shadow: 0 18px 50px -24px color-mix(in oklab, var(--color-primary) 60%, transparent);
+    transform: translate(3px, 3px);
+    box-shadow: var(--shadow-hard-sm);
+    background: var(--color-surface-2);
   }
 
-  .text-gradient {
-    background: linear-gradient(94deg, var(--color-primary), var(--color-secondary));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  /* Emphasis is a marker stroke behind the words, not a gradient inside them.
+     Painted with a shadow so the highlight sits outside the glyphs and the
+     text keeps its own colour and its contrast ratio. */
+  .text-mark {
+    background: var(--color-primary);
+    box-shadow:
+      0.18em 0 0 var(--color-primary),
+      -0.18em 0 0 var(--color-primary);
+    color: var(--color-ink);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
 
   .kicker {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.32em;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--color-primary);
+    color: var(--color-muted);
   }
 
   .hairline {
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      var(--color-border),
-      transparent
+    height: 2px;
+    background: var(--color-border);
+  }
+
+  /* Diagonal ink hatching. Used behind hero and CTA bands where the old build
+     used a vanishing engineering grid. */
+  .grid-bg {
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgb(28 27 25 / 0.07) 0,
+      rgb(28 27 25 / 0.07) 1px,
+      transparent 1px,
+      transparent 9px
     );
   }
 
-  /* Faint engineering grid used behind hero and CTA bands. */
-  .grid-bg {
-    background-image:
-      linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
-    background-size: 72px 72px;
-    -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 40%, #000 20%, transparent 78%);
-    mask-image: radial-gradient(ellipse 85% 65% at 50% 40%, #000 20%, transparent 78%);
+  .dot-bg {
+    background-image: radial-gradient(rgb(28 27 25 / 0.16) 1.4px, transparent 1.4px);
+    background-size: 18px 18px;
   }
 
-  .glow {
+  /* A flat block of colour with a hard edge, used as hero decoration. It
+     replaces the blurred accent orb, which was the single most recognisable
+     tell of a generated landing page. */
+  .block-shape {
     position: absolute;
-    border-radius: 9999px;
-    filter: blur(90px);
+    border-radius: 4px;
+    border: 2px solid var(--color-ink);
     pointer-events: none;
+  }
+
+  /* The old blurred orb. Kept as a no-op so any stray usage renders nothing
+     rather than a giant hard rectangle across a section. */
+  .glow {
+    display: none;
   }
 
   .field {
     width: 100%;
     background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 0.85rem;
-    padding: 0.85rem 1rem;
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
     color: var(--color-text);
-    transition: border-color 0.2s ease, background 0.2s ease;
+    transition: box-shadow 0.15s ease, background 0.15s ease;
   }
 
   .field::placeholder {
@@ -189,8 +256,8 @@
 
   .field:focus {
     outline: none;
-    border-color: var(--color-primary);
-    background: var(--color-surface-2);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-hard-sm);
   }
 
   /* An inline link is about 17px tall, which is a fiddly thing to hit with a
@@ -215,7 +282,8 @@
      button off the bottom of the screen on the single most common laptop
      resolution there is. */
   .hero-title {
-    font-size: clamp(2.5rem, min(7vw, 8.5vh), 5.4rem);
+    font-size: clamp(2.5rem, min(7.4vw, 8.5vh), 5.6rem);
+    text-transform: uppercase;
   }
 
   /* Hero spacing that shrinks on a short screen instead of holding a desktop

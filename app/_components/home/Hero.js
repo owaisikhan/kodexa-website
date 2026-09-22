@@ -35,7 +35,7 @@ export default function Hero() {
         .to("[data-animate='stats']", { opacity: 1, y: 0, duration: 0.7 }, "-=0.45")
         .to("[data-animate='orb']", { opacity: 1, scale: 1, duration: 1.4, stagger: 0.15 }, 0);
 
-      // The orbs drift forever. Cheap, and it keeps the screen alive while
+      // The blocks drift forever. Cheap, and it keeps the screen alive while
       // somebody reads.
       gsap.to("[data-orb='1']", {
         x: 60,
@@ -67,26 +67,23 @@ export default function Hero() {
     >
       <div className="absolute inset-0 grid-bg" aria-hidden />
 
+      {/* Two flat colour blocks instead of blurred orbs. They drift for the
+          same reason the orbs did, but a hard-edged rectangle reads as a
+          printed shape rather than the neon wash every generated landing page
+          ships with. Both sit in the visual column, which is empty below lg,
+          so neither can ever land underneath a line of copy. */}
       <div
         data-animate="orb"
         data-orb="1"
-        className="glow left-[8%] top-[14%] h-[200px] w-[200px] opacity-0 sm:h-[380px] sm:w-[380px]"
+        className="block-shape right-[4%] top-[48%] hidden h-[120px] w-[120px] rotate-[-9deg] opacity-0 lg:block xl:h-[160px] xl:w-[160px]"
         style={{ background: "var(--color-primary)", transform: "scale(0.6)" }}
         aria-hidden
       />
       <div
         data-animate="orb"
         data-orb="2"
-        className="glow right-[6%] bottom-[10%] h-[220px] w-[220px] opacity-0 sm:h-[420px] sm:w-[420px]"
-        style={{ background: "var(--color-secondary)", transform: "scale(0.6)" }}
-        aria-hidden
-      />
-
-      {/* Phones only: the orbs are unavoidably close to the text at this size,
-          so this takes the wash down far enough for muted body copy to stay
-          readable without flattening the effect. */}
-      <div
-        className="pointer-events-none absolute inset-0 bg-[var(--color-bg)]/55 sm:hidden"
+        className="block-shape right-[16%] bottom-[6%] hidden h-[110px] w-[110px] rotate-[11deg] opacity-0 lg:block xl:h-[150px] xl:w-[150px]"
+        style={{ background: "var(--color-accent)", transform: "scale(0.6)" }}
         aria-hidden
       />
 
@@ -94,10 +91,10 @@ export default function Hero() {
         <div>
         <div
           data-animate="kicker"
-          className="mb-5 inline-flex translate-y-4 items-center gap-2.5 rounded-full border border-[var(--color-primary)]/35 bg-[#070c16]/85 px-5 py-2.5 backdrop-blur-md"
+          className="mb-5 inline-flex translate-y-4 items-center gap-2.5 rounded-[4px] border-2 border-[var(--color-ink)] bg-[var(--color-surface)] px-4 py-2 shadow-[3px_3px_0_var(--color-ink)]"
         >
-          <Sparkles className="h-4.5 w-4.5 text-[var(--color-primary)]" />
-          <span className="text-[0.95rem] font-semibold tracking-wide text-[var(--color-text)]">
+          <Sparkles className="h-4 w-4 text-[var(--color-ink)]" />
+          <span className="font-mono text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[var(--color-ink)]">
             Websites, stores, dashboards, apps and AI
           </span>
         </div>
@@ -108,8 +105,8 @@ export default function Hero() {
               {w}&nbsp;
             </span>
           ))}
-          <span className="text-gradient inline-block translate-y-8 opacity-0">
-            your business runs on
+          <span className="inline-block translate-y-8 opacity-0">
+            <span className="text-mark">your business runs on</span>
           </span>
         </h1>
 
@@ -146,10 +143,12 @@ export default function Hero() {
         >
           {siteConfig.stats.map((s) => (
             <div key={s.label}>
-              <dt className="font-display text-3xl font-bold text-[var(--color-text)] md:text-4xl">
+              <dt className="font-display text-4xl font-extrabold tracking-tight text-[var(--color-text)] md:text-5xl">
                 {s.value}
               </dt>
-              <dd className="mt-1 text-sm text-[var(--color-dim)]">{s.label}</dd>
+              <dd className="mt-1 font-mono text-[0.7rem] uppercase tracking-[0.1em] text-[var(--color-muted)]">
+                {s.label}
+              </dd>
             </div>
           ))}
         </dl>

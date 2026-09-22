@@ -38,7 +38,7 @@ export default function WorkPage() {
               <article className="panel panel-hover h-full overflow-hidden">
                 <WorkMock shot={item.shot} mock={item.mock} title={item.title} />
                 <div className="p-6">
-                  <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-primary)]">
+                  <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-ink)]">
                     {item.kind}
                   </p>
                   <h2 className="mt-3 text-2xl">{item.title}</h2>
@@ -49,7 +49,7 @@ export default function WorkPage() {
                     {item.tags.map((t) => (
                       <span
                         key={t}
-                        className="rounded-full border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--color-muted)]"
+                        className="rounded-[4px] border border-[var(--color-border)] px-3 py-1 text-xs text-[var(--color-muted)]"
                       >
                         {t}
                       </span>
@@ -60,7 +60,7 @@ export default function WorkPage() {
                       href={item.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="tap mt-3 gap-1.5 text-sm font-semibold text-[var(--color-primary)] hover:underline"
+                      className="tap mt-3 gap-1.5 text-sm font-semibold text-[var(--color-ink)] hover:underline"
                     >
                       Visit the live site
                       <ArrowUpRight className="h-4 w-4" />

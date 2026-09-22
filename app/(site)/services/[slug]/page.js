@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Check, Clock, Target, Users } from "lucide-react";
 
 import { getService, services, process } from "@/app/_lib/services-data";
-import ServiceIcon, { accentVar } from "@/app/_components/ui/ServiceIcon";
+import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
 import Section, { SectionHeader } from "@/app/_components/ui/Section";
 import Reveal from "@/app/_components/ui/Reveal";
 import Button from "@/app/_components/ui/Button";
@@ -32,23 +32,19 @@ export default async function ServicePage({ params }) {
   if (!service) notFound();
 
   const accent = accentVar[service.accent] ?? accentVar.primary;
+  const ink = accentInk[service.accent] ?? accentInk.primary;
   const others = services.filter((s) => s.slug !== service.slug).slice(0, 3);
 
   return (
     <>
       <section className="relative overflow-hidden pt-[152px] pb-16 md:pb-24">
         <div className="absolute inset-0 grid-bg" aria-hidden />
-        <div
-          className="glow left-[10%] top-0 h-[360px] w-[420px] opacity-25"
-          style={{ background: accent }}
-          aria-hidden
-        />
 
         <div className="container-x relative">
           <Reveal direction="none">
             <Link
               href="/#services"
-              className="tap text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-primary)]"
+              className="tap text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-ink)]"
             >
               &larr; All services
             </Link>
@@ -56,8 +52,8 @@ export default async function ServicePage({ params }) {
 
           <Reveal delay={0.05}>
             <span
-              className="mt-8 grid h-16 w-16 place-items-center rounded-2xl border border-[var(--color-border)]"
-              style={{ color: accent, background: `color-mix(in oklab, ${accent} 12%, transparent)` }}
+              className="mt-8 grid h-16 w-16 place-items-center rounded-[6px] border-2 border-[var(--color-ink)] shadow-[4px_4px_0_var(--color-ink)]"
+              style={{ color: ink, background: accent }}
             >
               <ServiceIcon name={service.icon} className="h-8 w-8" />
             </span>
@@ -152,11 +148,15 @@ export default async function ServicePage({ params }) {
             {others.map((o, i) => (
               <Reveal key={o.slug} delay={i * 0.08}>
                 <Link href={`/services/${o.slug}`} className="panel panel-hover block h-full p-5">
-                  <ServiceIcon
-                    name={o.icon}
-                    className="h-5 w-5"
-                    style={{ color: accentVar[o.accent] }}
-                  />
+                  <span
+                    className="grid h-9 w-9 place-items-center rounded-[4px] border-2 border-[var(--color-ink)]"
+                    style={{
+                      color: accentInk[o.accent] ?? accentInk.primary,
+                      background: accentVar[o.accent] ?? accentVar.primary,
+                    }}
+                  >
+                    <ServiceIcon name={o.icon} className="h-5 w-5" />
+                  </span>
                   <h3 className="mt-3 text-base">{o.title}</h3>
                   <p className="mt-1.5 text-sm text-[var(--color-muted)]">{o.short}</p>
                 </Link>
@@ -177,7 +177,7 @@ export default async function ServicePage({ params }) {
 
 function Badge({ icon: Icon, label }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/[0.02] px-4 py-2 text-sm text-[var(--color-muted)]">
+    <span className="inline-flex items-center gap-2 rounded-[4px] border border-[var(--color-border)] bg-[var(--color-surface-2)] px-4 py-2 text-sm text-[var(--color-muted)]">
       <Icon className="h-4 w-4 text-[var(--color-dim)]" />
       {label}
     </span>
