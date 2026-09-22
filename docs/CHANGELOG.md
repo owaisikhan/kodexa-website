@@ -1,5 +1,25 @@
 # Changelog
 
+## Lime on neutral black
+
+Cyan-on-blue-black with a violet gradient partner was swapped for a single
+acid lime on a true neutral black. Colours only: no layout, component, copy or
+motion change. See "Why there is only one accent" in `docs/UI_CONVENTIONS.md`.
+
+**Decisions worth keeping:**
+
+- **`--color-secondary` is a silver, not a second accent.** A dozen
+  `from-primary to-secondary` gradients already exist in the components. Making
+  the partner a neutral turns every one of them into a sheen rather than a
+  second hue, without touching a single component.
+
+- **`.text-gradient` is hardcoded to white into grey.** It is the only gradient
+  large enough that an accent-to-accent ramp would carry the whole page.
+
+- **The hero orbs settle at 0.22 opacity, and every ambient wash is lime.**
+  Lime is far brighter through a 90px blur than the accent it replaced, and a
+  blurred silver orb is fog rather than light.
+
 ## Initial build
 
 The site: home, nine service pages, work, a three-step request flow, 404 and

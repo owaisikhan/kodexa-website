@@ -11,8 +11,8 @@ hue, so a rebrand is a token swap rather than a search for `cyan`.
 | `--color-surface`, `--color-surface-2` | inputs and inner panels |
 | `--color-border`, `--color-border-soft` | panel edges, hairlines |
 | `--color-text`, `--color-muted`, `--color-dim` | the three text weights |
-| `--color-primary` | the one action colour, cyan |
-| `--color-secondary` | the gradient partner, violet |
+| `--color-primary` | the one action colour, acid lime |
+| `--color-secondary` | a cool silver, not a second hue. See below |
 | `--color-success` / `--warning` / `--danger` | states, and service accents |
 
 Three text weights, not five. Body copy is `--color-muted`; `--color-dim` is
@@ -89,3 +89,36 @@ overflow, nothing past the right edge, no text under 12px, no tap target under
 - Colour is never the only signal: the selected service card gets a tick as
   well as a border, and buttons carry words rather than icons alone.
 - Reduced motion is honoured globally and re-checked in each GSAP effect.
+
+## Why there is only one accent
+
+The first build was cyan on blue-black with a violet gradient partner. That
+combination is the most recognisable tell of a generated interface there is,
+and it made a studio that builds software for a living look like it had
+ordered its own site from a prompt.
+
+Only the colours changed. The canvas is a true neutral black rather than a
+blue-black, the greys are neutral, and one acid lime does every job an accent
+does.
+
+`--color-secondary` is a cool silver rather than a second hue. That is
+deliberate: the codebase has a dozen `from-primary to-secondary` gradients
+(the logo mark, the chat launcher, the process spine, the form's progress
+bar), and with one accent against a grey scale each of them reads as a sheen
+across the lime instead of a trip across the colour wheel. Two accents invite
+the gradient. One cannot produce it.
+
+`.text-gradient` is the exception and is set explicitly to white into grey.
+The headline is the largest thing on the page, so it is the one place an
+accent-to-accent gradient gives the whole site away.
+
+One thing the hue forced. Lime pushes far more apparent brightness through the
+hero's 90px blur than the cool accent it replaced, so at full opacity the orbs
+washed the entire first screen olive. They settle at 0.22 now, and every
+ambient wash in the site uses `--color-primary-dim` where it used to use
+`--color-secondary`, because a blurred silver orb is fog rather than light.
+
+Measured against the canvas: `--color-text` 18.95:1, `--color-primary`
+13.80:1, `--color-muted` 7.60:1, and `--color-dim` 5.19:1, up from 3.77:1 on
+the old palette. `--color-dim` is still for labels and metadata only, never a
+sentence someone has to read.

@@ -17,7 +17,7 @@ const sizes = {
 
 const variants = {
   primary:
-    "bg-[var(--color-primary)] text-[#04121a] shadow-[0_10px_40px_-12px_var(--color-primary)] " +
+    "bg-[var(--color-primary)] text-[#0c0f02] shadow-[0_10px_40px_-12px_var(--color-primary)] " +
     "hover:shadow-[0_16px_50px_-10px_var(--color-primary)] hover:brightness-110",
   ghost:
     "border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-primary)] " +

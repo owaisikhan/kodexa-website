@@ -16,7 +16,7 @@ export default function CtaBand({
       <div className="absolute inset-0 grid-bg" aria-hidden />
       <div
         className="glow left-1/2 top-1/2 h-[420px] w-[700px] -translate-x-1/2 -translate-y-1/2 opacity-25"
-        style={{ background: "var(--color-secondary)" }}
+        style={{ background: "var(--color-primary-dim)" }}
         aria-hidden
       />
 

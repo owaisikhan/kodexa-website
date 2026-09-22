@@ -85,7 +85,7 @@ export default function HeroVisual() {
         <div className="grid grid-cols-3 gap-2">
           {[0, 1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="rounded-lg border border-[var(--color-border)] p-1.5">
-              <div className="h-7 rounded bg-gradient-to-br from-[var(--color-primary)]/30 to-[var(--color-secondary)]/15" />
+              <div className="h-7 rounded bg-gradient-to-br from-[var(--color-primary)]/30 to-[var(--color-primary)]/10" />
               <div className="mt-1.5 h-1 w-8 rounded-full bg-[var(--color-border)]" />
             </div>
           ))}

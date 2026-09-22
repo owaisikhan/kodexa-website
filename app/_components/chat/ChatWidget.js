@@ -146,11 +146,11 @@ export default function ChatWidget() {
             transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
             role="dialog"
             aria-label="Ask Kodexa"
-            className="panel fixed bottom-24 right-4 z-50 flex h-[min(560px,70vh)] w-[min(400px,calc(100vw-2rem))] flex-col overflow-hidden bg-[#070c16]/95 sm:right-5"
+            className="panel fixed bottom-24 right-4 z-50 flex h-[min(560px,70vh)] w-[min(400px,calc(100vw-2rem))] flex-col overflow-hidden bg-[#101013]/95 sm:right-5"
           >
             <header className="flex items-center justify-between gap-3 border-b border-[var(--color-border)] px-4 py-3">
               <div className="flex items-center gap-2.5">
-                <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[#04121a]">
+                <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[#0c0f02]">
                   <Bot className="h-4 w-4" strokeWidth={2} />
                 </span>
                 <div>
@@ -218,7 +218,7 @@ export default function ChatWidget() {
                 type="submit"
                 disabled={busy || !input.trim()}
                 aria-label="Send"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--color-primary)] text-[#04121a] transition-opacity disabled:opacity-40"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--color-primary)] text-[#0c0f02] transition-opacity disabled:opacity-40"
               >
                 <Send className="h-4 w-4" />
               </button>
@@ -232,7 +232,7 @@ export default function ChatWidget() {
         aria-label={open ? "Close chat" : "Ask Kodexa a question"}
         aria-expanded={open}
         whileTap={{ scale: 0.94 }}
-        className="fixed bottom-5 right-4 z-50 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[#04121a] shadow-[0_12px_40px_-10px_var(--color-primary)] sm:right-5"
+        className="fixed bottom-5 right-4 z-50 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[#0c0f02] shadow-[0_12px_40px_-10px_var(--color-primary)] sm:right-5"
       >
         {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
       </motion.button>

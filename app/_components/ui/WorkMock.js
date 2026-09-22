@@ -46,7 +46,7 @@ export default function WorkMock({ shot, mock = "store", title }) {
       />
       <div
         className="glow -bottom-16 -right-8 h-56 w-56 opacity-25"
-        style={{ background: "var(--color-secondary)" }}
+        style={{ background: "var(--color-primary-dim)" }}
         aria-hidden
       />
 
@@ -95,7 +95,7 @@ function StoreMock() {
             transition={{ duration: 0.45, delay: i * 0.06 }}
             className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-2)] p-2"
           >
-            <div className="mb-1.5 h-8 rounded bg-gradient-to-br from-[var(--color-primary)]/25 to-[var(--color-secondary)]/15" />
+            <div className="mb-1.5 h-8 rounded bg-gradient-to-br from-[var(--color-primary)]/25 to-[var(--color-primary)]/8" />
             <div className="h-1.5 w-10 rounded-full bg-[var(--color-border)]" />
             <div className="mt-1 h-1.5 w-6 rounded-full bg-[var(--color-primary)]/60" />
           </motion.div>

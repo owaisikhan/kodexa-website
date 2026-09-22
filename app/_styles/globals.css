@@ -2,26 +2,37 @@
 
 /* ---------------------------------------------------------------------------
    Tokens. Named by role, never by hue, so a rebrand is a token swap.
+
+   Neutral near-black, neutral greys, and one acid lime doing every job an
+   accent does. The build this replaced was cyan on blue-black with a violet
+   gradient partner, which is the most recognisable tell of a generated
+   interface there is. Two accents invite a gradient between them; one accent
+   against a grey scale cannot produce that, which is the point.
    --------------------------------------------------------------------------- */
 @theme {
-  --color-bg: #05070d;
-  --color-bg-2: #080c16;
-  --color-surface: #0c1220;
-  --color-surface-2: #111a2c;
-  --color-border: #1b2540;
-  --color-border-soft: #141d33;
+  /* A true neutral black, not a blue-black. Half of what makes neon-on-dark
+     read as generated is the blue in the canvas underneath it. */
+  --color-bg: #0a0a0c;
+  --color-bg-2: #0f0f12;
+  --color-surface: #18181b;
+  --color-surface-2: #1f1f23;
+  --color-border: #2a2a2f;
+  --color-border-soft: #1d1d21;
 
-  --color-text: #e9eefc;
-  --color-muted: #8d9bb8;
-  --color-dim: #5d6b8a;
+  --color-text: #fafafa;
+  --color-muted: #a0a0a6;
+  --color-dim: #82828a;
 
-  --color-primary: #22d3ee;
-  --color-primary-dim: #0e7490;
-  --color-secondary: #a78bfa;
-  --color-secondary-dim: #6d28d9;
-  --color-success: #34d399;
-  --color-warning: #fbbf24;
-  --color-danger: #fb7185;
+  /* One accent. --color-secondary is a cool silver rather than a second hue:
+     every from-primary/to-secondary gradient in the codebase then reads as a
+     sheen across the lime instead of a trip across the colour wheel. */
+  --color-primary: #cae430;
+  --color-primary-dim: #8ba31a;
+  --color-secondary: #e9eef2;
+  --color-secondary-dim: #9a9aa2;
+  --color-success: #7fc241;
+  --color-warning: #e8b33c;
+  --color-danger: #ef5a4c;
 
   --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
@@ -30,7 +41,7 @@
 }
 
 :root {
-  --color-dim: #5d6b8a;
+  --color-dim: #82828a;
   color-scheme: dark;
 }
 
@@ -71,7 +82,7 @@
 
   ::selection {
     background: var(--color-primary);
-    color: #04121a;
+    color: #0c0f02;
   }
 
   /* Keyboard users get a visible ring; mouse users do not. */
@@ -131,8 +142,11 @@
     box-shadow: 0 18px 50px -24px color-mix(in oklab, var(--color-primary) 60%, transparent);
   }
 
+  /* White into grey, not accent into accent. The headline is the largest
+     thing on the page, so it is the one place a two-colour accent gradient
+     gives the whole site away. */
   .text-gradient {
-    background: linear-gradient(94deg, var(--color-primary), var(--color-secondary));
+    background: linear-gradient(180deg, #fafafa 12%, #9e9e9f 96%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

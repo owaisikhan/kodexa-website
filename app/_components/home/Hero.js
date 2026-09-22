@@ -19,6 +19,7 @@ export default function Hero() {
     const ctx = gsap.context(() => {
       if (reduced) {
         gsap.set("[data-animate], [data-lines] > span", { opacity: 1, y: 0 });
+        gsap.set("[data-animate='orb']", { opacity: 0.22, scale: 1 });
         return;
       }
 
@@ -33,7 +34,10 @@ export default function Hero() {
         .to("[data-animate='sub']", { opacity: 1, y: 0, duration: 0.7 }, "-=0.5")
         .to("[data-animate='cta']", { opacity: 1, y: 0, duration: 0.7 }, "-=0.45")
         .to("[data-animate='stats']", { opacity: 1, y: 0, duration: 0.7 }, "-=0.45")
-        .to("[data-animate='orb']", { opacity: 1, scale: 1, duration: 1.4, stagger: 0.15 }, 0);
+        // Lime pushes far more apparent brightness through a 90px blur than
+        // the cool accent it replaced, so the orbs settle at 0.22. At full
+        // opacity they washed the whole first screen olive.
+        .to("[data-animate='orb']", { opacity: 0.22, scale: 1, duration: 1.4, stagger: 0.15 }, 0);
 
       // The orbs drift forever. Cheap, and it keeps the screen alive while
       // somebody reads.
@@ -78,7 +82,7 @@ export default function Hero() {
         data-animate="orb"
         data-orb="2"
         className="glow right-[6%] bottom-[10%] h-[220px] w-[220px] opacity-0 sm:h-[420px] sm:w-[420px]"
-        style={{ background: "var(--color-secondary)", transform: "scale(0.6)" }}
+        style={{ background: "var(--color-primary-dim)", transform: "scale(0.6)" }}
         aria-hidden
       />
 
@@ -94,7 +98,7 @@ export default function Hero() {
         <div>
         <div
           data-animate="kicker"
-          className="mb-5 inline-flex translate-y-4 items-center gap-2.5 rounded-full border border-[var(--color-primary)]/35 bg-[#070c16]/85 px-5 py-2.5 backdrop-blur-md"
+          className="mb-5 inline-flex translate-y-4 items-center gap-2.5 rounded-full border border-[var(--color-primary)]/35 bg-[#101013]/85 px-5 py-2.5 backdrop-blur-md"
         >
           <Sparkles className="h-4.5 w-4.5 text-[var(--color-primary)]" />
           <span className="text-[0.95rem] font-semibold tracking-wide text-[var(--color-text)]">
