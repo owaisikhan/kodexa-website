@@ -20,10 +20,10 @@ export default async function AdminLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)]">
-      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[#05070d]/85 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[#0d0b09]/85 backdrop-blur-xl">
         <div className="container-x flex h-16 items-center justify-between gap-4">
           <Link href="/admin" className="flex items-center gap-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[#04121a]">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-[#1c0d05]">
               <LayoutDashboard className="h-4 w-4" strokeWidth={2} />
             </span>
             <span className="font-display font-bold">{siteConfig.name} admin</span>

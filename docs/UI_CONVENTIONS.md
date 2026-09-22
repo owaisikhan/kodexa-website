@@ -11,8 +11,8 @@ hue, so a rebrand is a token swap rather than a search for `cyan`.
 | `--color-surface`, `--color-surface-2` | inputs and inner panels |
 | `--color-border`, `--color-border-soft` | panel edges, hairlines |
 | `--color-text`, `--color-muted`, `--color-dim` | the three text weights |
-| `--color-primary` | the one action colour, cyan |
-| `--color-secondary` | the gradient partner, violet |
+| `--color-primary` | the one action colour, ember orange |
+| `--color-secondary` | the gradient partner, hot pink |
 | `--color-success` / `--warning` / `--danger` | states, and service accents |
 
 Three text weights, not five. Body copy is `--color-muted`; `--color-dim` is
@@ -89,3 +89,27 @@ overflow, nothing past the right edge, no text under 12px, no tap target under
 - Colour is never the only signal: the selected service card gets a tick as
   well as a border, and buttons carry words rather than icons alone.
 - Reduced motion is honoured globally and re-checked in each GSAP effect.
+
+## Why the palette is warm
+
+The first build was cyan on blue-black with a violet gradient partner. That
+exact combination is the most recognisable tell of a generated interface
+there is, and it made a studio that builds software for a living look like it
+had ordered its own site from a prompt.
+
+Only the colours changed. The canvas moved to a warm near-black, and the
+accents to ember orange with hot pink as the gradient partner: complementary
+rather than adjacent, so the gradient travels somewhere instead of sliding
+along the blue edge of the wheel. Every structural decision, all the motion
+and all the copy are untouched.
+
+One thing did need adjusting for the new hues. A warm accent carries far more
+apparent brightness through the hero's 90px blur than the cool one it
+replaced, so at full opacity the orbs gelled the whole first screen orange and
+pink. They settle at 0.4 now. That is a property of the colour, not of the
+effect, which is why it belongs in this note rather than in the motion rules.
+
+Measured against the new canvas: `--color-muted` 7.18:1, `--color-primary`
+7.53:1, `--color-secondary` 5.89:1, and `--color-dim` 5.35:1, which is up from
+3.77:1 on the old palette. `--color-dim` is still for labels and metadata
+only, never a sentence someone has to read.

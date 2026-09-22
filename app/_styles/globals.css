@@ -2,26 +2,37 @@
 
 /* ---------------------------------------------------------------------------
    Tokens. Named by role, never by hue, so a rebrand is a token swap.
+
+   The palette is deliberately not the one every AI-generated site ships with.
+   Cyan-on-blue-black with a violet gradient partner is the single most
+   recognisable tell there is, so the canvas moved to a warm near-black and the
+   accents to ember orange and hot pink: the same structure, a palette nobody
+   gets by accident.
    --------------------------------------------------------------------------- */
 @theme {
-  --color-bg: #05070d;
-  --color-bg-2: #080c16;
-  --color-surface: #0c1220;
-  --color-surface-2: #111a2c;
-  --color-border: #1b2540;
-  --color-border-soft: #141d33;
+  /* Warm near-black. The old canvas was blue-black, which is half of what
+     makes neon-on-dark read as generated. */
+  --color-bg: #0d0b09;
+  --color-bg-2: #12100d;
+  --color-surface: #191512;
+  --color-surface-2: #221d19;
+  --color-border: #37302a;
+  --color-border-soft: #262019;
 
-  --color-text: #e9eefc;
-  --color-muted: #8d9bb8;
-  --color-dim: #5d6b8a;
+  --color-text: #f4efe7;
+  --color-muted: #a99a8a;
+  --color-dim: #928374;
 
-  --color-primary: #22d3ee;
-  --color-primary-dim: #0e7490;
-  --color-secondary: #a78bfa;
-  --color-secondary-dim: #6d28d9;
-  --color-success: #34d399;
-  --color-warning: #fbbf24;
-  --color-danger: #fb7185;
+  /* Ember orange carries every action, hot pink is its gradient partner.
+     Complementary rather than adjacent, so the gradient between them travels
+     somewhere instead of sliding along the blue edge of the wheel. */
+  --color-primary: #ff7a1a;
+  --color-primary-dim: #b04a00;
+  --color-secondary: #ff3d8b;
+  --color-secondary-dim: #b0245c;
+  --color-success: #5fbf8f;
+  --color-warning: #e8b33c;
+  --color-danger: #e5484d;
 
   --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
@@ -30,7 +41,7 @@
 }
 
 :root {
-  --color-dim: #5d6b8a;
+  --color-dim: #928374;
   color-scheme: dark;
 }
 
@@ -71,7 +82,7 @@
 
   ::selection {
     background: var(--color-primary);
-    color: #04121a;
+    color: #1c0d05;
   }
 
   /* Keyboard users get a visible ring; mouse users do not. */

@@ -1,5 +1,17 @@
 # Changelog
 
+## Warm palette
+
+Cyan-on-blue-black with a violet gradient partner was swapped for ember orange
+and hot pink on a warm near-black. Colours only: no layout, component, copy or
+motion change. See "Why the palette is warm" in `docs/UI_CONVENTIONS.md`.
+
+**Decision worth keeping:** the hero orbs settle at 0.4 opacity rather than 1.
+A warm accent pushes far more apparent brightness through a 90px blur than the
+cool one it replaced, and at full opacity the orbs gelled the entire first
+screen. That is a property of the hue, so it is recorded with the palette
+rather than with the motion rules.
+
 ## Initial build
 
 The site: home, nine service pages, work, a three-step request flow, 404 and
