@@ -91,7 +91,7 @@ export default function SpeedCheck() {
               inputMode="url"
               autoComplete="url"
               spellCheck={false}
-              placeholder="yourshop.pk"
+              placeholder="e.g. yourshop.pk"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               maxLength={200}

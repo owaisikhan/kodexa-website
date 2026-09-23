@@ -30,6 +30,11 @@
   --color-ink: #1c1b19;
   --color-muted: #56534c;
   --color-dim: #68635a;
+  /* Example text inside empty fields. Deliberately lighter than any real
+     text (about 3.9:1 on the field, against 17:1 for typed text) so an
+     example never reads as an answer already filled in. The label above
+     each field carries the instruction, so this only has to be legible. */
+  --color-placeholder: #857f74;
   --color-on-accent: #1c1b19;
   --color-on-dark: #fffefa;
 
@@ -247,11 +252,16 @@
     border-radius: 4px;
     padding: 0.8rem 1rem;
     color: var(--color-text);
+    /* Typed answers sit a step heavier than the example text, so filled and
+       empty fields look different at a glance, not only by colour. */
+    font-weight: 500;
     transition: box-shadow 0.15s ease, background 0.15s ease;
   }
 
   .field::placeholder {
-    color: var(--color-dim);
+    color: var(--color-placeholder);
+    font-weight: 400;
+    opacity: 1; /* Firefox dims placeholders on its own; keep one value. */
   }
 
   .field:focus {

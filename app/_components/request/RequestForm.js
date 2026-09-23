@@ -429,7 +429,7 @@ function StepProject({ chosen, values, set }) {
             value={values.brief}
             onChange={(e) => set("brief", e.target.value)}
             maxLength={2000}
-            placeholder="We take orders on WhatsApp and lose track of them. We want a proper online store with delivery."
+            placeholder="e.g. We take orders on WhatsApp and lose track of them. We want a proper online store with delivery."
           />
         </Field>
       </div>
@@ -451,7 +451,7 @@ function StepContact({ values, set }) {
             className="field"
             value={values.name}
             onChange={(e) => set("name", e.target.value)}
-            placeholder="Hamid"
+            placeholder="e.g. Hamid"
             maxLength={80}
             autoComplete="name"
           />
@@ -462,7 +462,7 @@ function StepContact({ values, set }) {
             className="field"
             value={values.contact}
             onChange={(e) => set("contact", e.target.value)}
-            placeholder="+92 300 1234567"
+            placeholder="e.g. +92 300 1234567"
             maxLength={60}
             autoComplete="tel"
           />
