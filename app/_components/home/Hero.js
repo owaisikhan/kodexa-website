@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ArrowRight, MessageCircle, Sparkles } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 
 import { siteConfig, whatsappHref } from "@/app/_lib/siteConfig";
 import Button from "@/app/_components/ui/Button";
@@ -93,7 +93,7 @@ export default function Hero() {
           data-animate="kicker"
           className="mb-5 inline-flex translate-y-4 items-center gap-2.5 rounded-[4px] border-2 border-[var(--color-ink)] bg-[var(--color-surface)] px-4 py-2 shadow-[3px_3px_0_var(--color-ink)]"
         >
-          <Sparkles className="h-4 w-4 text-[var(--color-ink)]" />
+          <span aria-hidden className="h-2 w-2 shrink-0 bg-[var(--color-ink)]" />
           <span className="font-mono text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[var(--color-ink)]">
             Websites, stores, dashboards, apps and AI
           </span>

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight, Bot, MessageCircle, Send, Sparkles, X } from "lucide-react";
+import { ArrowUpRight, Bot, MessageCircle, Send, X } from "lucide-react";
 
 import Link from "next/link";
 
@@ -190,7 +190,7 @@ export default function ChatWidget() {
                       onClick={() => ask(s)}
                       className="flex w-full items-center gap-2 rounded-xl border border-[var(--color-border)] px-3 py-2 text-left text-sm text-[var(--color-muted)] transition-colors hover:border-[var(--color-ink)] hover:text-[var(--color-text)]"
                     >
-                      <Sparkles className="h-3.5 w-3.5 shrink-0 text-[var(--color-ink)]" />
+                      <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-[var(--color-ink)]" />
                       {s}
                     </button>
                   ))}
