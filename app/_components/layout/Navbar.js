@@ -16,7 +16,8 @@ import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 // Where the visitor is decides which item is marked. On the home page the
 // sections are the places, so the marker follows the scroll; everywhere else
 // the route decides.
-const SPY_SECTIONS = ["services", "process"];
+// The finder sits right under the services grid, so it counts as Services.
+const SPY_SECTIONS = ["services", "finder", "process"];
 
 function useSection(pathname) {
   const [section, setSection] = useState(null);
@@ -49,7 +50,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const section = useSection(pathname);
   const current = {
-    services: pathname.startsWith("/services") || section === "services",
+    services: pathname.startsWith("/services") || section === "services" || section === "finder",
     work: pathname.startsWith("/work"),
     process: section === "process",
   };
@@ -243,21 +244,20 @@ function ServicesMenu({ open, setOpen, active }) {
                 <div>
                   <p className="kicker">Not sure which?</p>
                   <p className="mt-3 text-[var(--color-muted)]">
-                    Tell us the problem in your own words. We will say which of these fits, and what
-                    it costs.
+                    Answer one or two questions about what is getting in the way, and we will point
+                    you at the one that fixes it.
                   </p>
                 </div>
-                <div className="flex flex-col gap-3">
-                  <Button href="/request" size="sm">
-                    Describe your project
+                {/* Two real buttons, not two underlined links: stacked links
+                    this close read as fine print and got missed. */}
+                <div className="grid gap-3">
+                  <Button href="/services#finder" size="sm" className="w-full">
+                    Find yours in two taps
                     <ArrowRight className="h-4 w-4" />
                   </Button>
-                  <Link
-                    href="/services"
-                    className="tap justify-center gap-1.5 text-sm font-bold underline decoration-2 underline-offset-4"
-                  >
-                    Compare all nine services
-                  </Link>
+                  <Button href="/services#compare" size="sm" variant="ghost" className="w-full">
+                    Compare all nine
+                  </Button>
                 </div>
               </div>
             </div>
@@ -411,15 +411,6 @@ function MobileDrawer({ open, setOpen, current, pathname }) {
                           <ServiceLink service={s} compact />
                         </li>
                       ))}
-                      <li>
-                        <Link
-                          href="/services"
-                          className="tap gap-1.5 px-3 text-sm font-bold underline decoration-2 underline-offset-4"
-                        >
-                          Compare all nine
-                          <ArrowRight className="h-4 w-4" />
-                        </Link>
-                      </li>
                     </ul>
                   ) : null}
                 </li>
@@ -438,6 +429,22 @@ function MobileDrawer({ open, setOpen, current, pathname }) {
                   </Link>
                 </li>
               </ul>
+
+              {/* Visible without opening Services: the visitor who does not
+                  know which service they need is the one who opens the menu
+                  looking for help. */}
+              <div className="panel mt-6 p-4">
+                <p className="font-display font-bold">Not sure which service?</p>
+                <div className="mt-3 grid gap-3">
+                  <Button href="/services#finder" className="w-full">
+                    Find yours in two taps
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                  <Button href="/services#compare" variant="ghost" className="w-full">
+                    Compare all nine
+                  </Button>
+                </div>
+              </div>
 
               <div className="mt-auto flex flex-col gap-3 pt-8 pb-4">
                 <Button href="/request" className="w-full" size="lg">

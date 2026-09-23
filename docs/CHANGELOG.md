@@ -1,5 +1,24 @@
 # Changelog
 
+## Things to try, not just read
+
+Three pieces of interactivity, each aimed at getting a request sent:
+
+- **"Find yours in two taps"**, a finder that asks what is getting in the way
+  (in the visitor's words: "orders come in on WhatsApp and get lost"), asks
+  one follow-up only where it changes the answer, and ends on one service
+  with the request form already set to it.
+- **The work drawings work**: a cart that fills, a dashboard that switches
+  between today, this week and this month, and a committee ledger where
+  ticking a member moves the total.
+- **They say they can be tapped**: the pointing hand over every button (Tailwind
+  v4 had reset buttons to the arrow), and an animated hand tapping the first
+  control in each drawing until the visitor presses something.
+- **"Find yours in two taps" is a button** in the Services menu, the phone
+  menu and the /services header, instead of a small link stacked on another.
+- **"Ask a question"** on every service page opens the assistant with
+  questions about that service ready to tap.
+
 ## Easier navigation
 
 Nothing about the look changed; this is about never being lost. Measured

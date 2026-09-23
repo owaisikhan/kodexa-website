@@ -68,6 +68,37 @@ fallback if the file is ever removed.
 not exist, and nothing from a project that carries someone else's branding. A
 course-project demo with a banner across the top is not our work.
 
+## Interactive pieces
+
+- **The service finder** (`_components/finder/ServiceFinder.js`) sits under
+  the services grid on the home page and on `/services`. Its questions live in
+  `app/_lib/finder-data.js`, written as the visitor's problem, never our
+  service names. Every `why` line must be true of that service's page in
+  `services-data.js`: the finder recommends, it does not promise anything
+  the service page does not. One follow-up question at most.
+- **The work drawings can be tried** (`ui/WorkMock.js`): add to the cart,
+  switch the dashboard's period, tick a committee member as paid. The
+  figures are made up and look it (no currency, no names), because these
+  stand in for private systems. Controls are real buttons with labels and a
+  44px height, so the drawings are 4:3 on phones (square for the phone
+  drawing) rather than 16:10.
+- **The drawings show they can be tapped.** Every button gets the pointing
+  hand (a global rule in `globals.css`, since Tailwind v4 gives buttons the
+  plain arrow), and each drawing shows an animated tapping hand (`TapHint`)
+  over the control to try: on mouse hover, or on touch screens when it
+  scrolls into view. It goes away once anything in that drawing is pressed,
+  and stays still under reduced motion.
+- **The finder is offered as a button, everywhere.** In the desktop Services
+  panel, the phone menu (visible without opening Services) and the
+  `/services` header, "Find yours in two taps" is a primary button with
+  "Compare all nine" as a ghost button beside or under it. Two underlined
+  links stacked together read as fine print and were missed.
+- **"Ask a question" on a service page** opens the chatbot pointed at that
+  service. It fires one window event, `ASK_EVENT` from `ChatWidget.js`, with
+  `{ topic }`; the widget swaps its suggested questions for ones about that
+  service. The round chat button resets to the general questions. The button
+  only renders when `isChatConfigured()`, like the widget itself.
+
 ## The admin area
 
 `/admin` reads and works the leads. Three things about it are not negotiable:

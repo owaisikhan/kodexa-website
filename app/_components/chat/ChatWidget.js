@@ -24,11 +24,25 @@ const SUGGESTIONS = [
   "How long does an online store take?",
 ];
 
+// Fired by "Ask a question" on a service page, with { topic: service title }.
+export const ASK_EVENT = "kodexa:ask";
+
+// Written "Topic: question" so each one still makes sense on its own in the
+// history the model sees, and so no service name needs "a" or "an" in front.
+function topicSuggestions(topic) {
+  return [
+    `${topic}: what is included?`,
+    `${topic}: how long does it take?`,
+    `${topic}: is it right for my business?`,
+  ];
+}
+
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([GREETING]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [topic, setTopic] = useState(null);
 
   const scroller = useRef(null);
   const inputRef = useRef(null);
@@ -44,6 +58,18 @@ export default function ChatWidget() {
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
+
+  // A service page asked us to open about one service. If the chat is already
+  // open, the open effect will not run again, so focus the input here too.
+  useEffect(() => {
+    const onAsk = (e) => {
+      setTopic(e.detail?.topic ?? null);
+      setOpen(true);
+      requestAnimationFrame(() => inputRef.current?.focus());
+    };
+    window.addEventListener(ASK_EVENT, onAsk);
+    return () => window.removeEventListener(ASK_EVENT, onAsk);
+  }, []);
 
   // Escape closes it, the way every other dialog on the web behaves.
   useEffect(() => {
@@ -184,7 +210,7 @@ export default function ChatWidget() {
 
               {messages.length === 1 ? (
                 <div className="space-y-2 pt-2">
-                  {SUGGESTIONS.map((s) => (
+                  {(topic ? topicSuggestions(topic) : SUGGESTIONS).map((s) => (
                     <button
                       key={s}
                       onClick={() => ask(s)}
@@ -209,7 +235,7 @@ export default function ChatWidget() {
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about a service..."
+                placeholder={topic ? `Ask about ${topic}...` : "Ask about a service..."}
                 maxLength={500}
                 aria-label="Your question"
                 className="field py-2.5 text-sm"
@@ -228,7 +254,12 @@ export default function ChatWidget() {
       </AnimatePresence>
 
       <motion.button
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          // The round button is the general way in, so it drops any service a
+          // page opened the chat about earlier.
+          if (!open) setTopic(null);
+          setOpen((v) => !v);
+        }}
         aria-label={open ? "Close chat" : "Ask Kodexa a question"}
         aria-expanded={open}
         whileTap={{ scale: 0.94 }}

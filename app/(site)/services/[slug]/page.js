@@ -10,6 +10,8 @@ import Reveal from "@/app/_components/ui/Reveal";
 import Button from "@/app/_components/ui/Button";
 import Breadcrumbs from "@/app/_components/ui/Breadcrumbs";
 import CtaBand from "@/app/_components/home/CtaBand";
+import AskAboutService from "@/app/_components/chat/AskAboutService";
+import { isChatConfigured } from "@/app/_lib/chatbot/config";
 
 // Nine static pages, generated at build time. No database, no request-time work.
 export function generateStaticParams() {
@@ -86,11 +88,12 @@ export default async function ServicePage({ params }) {
           </Reveal>
 
           <Reveal delay={0.25}>
-            <div className="mt-10">
+            <div className="mt-10 flex flex-wrap gap-3">
               <Button href={`/request?service=${service.slug}`} size="lg">
                 Request this service
                 <ArrowRight className="h-4.5 w-4.5 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
+              {isChatConfigured() ? <AskAboutService title={service.title} /> : null}
             </div>
           </Reveal>
         </div>
