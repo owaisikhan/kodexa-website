@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
+import clsx from "clsx";
 import { ArrowUpRight } from "lucide-react";
 
 import { services } from "@/app/_lib/services-data";
@@ -27,13 +28,21 @@ export default function ServicesGrid() {
           body="Nine things we actually ship. Every card opens the detail, and every detail page ends in one button."
         />
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s, i) => (
-            <Card key={s.slug} service={s} index={i} />
-          ))}
-        </div>
+        <ServiceCards className="mt-14" />
       </div>
     </Section>
+  );
+}
+
+// The grid on its own, so /services shows the same nine cards as the home
+// page rather than a second design of them.
+export function ServiceCards({ className }) {
+  return (
+    <ul className={clsx("grid gap-4 sm:grid-cols-2 lg:grid-cols-3", className)}>
+      {services.map((s, i) => (
+        <Card key={s.slug} service={s} index={i} />
+      ))}
+    </ul>
   );
 }
 
@@ -46,7 +55,7 @@ function Card({ service, index }) {
   const ink = accentInk[service.accent] ?? accentInk.primary;
 
   return (
-    <motion.div
+    <motion.li
       initial={{ opacity: 0, y: 26 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.25 }}
@@ -69,7 +78,7 @@ function Card({ service, index }) {
             {service.short}
           </p>
 
-          <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-ink)] underline decoration-2 underline-offset-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+          <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-bold text-[var(--color-ink)] underline decoration-2 underline-offset-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 [@media(hover:none)]:opacity-100">
             See what you get
             <ArrowUpRight className="h-4 w-4" />
           </span>
@@ -77,6 +86,6 @@ function Card({ service, index }) {
           <span className="kicker mt-auto pt-4">{service.timeline}</span>
         </div>
       </Link>
-    </motion.div>
+    </motion.li>
   );
 }

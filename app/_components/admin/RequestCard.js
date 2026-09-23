@@ -1,13 +1,14 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { Check, Loader2, MessageCircle, Phone, StickyNote } from "lucide-react";
+import { Check, Loader2, Phone, StickyNote } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { updateRequestStatusAction, updateRequestNotesAction } from "@/app/_lib/actions";
 import { STATUSES, STATUS_STYLE } from "@/app/_lib/requests-data";
 import { formatDate } from "@/app/_lib/format-helpers";
 import { whatsappHref } from "@/app/_lib/siteConfig";
+import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 
 // One lead, everything needed to act on it: what they asked for, how to reach
 // them, where it stands, and your own notes.
@@ -91,7 +92,7 @@ export default function RequestCard({ request }) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-[4px] bg-[#25D366]/15 px-3.5 py-1.5 text-sm font-semibold text-[#25D366] transition-colors hover:bg-[#25D366]/25"
           >
-            <MessageCircle className="h-4 w-4" />
+            <WhatsAppIcon className="h-4 w-4" />
             Reply on WhatsApp
           </a>
         ) : null}

@@ -2,11 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { siteConfig, whatsappHref } from "@/app/_lib/siteConfig";
 import Button from "@/app/_components/ui/Button";
 import HeroVisual from "@/app/_components/home/HeroVisual";
+import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 
 // The first screen. One promise, two buttons, and enough motion to say
 // "these people build things" without making the sentence hard to read.
@@ -132,7 +133,7 @@ export default function Hero() {
             variant="ghost"
             size="lg"
           >
-            <MessageCircle className="h-4.5 w-4.5 text-[#25D366]" />
+            <WhatsAppIcon className="h-5 w-5 text-[#25D366]" />
             Or just WhatsApp us
           </Button>
         </div>

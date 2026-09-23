@@ -6,6 +6,10 @@ from a Facebook post or an ad. They are not technical and they are not patient.
 **The whole site has one job: get a service request sent.** Every change should
 make that faster or clearer. Anything that makes it slower needs a reason.
 
+> Built with the kodexa-builder skill (v1.0.0). Load it for any new feature or
+> design work, and log preferences, corrections and reversals to
+> `.claude/kodexa-learnings.md` as they happen.
+
 ## Ground rules
 
 - **Plain JavaScript, App Router, Tailwind v4.** No TypeScript, no UI kit.
@@ -158,8 +162,44 @@ Things to know before changing it:
 The header is `h-[88px]`. Pages that start underneath it hardcode that:
 `pt-[88px]` on full-height sections (hero, 404, error) and `pt-[152px]` on
 pages with a heading block (services, request, work), plus `top-[88px]` on the
-mobile drawer. **Change the header height and all five move**, or content hides
-behind the header on one page and floats on another.
+mobile drawer and the desktop Services panel, plus `scroll-padding-top: 104px`
+in `globals.css` so in-page links (`/#services`, `/#process`, `#compare`) land
+below the header rather than under it. **Change the header height and all of
+them move**, or content hides behind the header on one page and floats on
+another.
+
+## Navigation
+
+A visitor should always be able to tell where they are and reach any service
+in two taps.
+
+- **The header marks where you are.** Routes mark themselves with
+  `aria-current="page"`; on the home page the marker follows the scroll
+  through `#services` and `#process` (an IntersectionObserver in
+  `Navbar.js`) with `aria-current="location"`. A new home section that
+  deserves a header link goes in `SPY_SECTIONS` there.
+- **Services is a menu, not an anchor.** On desktop it opens on click or
+  hover and lists all nine; on phones it is a collapsible list inside the
+  drawer, and it starts closed so the rest of the menu stays on screen. Both
+  close on Escape (focus goes back to the button), on a click outside, and on
+  any link click. The drawer keeps Tab inside itself while open.
+- **`/services` is the index**: the same cards as the home page plus a
+  side-by-side list for people deciding between them. The breadcrumb, the
+  menu, the footer and the 404 page all point there.
+- **Every inner page has a breadcrumb** (`_components/ui/Breadcrumbs.js`),
+  which also writes the BreadcrumbList structured data. Service pages end
+  with previous and next links that wrap around, so all nine can be walked
+  without going back to a list.
+- **Nothing that tells you what a card does is hover-only.** Touch screens
+  have no hover, so such hints are always visible there
+  (`[@media(hover:none)]:opacity-100`).
+- **WhatsApp always shows the real WhatsApp logo** (`ui/WhatsAppIcon.js`),
+  never a generic chat bubble. The floating WhatsApp button is the logo
+  alone, and the chatbot launcher is a bot icon, so the two never look alike.
+- `.tap` is a flex row everywhere; only its 44px growth is touch-only. An
+  icon inside a link otherwise drops to its own line on desktop.
+- The header sits at `z-[60]`, above the chat and WhatsApp buttons, so they
+  never cover an open menu.
 
 ## Verifying a change
 

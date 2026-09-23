@@ -1,8 +1,9 @@
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { whatsappHref } from "@/app/_lib/siteConfig";
 import Button from "@/app/_components/ui/Button";
 import Reveal from "@/app/_components/ui/Reveal";
+import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 
 // The last thing on every page. Two ways to start, no form to read first.
 
@@ -46,7 +47,7 @@ export default function CtaBand({
               variant="whatsapp"
               size="lg"
             >
-              <MessageCircle className="h-4.5 w-4.5" />
+              <WhatsAppIcon className="h-5 w-5" />
               Message on WhatsApp
             </Button>
           </div>
