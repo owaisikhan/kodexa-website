@@ -219,7 +219,28 @@ export default function RequestForm() {
 
       <Progress step={step} />
 
-      <form action={formAction} className="panel relative mt-8 p-6 md:p-10">
+      <form
+        action={formAction}
+        // Only the last step sends. Anything that submits earlier (Enter in a
+        // field on step two, say) moves on a step instead of sending a
+        // request with no name and no contact.
+        onSubmit={(e) => {
+          if (step < STEPS.length - 1) {
+            e.preventDefault();
+            next();
+          }
+        }}
+        // Enter in a one-line field means "next", as it does on the last
+        // step. Browsers will not submit a form with no submit button on
+        // screen, so without this Enter on step two did nothing at all.
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && e.target.tagName === "INPUT" && step < STEPS.length - 1) {
+            e.preventDefault();
+            next();
+          }
+        }}
+        className="panel relative mt-8 p-6 md:p-10"
+      >
         {/* Bots fill every field they can find. People never see this one. */}
         <div className="pointer-events-none absolute left-[-9999px] top-0" aria-hidden>
           <label>
@@ -259,13 +280,18 @@ export default function RequestForm() {
             Back
           </button>
 
+          {/* Different keys, so React builds a new <button> for Send instead
+              of turning Continue's into it mid-click. Reusing one element
+              changed its type to "submit" while the browser was still
+              handling the click, and pressing Continue on step two sent the
+              form, with no name yet. */}
           {step < STEPS.length - 1 ? (
-            <Button type="button" onClick={next}>
+            <Button key="continue" type="button" onClick={next}>
               Continue
               <ArrowRight className="h-4 w-4" />
             </Button>
           ) : (
-            <Button type="submit" disabled={pending} variant="whatsapp">
+            <Button key="send" type="submit" disabled={pending} variant="whatsapp">
               {pending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -425,7 +451,7 @@ function StepContact({ values, set }) {
             className="field"
             value={values.name}
             onChange={(e) => set("name", e.target.value)}
-            placeholder="Ammar"
+            placeholder="Hamid"
             maxLength={80}
             autoComplete="name"
           />
