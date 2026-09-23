@@ -11,6 +11,11 @@ Three pieces of interactivity, each aimed at getting a request sent:
 - **The work drawings work**: a cart that fills, a dashboard that switches
   between today, this week and this month, and a committee ledger where
   ticking a member moves the total.
+- **They say they can be tapped**: the pointing hand over every button (Tailwind
+  v4 had reset buttons to the arrow), and an animated hand tapping the first
+  control in each drawing until the visitor presses something.
+- **"Find yours in two taps" is a button** in the Services menu, the phone
+  menu and the /services header, instead of a small link stacked on another.
 - **"Ask a question"** on every service page opens the assistant with
   questions about that service ready to tap.
 

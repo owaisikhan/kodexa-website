@@ -326,6 +326,15 @@
   opacity: 0;
 }
 
+/* Anything you can press shows the pointing hand. Tailwind v4 resets
+   buttons to the plain arrow, so the "Try it" drawings, the finder's answers
+   and the menu buttons all looked inert under a mouse: a visitor had no hint
+   that the cart's Add button, say, actually did something. */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
 /* In-page links (/#services, /#process, #compare) land below the fixed
    88px header instead of under it, with a little air. Tied to the header
    height: see "The navbar height is load-bearing" in CLAUDE.md. */

@@ -8,6 +8,7 @@ import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceI
 import Breadcrumbs from "@/app/_components/ui/Breadcrumbs";
 import Section from "@/app/_components/ui/Section";
 import Reveal from "@/app/_components/ui/Reveal";
+import Button from "@/app/_components/ui/Button";
 import CtaBand from "@/app/_components/home/CtaBand";
 import ServiceFinder from "@/app/_components/finder/ServiceFinder";
 
@@ -42,15 +43,17 @@ export default function ServicesPage() {
               Each card opens what you get, how long it takes and who it suits. Not sure which one
               fits? Answer one or two questions, or see them side by side.
             </p>
-            <div className="mt-4 flex flex-wrap gap-x-6">
-              <a href="#finder" className="tap gap-1.5 font-bold underline decoration-2 underline-offset-4">
+            {/* Buttons, not a pair of underlined links: on a phone the links
+                stacked into one block and the finder was easy to miss. */}
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button href="#finder">
                 Find yours in two taps
                 <ArrowRight className="h-4 w-4 rotate-90" aria-hidden />
-              </a>
-              <a href="#compare" className="tap gap-1.5 font-bold underline decoration-2 underline-offset-4">
-                Compare them side by side
+              </Button>
+              <Button href="#compare" variant="ghost">
+                Compare side by side
                 <ArrowRight className="h-4 w-4 rotate-90" aria-hidden />
-              </a>
+              </Button>
             </div>
           </Reveal>
         </div>

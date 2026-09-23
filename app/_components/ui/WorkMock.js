@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
-import { Check, ShoppingCart } from "lucide-react";
+import { useRef, useState, useSyncExternalStore } from "react";
+import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
+import { Check, Pointer, ShoppingCart } from "lucide-react";
 
 // The picture at the top of a work card.
 //
@@ -16,34 +16,68 @@ import { Check, ShoppingCart } from "lucide-react";
 // `shot` on that project in services-data.js. Nothing here needs changing.
 
 export default function WorkMock({ shot, mock = "store", title }) {
-  if (shot) {
-    return (
-      <div className="relative aspect-[16/10] overflow-hidden border-b-2 border-[var(--color-ink)] bg-[var(--color-bg-2)]">
-        <Image
-          src={shot}
-          alt={`${title} screenshot`}
-          fill
-          sizes="(min-width: 768px) 46vw, 100vw"
-          className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
-        />
-        {/* The card's own text sits below, so the fade is only to stop a bright
-            screenshot fighting the dark panel edge. */}
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[var(--color-surface)] to-transparent"
-          aria-hidden
-        />
-      </div>
-    );
-  }
+  if (shot) return <Screenshot shot={shot} title={title} />;
+  return <Drawing kind={mock} title={title} />;
+}
 
-  const kind = mock;
+function Screenshot({ shot, title }) {
+  return (
+    <div className="relative aspect-[16/10] overflow-hidden border-b-2 border-[var(--color-ink)] bg-[var(--color-bg-2)]">
+      <Image
+        src={shot}
+        alt={`${title} screenshot`}
+        fill
+        sizes="(min-width: 768px) 46vw, 100vw"
+        className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+      />
+      {/* The card's own text sits below, so the fade is only to stop a bright
+          screenshot fighting the dark panel edge. */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[var(--color-surface)] to-transparent"
+        aria-hidden
+      />
+    </div>
+  );
+}
+
+// A touch screen cannot hover, so there the hint plays on scrolling into view.
+// Read as an external store so it is false on the server and stays right if
+// a mouse is plugged in later.
+const HOVER_NONE = "(hover: none)";
+function subscribeHoverNone(onChange) {
+  const mq = window.matchMedia(HOVER_NONE);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+function isHoverNone() {
+  return window.matchMedia(HOVER_NONE).matches;
+}
+
+// The drawings respond to taps, and a drawing does not look like it would.
+// So the first time someone points at one (a mouse hovering, or on a touch
+// screen the drawing scrolling into view) an animated hand taps the control
+// to try, and it goes away for good once they have pressed anything in it.
+// A browser cannot animate the system cursor itself, which is why the hint is
+// drawn on the page instead.
+function Drawing({ kind, title }) {
+  const box = useRef(null);
+  const inView = useInView(box, { amount: 0.6 });
+  const [hover, setHover] = useState(false);
+  const touch = useSyncExternalStore(subscribeHoverNone, isHoverNone, () => false);
+  const [tried, setTried] = useState(false);
+
+  const hint = !tried && (hover || (touch && inView));
 
   return (
     // Taller on phones: the drawings carry real controls now, and at 16:10 a
     // phone-width card leaves no room for a 44px button beside the chart.
     <div
+      ref={box}
       role="group"
       aria-label={`${title}: a drawing of the interface you can try`}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setHover(true)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setHover(false)}
+      onClickCapture={(e) => e.target.closest("button") && setTried(true)}
       // The phone drawing stands upright with three 44px rows, so it needs a
       // square frame on a phone; everything else fits at 4:3.
       className={`relative overflow-hidden border-b-2 border-[var(--color-ink)] bg-[var(--color-bg-2)] sm:aspect-[16/10] ${
@@ -57,11 +91,55 @@ export default function WorkMock({ shot, mock = "store", title }) {
       </span>
 
       <div className="relative flex h-full items-center justify-center p-4 pt-9 sm:p-6">
-        {kind === "phone" ? <PhoneMock /> : null}
-        {kind === "dashboard" ? <DashboardMock /> : null}
-        {kind === "store" ? <StoreMock /> : null}
+        {kind === "phone" ? <PhoneMock hint={hint} /> : null}
+        {kind === "dashboard" ? <DashboardMock hint={hint} /> : null}
+        {kind === "store" ? <StoreMock hint={hint} /> : null}
       </div>
     </div>
+  );
+}
+
+// The tapping hand. Drawn with the same pointing-hand shape the cursor turns
+// into over a button, so it reads as "press here" rather than decoration.
+// Placed by each drawing over the one control worth trying first.
+function TapHint({ show, className = "" }) {
+  const reduce = useReducedMotion();
+  const loop = { duration: 1.4, repeat: Infinity, ease: "easeInOut" };
+
+  return (
+    <AnimatePresence>
+      {show ? (
+        <motion.span
+          aria-hidden
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.7 }}
+          transition={{ duration: 0.2 }}
+          className={`pointer-events-none absolute z-20 ${className}`}
+        >
+          <span className="relative block h-8 w-8">
+            {reduce ? null : (
+              // The ripple starts at the fingertip, where the press lands.
+              <motion.span
+                className="absolute left-[6px] top-[1px] h-4 w-4 rounded-full border-2 border-[var(--color-ink)]"
+                animate={{ scale: [0.3, 1.9], opacity: [0.9, 0] }}
+                transition={{ ...loop, ease: "easeOut" }}
+              />
+            )}
+            <motion.span
+              className="block"
+              animate={reduce ? undefined : { x: [4, 0, 4], y: [6, 0, 6], scale: [1, 0.9, 1] }}
+              transition={loop}
+            >
+              <Pointer
+                className="h-8 w-8 fill-[var(--color-surface)] text-[var(--color-ink)] drop-shadow-[2px_2px_0_var(--color-ink)]"
+                strokeWidth={1.8}
+              />
+            </motion.span>
+          </span>
+        </motion.span>
+      ) : null}
+    </AnimatePresence>
   );
 }
 
@@ -95,7 +173,7 @@ const PRODUCTS = [
   { swatch: "var(--color-accent)" },
 ];
 
-function StoreMock() {
+function StoreMock({ hint }) {
   const [cart, setCart] = useState([0, 0, 0]);
   const [last, setLast] = useState(null);
   const count = cart.reduce((a, b) => a + b, 0);
@@ -134,6 +212,7 @@ function StoreMock() {
                 {cart[i]}
               </span>
             ) : null}
+            {i === 0 ? <TapHint show={hint} className="-bottom-3 right-0" /> : null}
             <button
               type="button"
               onClick={() => add(i)}
@@ -162,7 +241,7 @@ const PERIODS = {
   Month: { bars: [62, 70, 58, 76, 84, 72, 90], figures: ["1,284", "270", "166"] },
 };
 
-function DashboardMock() {
+function DashboardMock({ hint }) {
   const [period, setPeriod] = useState("Today");
   const reduce = useReducedMotion();
   const { bars, figures } = PERIODS[period];
@@ -176,9 +255,10 @@ function DashboardMock() {
             type="button"
             onClick={() => setPeriod(p)}
             aria-pressed={period === p}
-            className={`${control} ${period === p ? "bg-[var(--color-ink)] text-[var(--color-on-dark)]" : "bg-[var(--color-surface)] hover:bg-[var(--color-primary)]"}`}
+            className={`${control} relative ${period === p ? "bg-[var(--color-ink)] text-[var(--color-on-dark)]" : "bg-[var(--color-surface)] hover:bg-[var(--color-primary)]"}`}
           >
             {p}
+            {p === "Week" ? <TapHint show={hint} className="-bottom-5 right-0" /> : null}
           </button>
         ))}
       </div>
@@ -216,7 +296,7 @@ function DashboardMock() {
 
 const MEMBERS = 3;
 
-function PhoneMock() {
+function PhoneMock({ hint }) {
   const [paid, setPaid] = useState([true, false, false]);
   const done = paid.filter(Boolean).length;
 
@@ -243,8 +323,9 @@ function PhoneMock() {
             aria-pressed={isPaid}
             aria-label={`Member ${i + 1}, ${isPaid ? "paid" : "not paid yet"}`}
             onClick={() => setPaid((p) => p.map((v, j) => (j === i ? !v : v)))}
-            className="flex min-h-11 items-center gap-1.5 rounded-[3px] border border-[var(--color-ink)] bg-[var(--color-surface-2)] px-2 text-left transition-colors hover:bg-[var(--color-primary)]"
+            className="relative flex min-h-11 items-center gap-1.5 rounded-[3px] border border-[var(--color-ink)] bg-[var(--color-surface-2)] px-2 text-left transition-colors hover:bg-[var(--color-primary)]"
           >
+            {i === 1 ? <TapHint show={hint} className="-bottom-4 -right-1" /> : null}
             <span className="h-4 w-4 shrink-0 rounded-full bg-[var(--color-secondary)]" aria-hidden />
             <span className="h-1.5 flex-1 rounded-full bg-[var(--color-border-soft)]" aria-hidden />
             <span

@@ -82,6 +82,17 @@ course-project demo with a banner across the top is not our work.
   stand in for private systems. Controls are real buttons with labels and a
   44px height, so the drawings are 4:3 on phones (square for the phone
   drawing) rather than 16:10.
+- **The drawings show they can be tapped.** Every button gets the pointing
+  hand (a global rule in `globals.css`, since Tailwind v4 gives buttons the
+  plain arrow), and each drawing shows an animated tapping hand (`TapHint`)
+  over the control to try: on mouse hover, or on touch screens when it
+  scrolls into view. It goes away once anything in that drawing is pressed,
+  and stays still under reduced motion.
+- **The finder is offered as a button, everywhere.** In the desktop Services
+  panel, the phone menu (visible without opening Services) and the
+  `/services` header, "Find yours in two taps" is a primary button with
+  "Compare all nine" as a ghost button beside or under it. Two underlined
+  links stacked together read as fine print and were missed.
 - **"Ask a question" on a service page** opens the chatbot pointed at that
   service. It fires one window event, `ASK_EVENT` from `ChatWidget.js`, with
   `{ topic }`; the widget swaps its suggested questions for ones about that
