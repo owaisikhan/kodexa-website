@@ -20,6 +20,7 @@ for the rules.
 | L-002 | 2026-09-23 | gotcha | Icon-and-text links are flex rows at every pointer; only the 44px growth is touch-only | all | ready |
 | L-003 | 2026-09-23 | rule | Interactive demos must announce themselves: pointer cursor on every button, plus an animated tapping hand until first use | all | ready |
 | L-004 | 2026-09-23 | correction | A pair of important actions is two real buttons, never two underlined links stacked together; and every menu action exists on phone too | all | ready |
+| L-005 | 2026-09-23 | gotcha | Multi-step forms: Continue and Submit need different keys, and the form must refuse to submit before the last step | all | ready |
 
 ## Entries
 
@@ -53,4 +54,12 @@ for the rules.
 - **Lesson:** When two actions matter, make them real buttons (primary and ghost), with a gap between them, not a stack of underlined links that reads as fine print. And every action in the desktop menu must exist in the phone menu, visible without expanding anything if it is the one an undecided visitor needs.
 - **Scope:** all
 - **Target in skill:** references/types/marketing-site.md section 4 (Layout and type)
+- **Status:** ready
+
+### L-005 · 2026-09-23 · medium · gotcha
+- **Said / saw:** "when first part of the form gets filled and the second form appears, this warning comes, even thought i did not yet press the send request button" (the toast "Please tell us your name." on reaching step three)
+- **Context:** kodexa-website request form. Continue (type="button") and Send request (type="submit") rendered in the same spot, so React reused one <button> and changed its type during the click; the browser then submitted the form. Shipped on main.
+- **Lesson:** In any multi-step form, give the step buttons distinct keys (key="continue" / key="send") so React never mutates one into the other, add an onSubmit guard that moves to the next step instead of sending before the last step, and make Enter in a one-line field advance. Test by clicking Continue on the second-to-last step and asserting no POST was sent.
+- **Scope:** all
+- **Target in skill:** references/types/marketing-site.md section 6 (Lead capture); SKILL.md section 5 (How done is proven)
 - **Status:** ready
