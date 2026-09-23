@@ -205,6 +205,12 @@ never becomes a tappable WhatsApp link. Asking the model for markdown or full
 URLs instead would invite a confident link to somewhere we did not choose.
 
 Things to know before changing it:
+- **The answer model defaults to `gemini-flash-lite-latest`**, Google's moving
+  alias. A pinned `GEMINI_MODEL` that does not exist (a guessed version such
+  as `gemini-3.7-flash-lite`) used to 404 on every answer; now the agent
+  retries once on the alias, keeps using it on that instance, and logs one
+  warning naming the bad value. Only a failure before the first word is
+  retried.
 - The SSE controller is closed in exactly one place, the `finally` in the
   route. Early returns fall through to it. Closing it in a branch as well
   throws "Controller is already closed" and the visitor gets an empty reply.
