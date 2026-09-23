@@ -16,7 +16,8 @@ import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 // Where the visitor is decides which item is marked. On the home page the
 // sections are the places, so the marker follows the scroll; everywhere else
 // the route decides.
-const SPY_SECTIONS = ["services", "process"];
+// The finder sits right under the services grid, so it counts as Services.
+const SPY_SECTIONS = ["services", "finder", "process"];
 
 function useSection(pathname) {
   const [section, setSection] = useState(null);
@@ -49,7 +50,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const section = useSection(pathname);
   const current = {
-    services: pathname.startsWith("/services") || section === "services",
+    services: pathname.startsWith("/services") || section === "services" || section === "finder",
     work: pathname.startsWith("/work"),
     process: section === "process",
   };
@@ -253,10 +254,16 @@ function ServicesMenu({ open, setOpen, active }) {
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                   <Link
-                    href="/services"
+                    href="/services#finder"
                     className="tap justify-center gap-1.5 text-sm font-bold underline decoration-2 underline-offset-4"
                   >
-                    Compare all nine services
+                    Find yours in two taps
+                  </Link>
+                  <Link
+                    href="/services#compare"
+                    className="tap justify-center gap-1.5 text-sm font-bold underline decoration-2 underline-offset-4"
+                  >
+                    Compare all nine
                   </Link>
                 </div>
               </div>

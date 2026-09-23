@@ -68,6 +68,26 @@ fallback if the file is ever removed.
 not exist, and nothing from a project that carries someone else's branding. A
 course-project demo with a banner across the top is not our work.
 
+## Interactive pieces
+
+- **The service finder** (`_components/finder/ServiceFinder.js`) sits under
+  the services grid on the home page and on `/services`. Its questions live in
+  `app/_lib/finder-data.js`, written as the visitor's problem, never our
+  service names. Every `why` line must be true of that service's page in
+  `services-data.js`: the finder recommends, it does not promise anything
+  the service page does not. One follow-up question at most.
+- **The work drawings can be tried** (`ui/WorkMock.js`): add to the cart,
+  switch the dashboard's period, tick a committee member as paid. The
+  figures are made up and look it (no currency, no names), because these
+  stand in for private systems. Controls are real buttons with labels and a
+  44px height, so the drawings are 4:3 on phones (square for the phone
+  drawing) rather than 16:10.
+- **"Ask a question" on a service page** opens the chatbot pointed at that
+  service. It fires one window event, `ASK_EVENT` from `ChatWidget.js`, with
+  `{ topic }`; the widget swaps its suggested questions for ones about that
+  service. The round chat button resets to the general questions. The button
+  only renders when `isChatConfigured()`, like the widget itself.
+
 ## The admin area
 
 `/admin` reads and works the leads. Three things about it are not negotiable:

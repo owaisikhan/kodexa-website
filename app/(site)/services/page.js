@@ -9,6 +9,7 @@ import Breadcrumbs from "@/app/_components/ui/Breadcrumbs";
 import Section from "@/app/_components/ui/Section";
 import Reveal from "@/app/_components/ui/Reveal";
 import CtaBand from "@/app/_components/home/CtaBand";
+import ServiceFinder from "@/app/_components/finder/ServiceFinder";
 
 export const metadata = {
   title: "Services",
@@ -39,15 +40,18 @@ export default function ServicesPage() {
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]">
               Each card opens what you get, how long it takes and who it suits. Not sure which one
-              fits? The list below puts them side by side.
+              fits? Answer one or two questions, or see them side by side.
             </p>
-            <a
-              href="#compare"
-              className="tap mt-4 gap-1.5 font-bold underline decoration-2 underline-offset-4"
-            >
-              Compare them side by side
-              <ArrowRight className="h-4 w-4 rotate-90" aria-hidden />
-            </a>
+            <div className="mt-4 flex flex-wrap gap-x-6">
+              <a href="#finder" className="tap gap-1.5 font-bold underline decoration-2 underline-offset-4">
+                Find yours in two taps
+                <ArrowRight className="h-4 w-4 rotate-90" aria-hidden />
+              </a>
+              <a href="#compare" className="tap gap-1.5 font-bold underline decoration-2 underline-offset-4">
+                Compare them side by side
+                <ArrowRight className="h-4 w-4 rotate-90" aria-hidden />
+              </a>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -57,6 +61,8 @@ export default function ServicesPage() {
           <ServiceCards />
         </div>
       </Section>
+
+      <ServiceFinder className="border-t border-[var(--color-border-soft)]" />
 
       <Section tight id="compare" className="border-t border-[var(--color-border-soft)] bg-[var(--color-bg-2)]">
         <div className="container-x">
