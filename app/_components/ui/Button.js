@@ -12,7 +12,11 @@ const base =
   "shadow-[4px_4px_0_var(--color-ink)] transition-[transform,box-shadow,background] duration-150 " +
   "hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_var(--color-ink)] " +
   "active:translate-x-[4px] active:translate-y-[4px] active:shadow-none " +
-  "disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
+  "disabled:opacity-50 disabled:pointer-events-none " +
+  // One line wherever it fits; on a narrow phone a long label ("Open WhatsApp
+  // with your details") wraps instead of running off the screen, which
+  // nowrap made it do inside a clipped section.
+  "max-w-full text-center text-balance sm:whitespace-nowrap";
 
 const sizes = {
   sm: "px-4 py-2 text-sm",

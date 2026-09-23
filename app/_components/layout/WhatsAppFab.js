@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 
 import { siteConfig, whatsappHref } from "@/app/_lib/siteConfig";
@@ -14,6 +15,7 @@ import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 // so the two read as a pair of clearly different ways to reach us.
 
 export default function WhatsAppFab() {
+  const pathname = usePathname();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -23,9 +25,13 @@ export default function WhatsAppFab() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // The request page is the WhatsApp handoff already, and on a phone the
+  // floating button sat on top of its "Open WhatsApp" button.
+  const onRequest = pathname.startsWith("/request");
+
   return (
     <AnimatePresence>
-      {show ? (
+      {show && !onRequest ? (
         <motion.a
           href={whatsappHref({ service: "a project" })}
           target="_blank"

@@ -91,7 +91,7 @@ export async function submitRequest(prevState, formData) {
     return {
       ok: true,
       stored: false,
-      message: "Request ready. Opening WhatsApp so we get it straight away.",
+      message: "One last tap: send it to us on WhatsApp so we get it straight away.",
       whatsappUrl,
       reference: null,
     };
@@ -116,7 +116,7 @@ export async function submitRequest(prevState, formData) {
     return {
       ok: true,
       stored: false,
-      message: "Request ready. Opening WhatsApp so we get it straight away.",
+      message: "One last tap: send it to us on WhatsApp so we get it straight away.",
       whatsappUrl,
       reference: null,
     };
@@ -125,7 +125,7 @@ export async function submitRequest(prevState, formData) {
   return {
     ok: true,
     stored: true,
-    message: "Request received. Opening WhatsApp so we can reply faster.",
+    message: "Saved. Send it on WhatsApp too, and we can reply faster.",
     whatsappUrl,
     reference,
   };

@@ -172,7 +172,7 @@ export default function ChatWidget() {
             transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
             role="dialog"
             aria-label="Ask Kodexa"
-            className="panel fixed bottom-24 right-4 z-50 flex h-[min(560px,70vh)] w-[min(400px,calc(100vw-2rem))] flex-col overflow-hidden bg-[var(--color-surface)]/95 sm:right-5"
+            className="panel fixed bottom-24 right-4 z-50 flex h-[min(560px,70vh)] w-[min(400px,calc(100vw-2rem))] flex-col overflow-hidden bg-[var(--color-surface)] sm:right-5"
           >
             <header className="flex items-center justify-between gap-3 border-b border-[var(--color-border)] px-4 py-3">
               <div className="flex items-center gap-2.5">
@@ -238,13 +238,14 @@ export default function ChatWidget() {
                 placeholder={topic ? `Ask about ${topic}...` : "Ask about a service..."}
                 maxLength={500}
                 aria-label="Your question"
-                className="field py-2.5 text-sm"
+                // 16px, or iPhone Safari zooms the page when the field is tapped.
+                className="field py-2.5 text-base"
               />
               <button
                 type="submit"
                 disabled={busy || !input.trim()}
                 aria-label="Send"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--color-primary)] text-[var(--color-ink)] transition-opacity disabled:opacity-40"
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--color-primary)] text-[var(--color-ink)] transition-opacity disabled:opacity-40"
               >
                 <Send className="h-4 w-4" />
               </button>

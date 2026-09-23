@@ -484,7 +484,9 @@ function Success({ state }) {
         <PartyPopper className="h-8 w-8" strokeWidth={1.6} />
       </span>
 
-      <h2 className="mt-7 text-3xl">Request received</h2>
+      {/* "Received" only when it was stored; otherwise WhatsApp is how it
+          reaches us, so the heading says the job is not quite done. */}
+      <h2 className="mt-7 text-3xl">{state.stored ? "Request received" : "Almost done"}</h2>
       <p className="mx-auto mt-4 max-w-md text-lg leading-relaxed text-[var(--color-muted)]">
         {state.message}
       </p>
@@ -496,7 +498,7 @@ function Success({ state }) {
       ) : null}
 
       <div className="mt-9">
-        <Button href={state.whatsappUrl} external variant="whatsapp" size="lg">
+        <Button href={state.whatsappUrl} external variant="whatsapp" size="lg" className="w-full sm:w-auto">
           <WhatsAppIcon className="h-5 w-5" />
           Open WhatsApp with your details
         </Button>
