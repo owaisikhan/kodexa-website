@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check, Clock, Target, Users } from "lucide-react";
 
-import { getService, services, process } from "@/app/_lib/services-data";
+// Imported as `steps`: named `process` it would hide Node's process.env here.
+import { getService, services, process as steps } from "@/app/_lib/services-data";
 import { siteConfig } from "@/app/_lib/siteConfig";
 import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
 import Section, { SectionHeader } from "@/app/_components/ui/Section";
@@ -103,7 +104,13 @@ export default async function ServicePage({ params }) {
 
       {/* Only on the audit page, and only with a key: a check that cannot run
           is worse than no check. */}
-      {service.slug === "website-audit" && isSpeedConfigured() ? <SpeedCheck /> : null}
+      {service.slug === "website-audit" ? (
+        isSpeedConfigured() ? (
+          <SpeedCheck />
+        ) : process.env.NODE_ENV === "development" ? (
+          <SpeedCheckMissingKey />
+        ) : null
+      ) : null}
 
       <Section tight className="border-y border-[var(--color-border-soft)] bg-[var(--color-bg-2)]">
         <div className="container-x grid gap-12 md:grid-cols-2 md:gap-16">
@@ -140,7 +147,7 @@ export default async function ServicePage({ params }) {
           <SectionHeader kicker="How it works" title="From your message to live" />
 
           <ol className="mt-12 grid gap-4 md:grid-cols-4">
-            {process.map((step, i) => (
+            {steps.map((step, i) => (
               <Reveal key={step.n} delay={i * 0.08} as="li">
                 <div className="panel h-full p-6">
                   <span className="font-display text-sm font-bold" style={{ color: accent }}>
@@ -232,6 +239,23 @@ function KeepHyphens({ text }) {
       {word.includes("-") ? <span className="whitespace-nowrap">{word}</span> : word}
     </span>
   ));
+}
+
+// Development only: says why the speed check is not showing, instead of an
+// absence that looks like a bug. Never rendered in a production build.
+function SpeedCheckMissingKey() {
+  return (
+    <div className="container-x py-8">
+      <div className="rounded-[4px] border-2 border-dashed border-[var(--color-ink)] bg-[var(--color-surface)] p-5 text-sm">
+        <p className="font-bold">Speed check hidden: PAGESPEED_API_KEY is not set.</p>
+        <p className="mt-2 text-[var(--color-muted)]">
+          Add <code className="font-mono">PAGESPEED_API_KEY=your-key</code> to .env.local (with an equals
+          sign, no quotes, no spaces), then restart npm run dev. Only you see this notice; it is not
+          part of the production build.
+        </p>
+      </div>
+    </div>
+  );
 }
 
 function Badge({ icon: Icon, label }) {
