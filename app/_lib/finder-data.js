@@ -87,3 +87,71 @@ export const finder = {
     },
   ],
 };
+
+// The optional parts a visitor can tick once the finder has named their
+// service. They shape the brief, not a price: we quote per project, so ticking
+// more says "expect the longer end of the timeline", never a number of weeks
+// or rupees we have not worked out. `id` travels in the request URL
+// (?needs=payments,delivery), so keep ids short and never rename one that has
+// shipped, or old links lose the extra.
+export const extras = {
+  website: [
+    { id: "urdu", label: "An Urdu version" },
+    { id: "booking", label: "Bookings or enquiries online" },
+    { id: "blog", label: "A news or blog page" },
+    { id: "pages", label: "More than 6 pages" },
+  ],
+  "online-store": [
+    { id: "cod", label: "Cash on delivery" },
+    { id: "payments", label: "Card or wallet payments online" },
+    { id: "delivery", label: "Delivery areas and charges" },
+    { id: "assistant", label: "A chat assistant for customers" },
+  ],
+  "business-software": [
+    { id: "credit", label: "Customer credit and ledgers" },
+    { id: "staff", label: "Separate logins for staff" },
+    { id: "reports", label: "Monthly reports and Excel export" },
+    { id: "offline", label: "A copy that works offline" },
+  ],
+  "offline-desktop": [
+    { id: "counters", label: "More than one counter" },
+    { id: "receipts", label: "Printed receipts" },
+    { id: "backups", label: "Backups to a USB drive" },
+  ],
+  "android-app": [
+    { id: "printing", label: "Printing and PDF receipts" },
+    { id: "sync", label: "Sync with a website or dashboard" },
+    { id: "playstore", label: "A Play Store listing" },
+  ],
+  "ai-assistant": [
+    { id: "urdu", label: "Urdu and Roman Urdu" },
+    { id: "live", label: "Answers from live stock and prices" },
+    { id: "voice", label: "Voice questions and spoken answers" },
+  ],
+  "website-audit": [
+    { id: "fixes", label: "You make the fixes too" },
+    { id: "ads", label: "A review of our ad landing pages" },
+  ],
+  "ui-design": [
+    { id: "dark", label: "A dark mode" },
+    { id: "library", label: "A component library for our developers" },
+  ],
+  support: [
+    { id: "features", label: "Small new features each month" },
+    { id: "uptime", label: "Uptime checks and alerts" },
+  ],
+};
+
+export function extrasFor(slug) {
+  return extras[slug] ?? [];
+}
+
+// "I also need: an Urdu version, a news or blog page." for the brief and the
+// WhatsApp message. Unknown ids are dropped, so a hand-edited URL cannot put
+// arbitrary text into the form.
+export function needsSentence(slug, ids) {
+  const picked = extrasFor(slug).filter((e) => ids.includes(e.id));
+  if (!picked.length) return "";
+  const list = picked.map((e, i) => (i === 0 ? e.label : e.label.charAt(0).toLowerCase() + e.label.slice(1)));
+  return `I also need: ${list.join(", ")}.`;
+}

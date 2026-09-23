@@ -3,9 +3,11 @@
 import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight, Clock, RotateCcw } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Clock, RotateCcw } from "lucide-react";
 
-import { finder } from "@/app/_lib/finder-data";
+import { finder, extrasFor, needsSentence } from "@/app/_lib/finder-data";
+import { whatsappHref } from "@/app/_lib/siteConfig";
+import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 import { getService } from "@/app/_lib/services-data";
 import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
 import Section, { SectionHeader } from "@/app/_components/ui/Section";
@@ -149,6 +151,11 @@ function Question({ question, wantFocus, onPick }) {
 
 function Answer({ service, why, wantFocus, onRestart }) {
   const heading = useFocusOnMount(wantFocus);
+  const extras = extrasFor(service.slug);
+  const [needs, setNeeds] = useState([]);
+  const sentence = needsSentence(service.slug, needs);
+  const requestHref = `/request?service=${service.slug}${needs.length ? `&needs=${needs.join(",")}` : ""}`;
+  const toggle = (id) => setNeeds((n) => (n.includes(id) ? n.filter((x) => x !== id) : [...n, id]));
   const accent = accentVar[service.accent] ?? accentVar.primary;
   const ink = accentInk[service.accent] ?? accentInk.primary;
 
@@ -174,10 +181,67 @@ function Answer({ service, why, wantFocus, onRestart }) {
           {/^\d/.test(service.timeline) ? `Usually ${service.timeline}` : service.timeline}
         </p>
 
-        <div className="mt-7 flex flex-wrap items-center gap-3">
-          <Button href={`/request?service=${service.slug}`}>
+        {/* The project builder: optional, and it shapes the brief rather than
+            a price. Ticked parts ride into the request form and the WhatsApp
+            message, so the visitor does not have to type them. */}
+        {extras.length ? (
+          // The rule sits on a wrapper: a border on the fieldset itself is
+          // drawn through its legend by every browser.
+          <div className="mt-7 border-t border-[var(--color-border-soft)] pt-6">
+          <fieldset>
+            <legend className="font-display font-bold">
+              Anything else you will need?{" "}
+              <span className="font-sans text-sm font-normal text-[var(--color-muted)]">Optional, tick any</span>
+            </legend>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {extras.map((e) => {
+                const on = needs.includes(e.id);
+                return (
+                  <label
+                    key={e.id}
+                    className={`inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-[4px] border-2 px-3 text-sm font-semibold transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-[var(--color-secondary)] ${
+                      on
+                        ? "border-[var(--color-ink)] bg-[var(--color-primary)]"
+                        : "border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-ink)]"
+                    }`}
+                  >
+                    <input type="checkbox" className="sr-only" checked={on} onChange={() => toggle(e.id)} />
+                    <span
+                      className={`grid h-4 w-4 place-items-center rounded-[2px] border-2 border-[var(--color-ink)] ${on ? "bg-[var(--color-ink)] text-[var(--color-primary)]" : ""}`}
+                      aria-hidden
+                    >
+                      {on ? <Check className="h-3 w-3" strokeWidth={3} /> : null}
+                    </span>
+                    {e.label}
+                  </label>
+                );
+              })}
+            </div>
+            {/* No invented numbers: we quote per project, so extra parts only
+                ever move the estimate within, or just past, the usual range. */}
+            <p aria-live="polite" className="mt-3 min-h-5 text-sm text-[var(--color-muted)]">
+              {needs.length
+                ? needs.length === 1
+                  ? "Noted. It may add a little time; the plan will say exactly how much."
+                  : "Noted. Expect the longer end of that timeline; the plan will say exactly."
+                : ""}
+            </p>
+          </fieldset>
+          </div>
+        ) : null}
+
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <Button href={requestHref}>
             Request this
             <ArrowRight className="h-4 w-4" />
+          </Button>
+          <Button
+            href={whatsappHref({ service: service.title, brief: sentence || undefined })}
+            external
+            variant="whatsapp"
+          >
+            <WhatsAppIcon className="h-4.5 w-4.5" />
+            Or send on WhatsApp
           </Button>
           <Button href={`/services/${service.slug}`} variant="ghost">
             See what you get

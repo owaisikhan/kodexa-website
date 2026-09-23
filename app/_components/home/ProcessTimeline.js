@@ -1,17 +1,33 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { Check, ChevronDown } from "lucide-react";
 
 import { process } from "@/app/_lib/services-data";
 import Section, { SectionHeader } from "@/app/_components/ui/Section";
 
 // The four steps, drawn as a line that fills as you scroll. The point is to
 // answer "what actually happens if I send this form" before it is asked.
+//
+// Each step opens to show what the visitor actually has in hand at the end
+// of it (`receive` in services-data.js): the concrete answer to "and then
+// what?", for the people who want it, without lengthening the page for
+// everyone else.
 
 export default function ProcessTimeline() {
   const root = useRef(null);
+  const [open, setOpen] = useState([]);
+  const reduce = useReducedMotion();
+
+  const toggle = (n) => {
+    setOpen((o) => (o.includes(n) ? o.filter((x) => x !== n) : [...o, n]));
+    // Opening a step makes the section taller, so every ScrollTrigger below
+    // it would fire at the old offsets. Measure again once the panel is in.
+    setTimeout(() => ScrollTrigger.refresh(), reduce ? 50 : 320);
+  };
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -104,6 +120,44 @@ export default function ProcessTimeline() {
                 <p className="mt-3 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]">
                   {step.body}
                 </p>
+                {step.receive?.length ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => toggle(step.n)}
+                      aria-expanded={open.includes(step.n)}
+                      aria-controls={`receive-${step.n}`}
+                      className="mt-3 inline-flex min-h-11 items-center gap-1.5 font-semibold underline decoration-2 underline-offset-4"
+                    >
+                      What you get at this step
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform duration-200 ${open.includes(step.n) ? "rotate-180" : ""}`}
+                        aria-hidden
+                      />
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {open.includes(step.n) ? (
+                        <motion.div
+                          id={`receive-${step.n}`}
+                          initial={reduce ? { opacity: 0 } : { opacity: 0, height: 0 }}
+                          animate={reduce ? { opacity: 1 } : { opacity: 1, height: "auto" }}
+                          exit={reduce ? { opacity: 0 } : { opacity: 0, height: 0 }}
+                          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                          className="overflow-hidden"
+                        >
+                          <ul className="panel mt-3 max-w-xl space-y-2.5 p-5">
+                            {step.receive.map((r) => (
+                              <li key={r} className="flex gap-2.5">
+                                <Check className="mt-1 h-4 w-4 shrink-0 text-[var(--color-success)]" strokeWidth={3} aria-hidden />
+                                <span>{r}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </motion.div>
+                      ) : null}
+                    </AnimatePresence>
+                  </>
+                ) : null}
               </li>
             ))}
           </ol>

@@ -12,6 +12,8 @@ import Breadcrumbs from "@/app/_components/ui/Breadcrumbs";
 import CtaBand from "@/app/_components/home/CtaBand";
 import AskAboutService from "@/app/_components/chat/AskAboutService";
 import { isChatConfigured } from "@/app/_lib/chatbot/config";
+import { isSpeedConfigured } from "@/app/_lib/speed/psi";
+import SpeedCheck from "@/app/_components/speed/SpeedCheck";
 
 // Nine static pages, generated at build time. No database, no request-time work.
 export function generateStaticParams() {
@@ -98,6 +100,10 @@ export default async function ServicePage({ params }) {
           </Reveal>
         </div>
       </section>
+
+      {/* Only on the audit page, and only with a key: a check that cannot run
+          is worse than no check. */}
+      {service.slug === "website-audit" && isSpeedConfigured() ? <SpeedCheck /> : null}
 
       <Section tight className="border-y border-[var(--color-border-soft)] bg-[var(--color-bg-2)]">
         <div className="container-x grid gap-12 md:grid-cols-2 md:gap-16">

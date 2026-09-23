@@ -24,6 +24,17 @@ export const siteConfig = {
     { value: "24h", label: "typical reply time" },
   ],
 
+  // When someone is at the phone to reply, in Pakistan time. The reply badge
+  // reads this, so it must be true: change it the day the hours change.
+  // Days are 0 = Sunday to 6 = Saturday; hours are 24h, close exclusive.
+  // PLACEHOLDER: confirm the real hours before this ships.
+  hours: {
+    timeZone: "Asia/Karachi",
+    days: [1, 2, 3, 4, 5, 6],
+    open: 10,
+    close: 20,
+  },
+
   social: {
     facebook: "https://facebook.com/",
     github: "https://github.com/owaisikhan",
