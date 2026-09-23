@@ -266,10 +266,16 @@
      into a ladder on desktop. Keyed to pointer: coarse rather than a width
      breakpoint, because the question is what you are pointing with, not how
      wide the window is. */
+  /* Always a row: without this, on a mouse-driven screen the icon inside a
+     link (an svg, which the reset makes display: block) took its own line,
+     stacking icon, word and arrow into a column in the footer. */
+  .tap {
+    display: inline-flex;
+    align-items: center;
+  }
+
   @media (pointer: coarse) {
     .tap {
-      display: inline-flex;
-      align-items: center;
       min-height: 44px;
       /* A short word like "Work" is only 35px wide, so height alone is not
          enough to make it comfortable to hit. */

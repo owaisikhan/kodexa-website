@@ -8,7 +8,6 @@ import {
   ArrowRight,
   Check,
   Loader2,
-  MessageCircle,
   PartyPopper,
 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -17,6 +16,7 @@ import { services } from "@/app/_lib/services-data";
 import { submitRequest } from "@/app/_lib/actions";
 import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
 import Button from "@/app/_components/ui/Button";
+import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 
 // Three steps, one question each.
 //
@@ -143,7 +143,7 @@ export default function RequestForm() {
                 </>
               ) : (
                 <>
-                  <MessageCircle className="h-4 w-4" />
+                  <WhatsAppIcon className="h-4.5 w-4.5" />
                   Send request
                 </>
               )}
@@ -341,7 +341,7 @@ function Success({ state }) {
 
       <div className="mt-9">
         <Button href={state.whatsappUrl} external variant="whatsapp" size="lg">
-          <MessageCircle className="h-4.5 w-4.5" />
+          <WhatsAppIcon className="h-5 w-5" />
           Open WhatsApp with your details
         </Button>
       </div>

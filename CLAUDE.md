@@ -6,6 +6,10 @@ from a Facebook post or an ad. They are not technical and they are not patient.
 **The whole site has one job: get a service request sent.** Every change should
 make that faster or clearer. Anything that makes it slower needs a reason.
 
+> Built with the kodexa-builder skill (v1.0.0). Load it for any new feature or
+> design work, and log preferences, corrections and reversals to
+> `.claude/kodexa-learnings.md` as they happen.
+
 ## Ground rules
 
 - **Plain JavaScript, App Router, Tailwind v4.** No TypeScript, no UI kit.
@@ -189,6 +193,11 @@ in two taps.
 - **Nothing that tells you what a card does is hover-only.** Touch screens
   have no hover, so such hints are always visible there
   (`[@media(hover:none)]:opacity-100`).
+- **WhatsApp always shows the real WhatsApp logo** (`ui/WhatsAppIcon.js`),
+  never a generic chat bubble. The floating WhatsApp button is the logo
+  alone, and the chatbot launcher is a bot icon, so the two never look alike.
+- `.tap` is a flex row everywhere; only its 44px growth is touch-only. An
+  icon inside a link otherwise drops to its own line on desktop.
 - The header sits at `z-[60]`, above the chat and WhatsApp buttons, so they
   never cover an open menu.
 

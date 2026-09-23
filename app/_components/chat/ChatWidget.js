@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight, Bot, MessageCircle, Send, X } from "lucide-react";
+import { ArrowUpRight, Bot, Send, X } from "lucide-react";
 
 import Link from "next/link";
 
@@ -234,7 +234,7 @@ export default function ChatWidget() {
         whileTap={{ scale: 0.94 }}
         className="fixed bottom-5 right-4 z-50 grid h-14 w-14 place-items-center rounded-[4px] border-2 border-[var(--color-ink)] bg-[var(--color-primary)] text-[var(--color-ink)] shadow-[4px_4px_0_var(--color-ink)] transition-transform hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_var(--color-ink)] sm:right-5"
       >
-        {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
+        {open ? <X className="h-6 w-6" /> : <Bot className="h-6 w-6" />}
       </motion.button>
     </>
   );

@@ -5,12 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import clsx from "clsx";
-import { ArrowRight, ArrowUpRight, ChevronDown, Menu, MessageCircle, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 
 import { siteConfig, whatsappHref } from "@/app/_lib/siteConfig";
 import { services } from "@/app/_lib/services-data";
 import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
 import Button from "@/app/_components/ui/Button";
+import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 
 // Where the visitor is decides which item is marked. On the home page the
 // sections are the places, so the marker follows the scroll; everywhere else
@@ -450,7 +451,7 @@ function MobileDrawer({ open, setOpen, current, pathname }) {
                   className="w-full"
                   size="lg"
                 >
-                  <MessageCircle className="h-4 w-4 text-[#1a9e4b]" />
+                  <WhatsAppIcon className="h-5 w-5 text-[#25D366]" />
                   Or WhatsApp us
                 </Button>
               </div>

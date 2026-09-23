@@ -21,6 +21,13 @@ service card only appeared on hover, so phones never showed it.
   the real services, the footer links to the index, and the request form's
   Back button is a full 44px target.
 
+- **WhatsApp shows the real WhatsApp logo** everywhere it is named, and the
+  floating button is the logo alone. The chatbot launcher became a bot icon
+  so the pair are clearly two different ways to reach us.
+- **Icons stay on the line of their words** on desktop. `.tap` only became a
+  flex row on touch screens, so the footer's GitHub link and the Compare link
+  stacked icon, word and arrow into a column with a mouse.
+
 **Decision worth keeping:** the phone menu's services list starts closed, even
 on a service page. Starting it open pushed Work and the call to action below
 the fold, and the breadcrumb already says which service you are on.

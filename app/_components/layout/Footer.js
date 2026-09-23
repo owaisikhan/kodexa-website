@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowUpRight, GitBranch, Mail, MapPin, MessageCircle } from "lucide-react";
+import { ArrowUpRight, GitBranch, Mail, MapPin } from "lucide-react";
 
 import { siteConfig, whatsappHref } from "@/app/_lib/siteConfig";
 import { services } from "@/app/_lib/services-data";
+import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -31,7 +32,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="tap gap-2 hover:text-[var(--color-text)]"
               >
-                <MessageCircle className="h-4 w-4 text-[#25D366]" />
+                <WhatsAppIcon className="h-4 w-4 text-[#1a9e4b]" />
                 {siteConfig.whatsappDisplay}
               </a>
               <a
