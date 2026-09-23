@@ -61,12 +61,36 @@ export async function answerFromKnowledge(question, chunks, history, onToken) {
     { role: "user", parts: [{ text: buildAnswerPrompt(question, chunks) }] },
   ];
 
+  try {
+    return await streamAnswer(activeModel, contents, onToken, startedAt);
+  } catch (error) {
+    // A model name that does not exist fails before any text is sent, so
+    // retrying on the alias is invisible to the visitor. Remember the switch
+    // for the life of this instance, and say so once in the logs.
+    if (error.partial || !isModelNotFound(error) || activeModel === CHAT.fallbackModel) throw error;
+    console.warn(
+      `[chat] GEMINI_MODEL "${activeModel}" was not found; using "${CHAT.fallbackModel}". Fix GEMINI_MODEL, or remove it to use the alias.`
+    );
+    activeModel = CHAT.fallbackModel;
+    return streamAnswer(activeModel, contents, onToken, Date.now());
+  }
+}
+
+// The model in use on this instance: GEMINI_MODEL until it proves missing.
+let activeModel = CHAT.model;
+
+function isModelNotFound(error) {
+  const text = `${error?.status ?? ""} ${error?.code ?? ""} ${error?.message ?? ""}`;
+  return /\b404\b|NOT_FOUND|is not found|not supported for generateContent/i.test(text);
+}
+
+async function streamAnswer(model, contents, onToken, startedAt) {
   let full = "";
   let usage;
 
   try {
     const stream = await ai().models.generateContentStream({
-      model: CHAT.model,
+      model,
       contents,
       config: {
         systemInstruction: buildSystemPrompt(),
@@ -88,10 +112,13 @@ export async function answerFromKnowledge(question, chunks, history, onToken) {
       onToken?.(piece);
     }
 
-    trace({ name: "answer", model: CHAT.model, usage, startedAt });
+    trace({ name: "answer", model, usage, startedAt });
     return full.trim();
   } catch (error) {
-    trace({ name: "answer", model: CHAT.model, usage, startedAt, error });
+    trace({ name: "answer", model, usage, startedAt, error });
+    // Only a failure before the first word may be retried on another model;
+    // after that the visitor has already seen part of this answer.
+    if (full) error.partial = true;
     throw error;
   }
 }

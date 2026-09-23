@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { whatsappHref } from "@/app/_lib/siteConfig";
 import Button from "@/app/_components/ui/Button";
 import Reveal from "@/app/_components/ui/Reveal";
+import ReplyBadge from "@/app/_components/contact/ReplyBadge";
 import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 
 // The last thing on every page. Two ways to start, no form to read first.
@@ -51,6 +52,7 @@ export default function CtaBand({
               Message on WhatsApp
             </Button>
           </div>
+          <ReplyBadge tone="dark" className="mt-6" />
         </Reveal>
       </div>
     </section>

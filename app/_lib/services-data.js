@@ -211,21 +211,42 @@ export const process = [
     n: "01",
     title: "You tell us what you need",
     body: "One form, three questions, two minutes. No meeting needed to start.",
+    // What the visitor actually has in hand at the end of this step. Shown
+    // when a step is opened on the home page; keep every line true of how we
+    // work, because this is the promise.
+    receive: [
+      "A reference number for your request",
+      "Your message already written in WhatsApp, ready to send",
+    ],
   },
   {
     n: "02",
     title: "We reply with a plan and a price",
     body: "A fixed quote and a timeline, usually the same day. Nothing starts until you say yes.",
+    receive: [
+      "A written plan of what gets built, in what order",
+      "One fixed price and a timeline",
+      "Nothing to pay just to find out",
+    ],
   },
   {
     n: "03",
     title: "We build it, you watch it grow",
     body: "You see a working link early and at every step, not a surprise at the end.",
+    receive: [
+      "A private link to the working build, early on",
+      "The same link updated at every step, so you can try it as it grows",
+    ],
   },
   {
     n: "04",
     title: "Live, and still supported",
     body: "We deploy it, hand over everything, and stay reachable after launch.",
+    receive: [
+      "It live, on your domain or your devices",
+      "Every login, account and the code, in your name",
+      "Someone to message when something needs changing",
+    ],
   },
 ];
 

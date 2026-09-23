@@ -1,5 +1,21 @@
 # Changelog
 
+## Five more ways in
+
+- **A project builder in the finder's answer**: tick the extra parts you need
+  (cash on delivery, staff logins, an Urdu version). They go straight into the
+  request form and the WhatsApp message. No invented prices or week counts:
+  more parts means "expect the longer end", and the plan says exactly.
+- **A free phone speed check** on the Website Audit page, using Google
+  PageSpeed: a score, five plain-word measures, the three biggest fixes, and
+  "get these fixed" with the address filled in. Appears once
+  `PAGESPEED_API_KEY` is set.
+- **An honest reply badge** on the request page and the closing band:
+  "Online now" in working hours (Pakistan time), otherwise when we are back.
+- **How it works steps open** to show what you have in hand after each one.
+- **The request form remembers** a half-typed request on the same device, and
+  says so, with a Start fresh button.
+
 ## Things to try, not just read
 
 Three pieces of interactivity, each aimed at getting a request sent:

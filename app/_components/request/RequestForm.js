@@ -9,11 +9,13 @@ import {
   Check,
   Loader2,
   PartyPopper,
+  RotateCcw,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { services } from "@/app/_lib/services-data";
 import { submitRequest } from "@/app/_lib/actions";
+import { needsSentence } from "@/app/_lib/finder-data";
 import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
 import Button from "@/app/_components/ui/Button";
 import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
@@ -30,15 +32,122 @@ const STEPS = ["What do you need", "About the project", "How we reply"];
 
 const EMPTY = { business: "", brief: "", name: "", contact: "" };
 
+// A half-typed request survives closing the tab: saved on this device only,
+// in this browser's storage, never sent anywhere until the visitor presses
+// send. Old drafts expire so a stranger on a shared phone does not inherit
+// one from weeks ago. Storage can be missing or blocked (private windows,
+// strict settings), so every access is wrapped and the form works without it.
+const DRAFT_KEY = "kodexa:request-draft";
+const DRAFT_DAYS = 14;
+
+function hasContent(values) {
+  return Object.values(values).some((v) => v.trim());
+}
+
+function readDraft() {
+  try {
+    const d = JSON.parse(window.localStorage.getItem(DRAFT_KEY) || "null");
+    if (!d?.savedAt || Date.now() - d.savedAt > DRAFT_DAYS * 86400000) {
+      window.localStorage.removeItem(DRAFT_KEY);
+      return null;
+    }
+    const values = { ...EMPTY, ...d.values };
+    return hasContent(values) ? { service: d.service || "", values } : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeDraft(service, values) {
+  try {
+    if (hasContent(values)) {
+      window.localStorage.setItem(DRAFT_KEY, JSON.stringify({ service, values, savedAt: Date.now() }));
+    } else {
+      window.localStorage.removeItem(DRAFT_KEY);
+    }
+  } catch {
+    // Storage unavailable: the form still works, it just will not remember.
+  }
+}
+
+function clearDraft() {
+  try {
+    window.localStorage.removeItem(DRAFT_KEY);
+  } catch {}
+}
+
+function safeSite(raw) {
+  if (!raw || raw.length > 200) return "";
+  try {
+    const u = new URL(raw);
+    return ["http:", "https:"].includes(u.protocol) && u.hostname.includes(".") ? u.toString() : "";
+  } catch {
+    return "";
+  }
+}
+
+// The finder sends ticked extras as ?needs=a,b and the speed check sends
+// ?site=; each becomes one line in the brief ("I also need: ...", "My site:
+// ..."). A new line replaces an old one with the same start rather than
+// stacking under it, because a restored draft often carries the last visit's.
+const LINE_STARTS = ["I also need:", "My site:"];
+
+function withNeeds(brief, sentence) {
+  if (!sentence) return brief;
+  const incoming = sentence.split("\n");
+  const replaced = LINE_STARTS.filter((start) => incoming.some((l) => l.startsWith(start)));
+  const kept = brief
+    .split("\n")
+    .filter((l) => !replaced.some((start) => l.startsWith(start)))
+    .join("\n")
+    .trimEnd();
+  return kept ? `${kept}\n${sentence}` : sentence;
+}
+
 export default function RequestForm() {
   const params = useSearchParams();
   const preset = params.get("service");
   const presetValid = services.some((s) => s.slug === preset);
 
-  const [service, setService] = useState(presetValid ? preset : "");
-  const [step, setStep] = useState(presetValid ? 1 : 0);
-  const [values, setValues] = useState(EMPTY);
+  const needsKey = params.get("needs") || "";
+  // The speed check sends ?site=; only a plain http(s) address is accepted,
+  // so a crafted link cannot drop arbitrary text into someone's form.
+  const site = safeSite(params.get("site"));
+  const sentence = [presetValid ? needsSentence(preset, needsKey.split(",")) : "", site ? `My site: ${site}` : ""]
+    .filter(Boolean)
+    .join("\n");
+
+  // This component only renders in the browser (useSearchParams inside the
+  // page's Suspense boundary), so reading storage while choosing the first
+  // state is safe and avoids a flash of an empty form.
+  const [draft] = useState(() => readDraft());
+  const [restored, setRestored] = useState(Boolean(draft));
+  const [service, setService] = useState(presetValid ? preset : draft?.service ?? "");
+  const [step, setStep] = useState(presetValid || draft?.service ? 1 : 0);
+  const [values, setValues] = useState(() => {
+    const start = draft?.values ?? EMPTY;
+    return { ...start, brief: withNeeds(start.brief, sentence) };
+  });
   const [state, formAction, pending] = useActionState(submitRequest, null);
+
+  useEffect(() => {
+    if (!state?.ok) writeDraft(service, values);
+  }, [service, values, state]);
+
+  // Sent: the draft has done its job.
+  useEffect(() => {
+    if (state?.ok) clearDraft();
+  }, [state]);
+
+  function startFresh() {
+    clearDraft();
+    setRestored(false);
+    setValues({ ...EMPTY, brief: sentence });
+    if (!presetValid) {
+      setService("");
+      setStep(0);
+    }
+  }
 
   // Follow the URL when it changes under us.
   //
@@ -53,12 +162,16 @@ export default function RequestForm() {
   // against the last value during render and update immediately, rather than
   // in an effect that would render the wrong service first and correct it on
   // the next pass.
-  const [lastPreset, setLastPreset] = useState(preset);
-  if (preset !== lastPreset) {
-    setLastPreset(preset);
+  const presetKey = `${preset}|${needsKey}|${site}`;
+  const [lastPreset, setLastPreset] = useState(presetKey);
+  if (presetKey !== lastPreset) {
+    setLastPreset(presetKey);
     if (presetValid && preset !== service) {
       setService(preset);
       setStep(1);
+    }
+    if (sentence && withNeeds(values.brief, sentence) !== values.brief) {
+      setValues((v) => ({ ...v, brief: withNeeds(v.brief, sentence) }));
     }
   }
 
@@ -87,9 +200,47 @@ export default function RequestForm() {
 
   return (
     <div className="mx-auto max-w-3xl">
+      {restored ? (
+        <div
+          role="status"
+          className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-[4px] border-2 border-[var(--color-ink)] bg-[var(--color-surface)] px-4 py-2"
+        >
+          <p className="text-sm">We kept what you typed last time. It is saved on this device only.</p>
+          <button
+            type="button"
+            onClick={startFresh}
+            className="tap gap-1.5 px-1 text-sm font-semibold underline decoration-2 underline-offset-4"
+          >
+            <RotateCcw className="h-4 w-4" aria-hidden />
+            Start fresh
+          </button>
+        </div>
+      ) : null}
+
       <Progress step={step} />
 
-      <form action={formAction} className="panel relative mt-8 p-6 md:p-10">
+      <form
+        action={formAction}
+        // Only the last step sends. Anything that submits earlier (Enter in a
+        // field on step two, say) moves on a step instead of sending a
+        // request with no name and no contact.
+        onSubmit={(e) => {
+          if (step < STEPS.length - 1) {
+            e.preventDefault();
+            next();
+          }
+        }}
+        // Enter in a one-line field means "next", as it does on the last
+        // step. Browsers will not submit a form with no submit button on
+        // screen, so without this Enter on step two did nothing at all.
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && e.target.tagName === "INPUT" && step < STEPS.length - 1) {
+            e.preventDefault();
+            next();
+          }
+        }}
+        className="panel relative mt-8 p-6 md:p-10"
+      >
         {/* Bots fill every field they can find. People never see this one. */}
         <div className="pointer-events-none absolute left-[-9999px] top-0" aria-hidden>
           <label>
@@ -129,13 +280,18 @@ export default function RequestForm() {
             Back
           </button>
 
+          {/* Different keys, so React builds a new <button> for Send instead
+              of turning Continue's into it mid-click. Reusing one element
+              changed its type to "submit" while the browser was still
+              handling the click, and pressing Continue on step two sent the
+              form, with no name yet. */}
           {step < STEPS.length - 1 ? (
-            <Button type="button" onClick={next}>
+            <Button key="continue" type="button" onClick={next}>
               Continue
               <ArrowRight className="h-4 w-4" />
             </Button>
           ) : (
-            <Button type="submit" disabled={pending} variant="whatsapp">
+            <Button key="send" type="submit" disabled={pending} variant="whatsapp">
               {pending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -273,7 +429,7 @@ function StepProject({ chosen, values, set }) {
             value={values.brief}
             onChange={(e) => set("brief", e.target.value)}
             maxLength={2000}
-            placeholder="We take orders on WhatsApp and lose track of them. We want a proper online store with delivery."
+            placeholder="e.g. We take orders on WhatsApp and lose track of them. We want a proper online store with delivery."
           />
         </Field>
       </div>
@@ -295,7 +451,7 @@ function StepContact({ values, set }) {
             className="field"
             value={values.name}
             onChange={(e) => set("name", e.target.value)}
-            placeholder="Ammar"
+            placeholder="e.g. Hamid"
             maxLength={80}
             autoComplete="name"
           />
@@ -306,7 +462,7 @@ function StepContact({ values, set }) {
             className="field"
             value={values.contact}
             onChange={(e) => set("contact", e.target.value)}
-            placeholder="+92 300 1234567"
+            placeholder="e.g. +92 300 1234567"
             maxLength={60}
             autoComplete="tel"
           />

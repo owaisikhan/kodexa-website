@@ -2,6 +2,7 @@ import { Suspense } from "react";
 
 import RequestForm from "@/app/_components/request/RequestForm";
 import Reveal from "@/app/_components/ui/Reveal";
+import ReplyBadge from "@/app/_components/contact/ReplyBadge";
 
 export const metadata = {
   title: "Request a service",
@@ -23,6 +24,7 @@ export default function RequestPage() {
           <p className="mt-5 text-lg leading-relaxed text-[var(--color-muted)]">
             Then we reply on WhatsApp with a plan and a price.
           </p>
+          <ReplyBadge className="mt-4" />
         </Reveal>
 
         <div className="mt-14">

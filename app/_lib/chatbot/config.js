@@ -1,7 +1,13 @@
 // Every knob the chatbot has, in one place.
 
 export const CHAT = {
-  model: process.env.GEMINI_MODEL || "gemini-3.5-flash-lite",
+  // Google's moving alias for the current Flash-Lite model. A pinned name
+  // like "gemini-3.7-flash-lite" breaks the day it is retired or if it never
+  // existed for your key (a 404 on every answer); the alias does not. Pin a
+  // specific model in GEMINI_MODEL only when you need one, and the agent falls
+  // back to this alias if the pinned one is not found.
+  model: process.env.GEMINI_MODEL || "gemini-flash-lite-latest",
+  fallbackModel: "gemini-flash-lite-latest",
   embeddingModel: process.env.GEMINI_EMBEDDING_MODEL || "gemini-embedding-001",
 
   // Matches the vector(768) column in the migration. Changing one means

@@ -99,6 +99,38 @@ course-project demo with a banner across the top is not our work.
   service. The round chat button resets to the general questions. The button
   only renders when `isChatConfigured()`, like the widget itself.
 
+## Second batch: builder, speed check, reply badge, steps, drafts
+
+- **The finder's answer has optional extras** (`extras` in
+  `finder-data.js`, per service). They shape the brief, never a price or a
+  number of weeks: one ticked says "may add a little time", more say "expect
+  the longer end". Ticked ids travel as `?needs=a,b` to `/request`, which
+  turns known ids into one "I also need: ..." line; unknown ids are dropped,
+  so a crafted link cannot inject text. Never rename a shipped id.
+- **The free speed check** (`_components/speed/SpeedCheck.js`,
+  `app/api/speed`, `_lib/speed/psi.js`) runs Google PageSpeed on a phone
+  profile and shows the score, five metrics in plain words and the top three
+  fixes. It renders only when `PAGESPEED_API_KEY` is set, because keyless
+  PageSpeed shares one quota with the whole internet and is usually empty.
+  Public http(s) addresses only (no IPs, localhost or internal names), five
+  runs per visitor per ten minutes, results cached ten minutes. A bad key
+  shows visitors "unavailable" and logs the real reason on the server.
+  "Get these fixed" sends `?site=` to `/request`, accepted only as a plain
+  http(s) URL.
+- **The reply badge** (`_components/contact/ReplyBadge.js`) reads
+  `siteConfig.hours` in Asia/Karachi time, in the browser (a static page
+  would freeze a server answer at build time), rechecked every minute.
+  **The hours in `siteConfig` are a placeholder until confirmed**; the badge
+  is a promise, so keep them true. Logic is in `_lib/reply-hours.js`, pure.
+- **How it works steps open** to show `receive` from `process` in
+  `services-data.js`: what the visitor has in hand after that step. Keep each
+  line true of how we work. Opening one refreshes ScrollTrigger, because the
+  section grows.
+- **The request form keeps a draft** in localStorage (`kodexa:request-draft`,
+  14 days), restores it with a visible "saved on this device only" note and a
+  Start fresh button, and deletes it once sent. Every storage access is in
+  try/catch; the form works with storage blocked.
+
 ## The admin area
 
 `/admin` reads and works the leads. Three things about it are not negotiable:
@@ -173,6 +205,12 @@ never becomes a tappable WhatsApp link. Asking the model for markdown or full
 URLs instead would invite a confident link to somewhere we did not choose.
 
 Things to know before changing it:
+- **The answer model defaults to `gemini-flash-lite-latest`**, Google's moving
+  alias. A pinned `GEMINI_MODEL` that does not exist (a guessed version such
+  as `gemini-3.7-flash-lite`) used to 404 on every answer; now the agent
+  retries once on the alias, keeps using it on that instance, and logs one
+  warning naming the bad value. Only a failure before the first word is
+  retried.
 - The SSE controller is closed in exactly one place, the `finally` in the
   route. Early returns fall through to it. Closing it in a branch as well
   throws "Controller is already closed" and the visitor gets an empty reply.
