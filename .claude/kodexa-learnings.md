@@ -22,6 +22,7 @@ for the rules.
 | L-004 | 2026-09-23 | correction | A pair of important actions is two real buttons, never two underlined links stacked together; and every menu action exists on phone too | all | ready |
 | L-005 | 2026-09-23 | gotcha | Multi-step forms: Continue and Submit need different keys, and the form must refuse to submit before the last step | all | ready |
 | L-006 | 2026-09-23 | correction | Placeholders must never look like typed answers: lighter token, lighter weight, and an e.g. prefix | all | ready |
+| L-007 | 2026-09-23 | stale | slop_scan must skip the block next dev writes into AGENTS.md (its dashes are Next's text, and the block is meant to be committed) | all | ready |
 
 ## Entries
 
@@ -71,4 +72,12 @@ for the rules.
 - **Lesson:** Every project gets a `--color-placeholder` token clearly lighter than body text (about 3.5 to 4:1 on the field; the label carries the instruction), typed values one weight heavier (500) than placeholders (400), `opacity: 1` on `::placeholder` for Firefox, and example placeholders start with "e.g.".
 - **Scope:** all
 - **Target in skill:** SKILL.md section 3 (house defaults) or references/types/marketing-site.md section 6 (Lead capture)
+- **Status:** ready
+
+### L-007 · 2026-09-23 · strong · stale
+- **Said / saw:** `slop_scan.py` failed on AGENTS.md:29 and :31 after `next dev` ran; the lines are inside `<!-- BEGIN:nextjs-agent-rules -->`, which Next 16 writes and re-adds on every dev run, and whose own text says to commit it.
+- **Context:** kodexa-website, feature/easy-navigation (committed in ecdd00e with the missing-key notice).
+- **Lesson:** The anti-slop scan checks our words, not generated ones: `slop_scan.py` should skip everything between `BEGIN:nextjs-agent-rules` and `END:nextjs-agent-rules`. SKILL.md's "leave the AGENTS.md block alone" should also say to commit it, so `next dev` stops dirtying the tree.
+- **Scope:** all
+- **Target in skill:** scripts/slop_scan.py; SKILL.md section 3 (Next 16 specifics)
 - **Status:** ready
