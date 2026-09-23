@@ -123,7 +123,7 @@ export default function RequestForm() {
             type="button"
             onClick={() => setStep((s) => Math.max(0, s - 1))}
             disabled={step === 0}
-            className="inline-flex items-center gap-2 text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)] disabled:opacity-0"
+            className="inline-flex min-h-11 min-w-11 items-center gap-2 px-1 text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)] disabled:opacity-0"
           >
             <ArrowLeft className="h-4 w-4" />
             Back

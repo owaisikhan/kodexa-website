@@ -48,7 +48,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div>
+          <nav aria-label="Services">
             <h3 className="font-display text-sm uppercase tracking-[0.22em] text-[var(--color-dim)]">
               Services
             </h3>
@@ -63,10 +63,18 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/services"
+                  className="tap gap-1 text-sm font-semibold text-[var(--color-text)] underline decoration-2 underline-offset-4"
+                >
+                  Compare all services
+                </Link>
+              </li>
             </ul>
-          </div>
+          </nav>
 
-          <div>
+          <nav aria-label="Company">
             <h3 className="font-display text-sm uppercase tracking-[0.22em] text-[var(--color-dim)]">
               Company
             </h3>
@@ -99,7 +107,7 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-          </div>
+          </nav>
         </div>
 
         <div className="hairline my-10" />

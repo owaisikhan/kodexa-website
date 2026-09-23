@@ -19,6 +19,7 @@ const STATIC_ROUTES = {
   "/": "Home",
   "/request": "Request a service",
   "/work": "See our work",
+  "/services": "All services",
 };
 
 // A query string runs to the next space, so it happily swallows the full stop
@@ -66,7 +67,7 @@ export function resolvePath(raw) {
 // actually point people at. Everything else stays text.
 const PATTERN = new RegExp(
   [
-    "(?<path>\\/(?:request|work|services\\/[a-z-]+)(?:\\?[^\\s)]*)?)",
+    "(?<path>\\/(?:request|work|services(?:\\/[a-z-]+)?)(?:\\?[^\\s)]*)?)",
     "(?<whatsapp>\\+92[\\d\\s-]{9,15})",
     "(?<store>saam-s-store\\.vercel\\.app)",
   ].join("|"),

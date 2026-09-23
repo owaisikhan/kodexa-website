@@ -1,5 +1,30 @@
 # Changelog
 
+## Easier navigation
+
+Nothing about the look changed; this is about never being lost. Measured
+before: in-page links parked their section under the fixed header, nothing in
+the header said where you were, the phone menu ignored Escape and let Tab
+wander into the page behind it, and the "See what you get" hint on each
+service card only appeared on hover, so phones never showed it.
+
+- **A Services menu** in the header lists all nine (click or hover on
+  desktop, a collapsible list in the phone drawer), with a "Not sure which?"
+  route to the request form.
+- **`/services`**, a real index page: the same cards plus a side-by-side list
+  of who each service is for and how long it takes.
+- **Breadcrumbs** on every inner page, with BreadcrumbList structured data,
+  and **previous and next** links on service pages.
+- **The header marks the current page**, and on the home page follows the
+  scroll through Services and How it works.
+- **Anchors land below the header** (`scroll-padding-top`), the 404 page lists
+  the real services, the footer links to the index, and the request form's
+  Back button is a full 44px target.
+
+**Decision worth keeping:** the phone menu's services list starts closed, even
+on a service page. Starting it open pushed Work and the call to action below
+the fold, and the breadcrumb already says which service you are on.
+
 ## Muted pigments
 
 The brutalist structure kept, the accents turned down: acid lime, cobalt and

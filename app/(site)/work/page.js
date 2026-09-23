@@ -5,6 +5,8 @@ import WorkMock from "@/app/_components/ui/WorkMock";
 import Reveal from "@/app/_components/ui/Reveal";
 import Section from "@/app/_components/ui/Section";
 import CtaBand from "@/app/_components/home/CtaBand";
+import Breadcrumbs from "@/app/_components/ui/Breadcrumbs";
+import { siteConfig } from "@/app/_lib/siteConfig";
 
 export const metadata = {
   title: "Work",
@@ -18,9 +20,15 @@ export default function WorkPage() {
       <section className="relative overflow-hidden pt-[152px] pb-10">
         <div className="absolute inset-0 grid-bg" aria-hidden />
         <div className="container-x relative">
+          <Breadcrumbs
+            base={siteConfig.url}
+            items={[
+              { href: "/", label: "Home" },
+              { href: "/work", label: "Work" },
+            ]}
+          />
           <Reveal>
-            <p className="kicker mb-4">Work</p>
-            <h1 className="max-w-3xl text-[clamp(2.4rem,6.5vw,4.4rem)]">
+            <h1 className="mt-8 max-w-3xl text-[clamp(2.4rem,6.5vw,4.4rem)]">
               Built, shipped, in daily use
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-[var(--color-muted)]">

@@ -1,12 +1,14 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, Check, Clock, Target, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Clock, Target, Users } from "lucide-react";
 
 import { getService, services, process } from "@/app/_lib/services-data";
+import { siteConfig } from "@/app/_lib/siteConfig";
 import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
 import Section, { SectionHeader } from "@/app/_components/ui/Section";
 import Reveal from "@/app/_components/ui/Reveal";
 import Button from "@/app/_components/ui/Button";
+import Breadcrumbs from "@/app/_components/ui/Breadcrumbs";
 import CtaBand from "@/app/_components/home/CtaBand";
 
 // Nine static pages, generated at build time. No database, no request-time work.
@@ -34,6 +36,11 @@ export default async function ServicePage({ params }) {
   const accent = accentVar[service.accent] ?? accentVar.primary;
   const ink = accentInk[service.accent] ?? accentInk.primary;
   const others = services.filter((s) => s.slug !== service.slug).slice(0, 3);
+  // Previous and next wrap around, so every page has both and a visitor can
+  // walk all nine without going back to a list.
+  const at = services.findIndex((s) => s.slug === service.slug);
+  const prev = services[(at - 1 + services.length) % services.length];
+  const next = services[(at + 1) % services.length];
 
   return (
     <>
@@ -41,14 +48,14 @@ export default async function ServicePage({ params }) {
         <div className="absolute inset-0 grid-bg" aria-hidden />
 
         <div className="container-x relative">
-          <Reveal direction="none">
-            <Link
-              href="/#services"
-              className="tap text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-ink)]"
-            >
-              &larr; All services
-            </Link>
-          </Reveal>
+          <Breadcrumbs
+            base={siteConfig.url}
+            items={[
+              { href: "/", label: "Home" },
+              { href: "/services", label: "Services" },
+              { href: `/services/${service.slug}`, label: service.title },
+            ]}
+          />
 
           <Reveal delay={0.05}>
             <span
@@ -163,16 +170,59 @@ export default async function ServicePage({ params }) {
               </Reveal>
             ))}
           </div>
+
+          <nav
+            aria-label="More services"
+            className="mt-10 grid gap-3 border-t border-[var(--color-border-soft)] pt-8 sm:grid-cols-2"
+          >
+            <Link
+              href={`/services/${prev.slug}`}
+              rel="prev"
+              className="panel panel-hover group flex items-center gap-3 p-4"
+            >
+              <ArrowLeft className="h-5 w-5 shrink-0 transition-transform group-hover:-translate-x-1" aria-hidden />
+              <span className="min-w-0">
+                <span className="kicker block">Previous</span>
+                <span className="mt-1 block font-display font-bold">{prev.title}</span>
+              </span>
+            </Link>
+            <Link
+              href={`/services/${next.slug}`}
+              rel="next"
+              className="panel panel-hover group flex items-center justify-end gap-3 p-4 text-right"
+            >
+              <span className="min-w-0">
+                <span className="kicker block">Next</span>
+                <span className="mt-1 block font-display font-bold">{next.title}</span>
+              </span>
+              <ArrowRight className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden />
+            </Link>
+          </nav>
         </div>
       </Section>
 
       <CtaBand
-        title={`Ready for ${service.title.toLowerCase()}?`}
+        title={
+          <>
+            Ready for <KeepHyphens text={service.title.toLowerCase()} />?
+          </>
+        }
         body="Send the brief and we will come back with a plan and a fixed price."
         service={service.slug}
       />
     </>
   );
+}
+
+// "E-Commerce" at display size breaks after its hyphen, leaving "E-" alone at
+// the end of a line. Hold each hyphenated word together; spaces still wrap.
+function KeepHyphens({ text }) {
+  return text.split(" ").map((word, i) => (
+    <span key={i}>
+      {i > 0 ? " " : null}
+      {word.includes("-") ? <span className="whitespace-nowrap">{word}</span> : word}
+    </span>
+  ));
 }
 
 function Badge({ icon: Icon, label }) {

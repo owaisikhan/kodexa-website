@@ -320,6 +320,13 @@
   opacity: 0;
 }
 
+/* In-page links (/#services, /#process, #compare) land below the fixed
+   88px header instead of under it, with a little air. Tied to the header
+   height: see "The navbar height is load-bearing" in CLAUDE.md. */
+html {
+  scroll-padding-top: 104px;
+}
+
 /* One switch for everyone who asked the OS to calm motion down. */
 @media (prefers-reduced-motion: reduce) {
   *,
