@@ -114,3 +114,11 @@ for the rules.
 - **Target in skill:** SKILL.md intro and section 2 (placeholders: public-facing name)
 - **Status:** ready
 
+### L-012 · 2026-09-24 · strong · choice
+- **Said / saw:** "suggest better names, as they both seem to look alike" (nav: "Work" and "How it works"); picked Option B: "Our work" and "Process"
+- **Context:** kodexa-website top menu. Offered three options; the user chose "Our work" / "Process" over "Projects" / "How to order".
+- **Lesson:** Top-menu labels must not share a word ("Work" / "How it works" read as one link). Default labels for a studio site: Services, Our work, Process, plus the CTA button. Legal, About and Contact stay in the footer; FAQ may join the phone menu, and every added phone-menu row means re-checking that the CTA is visible on a 360x640 screen.
+- **Scope:** all
+- **Target in skill:** references/types/marketing-site.md section 3 (Navigation)
+- **Status:** ready
+

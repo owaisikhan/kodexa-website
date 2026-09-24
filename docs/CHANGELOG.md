@@ -1,5 +1,14 @@
 # Changelog
 
+## Clearer menu names
+
+- **"Work" is now "Our work" and "How it works" is now "Process"**, because
+  the two looked like the same link. The section that Process jumps to says
+  "Process" too.
+- **Questions in the phone menu**, since phone visitors rarely reach the
+  footer. Menu rows went from 56px to 48px so "Start a project" still shows
+  without scrolling on a small phone.
+
 ## The pages a business is expected to have
 
 - **About** (led by Hamid Javed), **Contact** (WhatsApp first, email, hours,
