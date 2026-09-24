@@ -94,7 +94,7 @@ export default function ProcessTimeline() {
     <Section id="process">
       <div ref={root} className="container-x">
         <SectionHeader
-          kicker="How it works"
+          kicker="Process"
           title="Four steps, no meetings to get started"
           body="You never pay to find out what something costs, and nothing starts until you say yes."
         />

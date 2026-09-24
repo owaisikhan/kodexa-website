@@ -188,7 +188,7 @@ table.
 
 `SmoothScroll.js` turns on Lenis's `anchors` and `stopInertiaOnNavigate`. Before
 that, a native jump to `/#process` fought Lenis's own glide: a second click on
-"How it works", or one made while the page was still gliding, left the page
+"Process" (then called "How it works"), or one made while the page was still gliding, left the page
 wherever Lenis was heading. Lenis reads `scroll-padding-top` from
 `globals.css`, so sections still land below the navbar. Test any change here
 with a click made mid-scroll and a repeat click on the same link.
@@ -272,6 +272,15 @@ them move**, or content hides behind the header on one page and floats on
 another.
 
 ## Navigation
+
+Top menu labels are **Services, Our work, Process** and the "Start a project"
+button. "Work" and "How it works" were renamed because both carried the word
+"work" and read as the same link. The phone menu adds **Questions** (/faq);
+its rows are 48px tall so that "Start a project" stays on the first screen of
+a 360x640 phone. Add a row and that check has to be repeated. Privacy, terms,
+About and Contact live in the footer only, on purpose: the top menu has one
+job, the request.
+
 
 A visitor should always be able to tell where they are and reach any service
 in two taps.

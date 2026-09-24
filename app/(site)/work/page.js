@@ -9,7 +9,7 @@ import Breadcrumbs from "@/app/_components/ui/Breadcrumbs";
 import { siteConfig } from "@/app/_lib/siteConfig";
 
 export const metadata = {
-  title: "Work",
+  title: "Our work",
   description:
     "Projects Kodexa has built and shipped: online stores, business dashboards, offline desktop software and Android apps.",
 };
@@ -24,7 +24,7 @@ export default function WorkPage() {
             base={siteConfig.url}
             items={[
               { href: "/", label: "Home" },
-              { href: "/work", label: "Work" },
+              { href: "/work", label: "Our work" },
             ]}
           />
           <Reveal>

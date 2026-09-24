@@ -144,7 +144,7 @@ export default async function ServicePage({ params }) {
 
       <Section>
         <div className="container-x">
-          <SectionHeader kicker="How it works" title="From your message to live" />
+          <SectionHeader kicker="Process" title="From your message to live" />
 
           <ol className="mt-12 grid gap-4 md:grid-cols-4">
             {steps.map((step, i) => (

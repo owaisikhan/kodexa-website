@@ -83,12 +83,12 @@ export default function Footer() {
             <ul className="mt-5 space-y-2.5">
               <li>
                 <Link href="/work" className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)]">
-                  Work
+                  Our work
                 </Link>
               </li>
               <li>
                 <Link href="/#process" className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)]">
-                  How it works
+                  Process
                 </Link>
               </li>
               <li>

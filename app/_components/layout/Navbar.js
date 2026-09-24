@@ -102,12 +102,12 @@ export default function Navbar() {
           </li>
           <li>
             <NavLink href="/work" active={current.work} page={pathname === "/work"}>
-              Work
+              Our work
             </NavLink>
           </li>
           <li>
             <NavLink href="/#process" active={current.process}>
-              How it works
+              Process
             </NavLink>
           </li>
         </ul>
@@ -307,7 +307,7 @@ function ServiceLink({ service, compact }) {
 function MobileDrawer({ open, setOpen, current, pathname }) {
   const toggle = useRef(null);
   const panel = useRef(null);
-  // Starts closed, so Work, How it works and the call to action are all on the
+  // Starts closed, so Our work, Process, Questions and the call to action are all on the
   // first screen of the menu. It was tried starting open on service pages: the
   // nine rows pushed everything else below the fold. The breadcrumb already
   // says which service you are on.
@@ -356,8 +356,10 @@ function MobileDrawer({ open, setOpen, current, pathname }) {
     };
   }, [open, setOpen]);
 
+  // 48px rows, not 56: with Questions added, 56 pushed "Start a project"
+  // below the fold of a 360x640 phone. 48 is still above the 44px minimum.
   const row =
-    "flex min-h-14 w-full items-center justify-between rounded-[4px] px-3 font-display text-lg font-bold";
+    "flex min-h-12 w-full items-center justify-between rounded-[4px] px-3 font-display text-lg font-bold";
 
   return (
     <>
@@ -420,12 +422,24 @@ function MobileDrawer({ open, setOpen, current, pathname }) {
                     aria-current={pathname === "/work" ? "page" : undefined}
                     className={clsx(row, current.work && "bg-[var(--color-surface-2)]")}
                   >
-                    Work
+                    Our work
                   </Link>
                 </li>
                 <li>
                   <Link href="/#process" className={row}>
-                    How it works
+                    Process
+                  </Link>
+                </li>
+                {/* Phone only: people browsing on a phone rarely reach the
+                    footer, and the answers to "how much, how long" are what
+                    stop them sending a request. */}
+                <li>
+                  <Link
+                    href="/faq"
+                    aria-current={pathname === "/faq" ? "page" : undefined}
+                    className={clsx(row, pathname === "/faq" && "bg-[var(--color-surface-2)]")}
+                  >
+                    Questions
                   </Link>
                 </li>
               </ul>
@@ -446,7 +460,7 @@ function MobileDrawer({ open, setOpen, current, pathname }) {
                 </div>
               </div>
 
-              <div className="mt-auto flex flex-col gap-3 pt-8 pb-4">
+              <div className="mt-auto flex flex-col gap-3 pt-6 pb-4">
                 <Button href="/request" className="w-full" size="lg">
                   Start a project
                   <ArrowUpRight className="h-4 w-4" />
