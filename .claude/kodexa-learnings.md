@@ -122,3 +122,11 @@ for the rules.
 - **Target in skill:** references/types/marketing-site.md section 3 (Navigation)
 - **Status:** ready
 
+### L-013 · 2026-09-24 · medium · gotcha
+- **Said / saw:** "would it be helpful?" then "yes add" (committing the regression checks); earlier, form tests run against a build with Supabase env stored fake leads ("Hamid", "+92 300 1234567") in the live `service_requests` table.
+- **Context:** kodexa-website. Checks lived in a session scratchpad and were lost with it; the only committed audit was the skill's generic `site_audit.mjs`.
+- **Lesson:** Every site ships `scripts/checks/` with `npm run check` (plain Playwright, a dev dependency, `/opt/pw-browsers/chromium` when present): one check per bug that shipped or nearly did. Form checks abort every POST in the browser by default and need an explicit `--allow-submit`, used only against a build without the database env. Prove each new check by reintroducing its bug once.
+- **Scope:** all
+- **Target in skill:** SKILL.md section 5 (How done is proven); references/folder-structure.md (scripts/checks)
+- **Status:** ready
+

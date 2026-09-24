@@ -112,7 +112,19 @@ branding. `public/work/README.md` has the procedure.
 ## Verifying a change
 
 `npm run build` and `npx eslint .` catch imports and typos, not a page that
-looks wrong. Look at it:
+looks wrong. Then run the regression checks against a production build:
+
+```bash
+npm run build && npm start      # one terminal
+npm run check                   # another; --base, --only form,builder,links,overflow
+```
+
+They cover the bugs that shipped or nearly did: the form sending on Continue,
+the extras message, in-page links on a repeat or mid-scroll click, the phone
+menu's call to action at 360x640, and anything past a phone's edge at 320 to
+414px. By default the form check aborts every POST in the browser, so it is
+safe against any build. Add a check in `scripts/checks/` when a new bug of
+that kind is fixed. Then look at it:
 
 - A real browser at 1440px and at 390px and 360px, scrolling the whole page.
 - The kodexa-builder skill's `scripts/site_audit.mjs` (CTA above the fold at
@@ -124,8 +136,9 @@ looks wrong. Look at it:
 
 **Never submit the request form in a test against a build that has the
 Supabase env.** It writes real rows into the live leads table (it happened:
-see PROGRESS). Copy the repo, build it without `.env.local`, and run submit
-tests there; the form still reaches the success screen and stores nothing.
+see PROGRESS). For the full send path, copy the repo, build it without
+`.env.local`, start it, and run `npm run check -- --base <that url> --only form
+--allow-submit`; it reaches "Almost done" and stores nothing.
 When running `next start` for a test, pass `PAGESPEED_API_KEY` at runtime too,
 or the speed check reports "not set up".
 

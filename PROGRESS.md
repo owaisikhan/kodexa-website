@@ -84,6 +84,6 @@ generator scripts lived in a session scratchpad and are gone with it;
   Keep them true.
 - The chatbot has no voice I/O, on purpose: a second paid call per answer for
   a marketing widget.
-- The Playwright checks used in these sessions (overflow, form, builder, links)
-  were not committed; only the skill's `site_audit.mjs` and `slop_scan.py`
-  travel with the kodexa-builder skill.
+- `npm run check` (`scripts/checks/`) runs by hand only; nothing runs it on
+  push. Verified on 24 September: 23 checks pass, and turning off the Lenis
+  fix made the link check fail as it should.
