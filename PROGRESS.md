@@ -1,45 +1,63 @@
 # Progress
 
-## Where this stands
+## Where this stands (24 September 2026)
 
-The site is **built, deployed-ready and working end to end**. `main` carries
-the live-ready version. `feature/real-screenshots` carries the header and
-screenshot work described below, waiting on the team to test it.
+The site is **complete and on `main`**. Work happens on
+`feature/easy-navigation`, which is merged into `main` with `--no-ff` whenever
+the owner asks, then fast-forwarded back to `main`. `admin`, `chatbot`,
+`chat-links`, `real-screenshots`, `genz-redesign` and `genz-muted` are merged
+and can be deleted. `editorial`, `lime-mono` and `palette-refresh` are design
+directions that were compared and not chosen (see the changelog); keep them
+only as a record.
 
-- Home, nine service pages, work, request flow, 404 and error pages: done.
-- Request flow: tested end to end, stores a row and opens WhatsApp with the
-  brief written out.
-- Supabase project **Kodexa** (`ap-south-1`) is live, migration applied,
-  `service_requests` taking inserts and refusing reads.
-- WhatsApp number is the real one: `923390391420`.
+- Pages: home, services index and nine service pages, our work, request,
+  about, contact, FAQ, privacy, terms, 404, error, admin.
+- Supabase project **Kodexa** (`ap-south-1`) is live: requests taking inserts
+  and refusing reads, admin working, chatbot knowledge seeded (24 September:
+  contact, about and 12 FAQ chunks added through the Supabase connector,
+  because `SUPABASE_SERVICE_ROLE_KEY` is empty in `.env.local`).
+- WhatsApp `+92 339 0391420` and email `kodexa77@gmail.com` are real.
+- The origin remote reports that the repo moved to
+  `github.com/owaisikhan/kodexa-website`; pushes to the old URL still work.
 
-## Next, in order
+Verified on 24 September, all passing: production build, lint, the skill's
+site audit on nine pages, element-level overflow at 320 to 414px on every page
+and state, 30 builder and form checks, in-page link tests (7 desktop, 3 phone
+menu), anti-slop scan. The chatbot was checked through the real pipeline; its
+answer model returned intermittent 503s from Google that day.
 
-1. **Real screenshots.** The team is supplying them, including screens behind a
-   login that no session can reach on its own. Drop each file in
-   `public/work/` and set `shot` in `app/_lib/services-data.js`. See
-   `public/work/README.md`. Nothing else changes.
+## Open, roughly in order
 
-2. **The `/admin` page: done**, on `feature/admin`. Sign in at `/admin/login`,
-   see every request newest first, filter by status, move a lead through
-   `new → contacted → quoted → won → lost`, write private notes, and reply
-   straight to their WhatsApp. Reads are in `data-service.js`, writes in
-   `actions.js`, and access is `app_admins` + `is_admin()` + RLS.
-
-   Verified against the live database: anon sees 0 rows, a signed-in
-   non-admin sees 0 rows and `is_admin()` returns false, the admin sees
-   everything, and even the admin cannot rewrite a customer's brief because
-   UPDATE is granted on `status` and `notes` only.
-
-3. **The chatbot: done**, on `feature/chatbot`. Ask it anything about Kodexa
-   and it answers from the site's own content; ask it anything else and it
-   says it can only help with Kodexa. Needs `GEMINI_API_KEY` in Vercel, and
-   `npm run seed:knowledge` re-run whenever services or contact details
-   change.
-
-4. **Deploy.** Vercel, region `bom1` to sit beside the database, with
-   `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and
-   `NEXT_PUBLIC_SITE_URL` set.
+1. **Delete test leads from the live database.** Form tests run against a
+   build with Supabase env may have stored rows named "Hamid" with contact
+   "+92 300 1234567" (briefs like "A site for my shop" or "test"). Remove them
+   in `/admin` or the Supabase table editor. Submit tests now run against a
+   copy built without Supabase env (see CLAUDE.md).
+2. **Confirm the working hours.** `siteConfig.hours` (Monday to Saturday,
+   10 am to 8 pm Pakistan time) is a placeholder, and the reply badge and the
+   Contact page state it as fact. The Contact page also says English or Urdu
+   are both fine; confirm.
+3. **Vercel env:** `GEMINI_API_KEY`, `PAGESPEED_API_KEY`, and `GEMINI_MODEL`
+   (the owner chose `gemini-flash-lite-latest`; `.env.local` pins
+   `gemini-3.5-flash-lite`).
+4. **Rotate the Gemini and PageSpeed keys**; both were pasted into a session
+   chat. Put `SUPABASE_SERVICE_ROLE_KEY` into `.env.local` (never Vercel) so
+   the seed runs normally.
+5. **Chatbot resilience:** retry once and fall back to the alias on a 503
+   ("model overloaded"), as it already does on a 404 (`agent.js`).
+6. **Legal read-through by the owner:** quotes valid 30 days, data requests
+   within 30 days, liability capped at the amount paid, Pakistani law.
+7. **Before any Meta pixel or analytics:** add a cookie and tracking section
+   to `legal-data.js` and decide on consent. There is no analytics today, so
+   there is no way to tell which service ad traffic wants.
+8. **The hero drawing says "Anything under $30?"** (`HeroVisual.js`) while the
+   Facebook cover advertises Rs 5,000. The site publishes no prices; decide
+   whether the drawing should use rupees.
+9. **Real screenshots** of our work: drop files in `public/work/` and set
+   `shot` (see `public/work/README.md`).
+10. **The domain.** `siteConfig.url` is `kodexa.dev`, a placeholder.
+11. **kodexa-builder learnings L-008 to L-012** in `.claude/kodexa-learnings.md`
+    are `ready` to promote into the next skill version.
 
 ## The admin login
 
@@ -50,15 +68,22 @@ endpoint and confirmed directly in `auth.users`, with its email seeded into
 **Change that password in the Supabase dashboard.** It was generated in a
 session transcript, which is not where a production password should live.
 
+## Marketing made outside the repo
+
+Delivered to the owner as files, not committed: Facebook profile picture and
+cover (2048x1154, "Rs 5,000"), two organic videos (a 4:5 phone promo and a
+16:9 laptop "How to order" walkthrough with a voice-over), and six Meta ad
+videos with music and subtitles, no voice: phone and PC-screen versions, each
+in 9:16 (Reels, Stories), 4:5 (Feed) and 1:1 (Marketplace, search). The
+generator scripts lived in a session scratchpad and are gone with it;
+`docs/CHANGELOG.md` records how they were built so they can be rebuilt.
+
 ## Known gaps
 
-- `siteConfig.url` (`kodexa.dev`) is a placeholder until the domain is
-  bought. The WhatsApp number and the email (kodexa77@gmail.com) are real.
-- The stats in the hero ("9 services", "20+ projects", "24h reply") are
-  hand-written. Keep them true.
-- The chatbot has no voice I/O. The store's pipeline speaks answers aloud
-  through `GEMINI_TTS_MODEL`; here it would be a second paid call per answer
-  for a marketing widget, so it was left out rather than half-built. The
-  agent is one function away from it if it is ever wanted.
-- No analytics. Worth adding before any ad spend, or there is no way to tell
-  which service the traffic actually wants.
+- The hero stats ("9 services", "20+ projects", "24h reply") are hand-written.
+  Keep them true.
+- The chatbot has no voice I/O, on purpose: a second paid call per answer for
+  a marketing widget.
+- The Playwright checks used in these sessions (overflow, form, builder, links)
+  were not committed; only the skill's `site_audit.mjs` and `slop_scan.py`
+  travel with the kodexa-builder skill.

@@ -1,5 +1,60 @@
 # Changelog
 
+## Docs brought up to date (24 September)
+
+CLAUDE.md was 331 lines of mixed rules and feature notes; it is now a short
+orientation with the load-bearing list, and the feature descriptions moved to
+README. README gained every page, the finder, extras, speed check, reply
+badge, the full env table and the chatbot internals. PROGRESS lists what is
+open now. `.env.example` gained `SUPABASE_SERVICE_ROLE_KEY` (seed only).
+Found while checking: `NEXT_PUBLIC_SITE_URL` is read only by `absoluteUrl()`,
+which nothing calls; `siteConfig.url` is the real canonical address.
+
+## Design directions tried and not merged
+
+Reconstructed from the branches on 24 September; the reasons beyond "the
+Gen Z redesign was chosen" were not recorded at the time.
+
+- `feature/editorial` ("Redesign the site as editorial print").
+- `feature/lime-mono` ("Recolour to a single acid lime on neutral black").
+- `feature/palette-refresh` ("Swap the palette off the generated-site
+  colours", plus a hero card tilt using rotation instead of the CSS `rotate`
+  property).
+
+`feature/genz-redesign` was merged and then turned down to muted pigments in
+`feature/genz-muted` (see "Gen Z redesign" and "Muted pigments" below). If a
+new visual direction is proposed, compare it against these first.
+
+## Marketing assets (made outside the repo, 23 and 24 September)
+
+Delivered to the owner as files; nothing here is committed, and the generator
+scripts were in a session scratchpad that no longer exists. Enough to rebuild
+them:
+
+- **Facebook profile and cover:** the K mark, and a 2048x1154 cover stating
+  "Rs 5,000" (the site itself publishes no prices).
+- **Organic videos:** a 4:5 phone promo, and a 16:9 laptop walkthrough "How to
+  order" with a Gemini TTS voice-over, both recorded frame by frame with
+  Playwright driving the real site inside a drawn device, then encoded with
+  ffmpeg.
+- **Meta ads, music and on-screen subtitles, no voice:** a yellow hook card
+  ("No website yet? Customers can't find you.") in the first 1.5s, then
+  services, the finder, the form and the "Almost done" screen, ending on the
+  WhatsApp number. Phone version 23s (slowed on request so subtitles can be
+  read, 92 BPM), PC-screen version 17.5s with a camera that zooms to each
+  click. Each in 9:16, 4:5 and 1:1. The music was synthesised (no licence to
+  worry about), loudness normalised to -14 LUFS.
+- **Specs used (researched September 2026):** 9:16 for Reels and Stories,
+  4:5 for feeds, 1:1 for Marketplace and search; 4:3 is not a recommended ad
+  shape. Reels and Stories safe zone: keep text out of the top 14%, the bottom
+  35% and 6% at each side.
+- **Gotchas:** a phone bezel drawn with a border ate 16px of the screen under
+  Tailwind's `border-box` and clipped the site's right edge (use
+  `box-sizing: content-box` on the frame); a desktop site shrunk into a 9:16
+  frame is unreadable without zooming to each click; form tests recorded
+  against a build with Supabase env store real rows, so record from a build
+  without it.
+
 ## Clearer menu names
 
 - **"Work" is now "Our work" and "How it works" is now "Process"**, because
