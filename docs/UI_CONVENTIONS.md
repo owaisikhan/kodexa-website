@@ -45,8 +45,11 @@ for labels and metadata only, never a sentence someone has to read.
 - `Section` owns vertical rhythm: `py-24 md:py-32`, or `tight` for `py-16
   md:py-20`. Do not set section padding by hand.
 - `SectionHeader` owns the kicker + title + body block.
-- Pages that start under the fixed navbar need `pt-[136px]`; the navbar is
-  72px and the rest is breathing room.
+- The navbar is 88px. Full-height sections start with `pt-[88px]`; inner
+  pages use `ui/PageHero.js` (breadcrumbs, one h1, one line, `pt-[152px]`).
+  See "Load-bearing things" in CLAUDE.md before changing the header.
+- Legal pages share `legal/LegalPage.js`: a contents list (sticky on
+  desktop), numbered sections with ids, a "Last updated" date from the data.
 
 ## Motion rules
 
@@ -83,18 +86,59 @@ a drawn mock, so the grid keeps one rhythm no matter which it is.
 - **`.tap` on any inline link.** Under `pointer: coarse` it grows the hit area
   to 44x44 without changing anything on a mouse-driven screen. A 17px-tall
   footer link is a miserable thing to hit with a thumb.
-- **The glow orbs shrink on phones**, and the hero carries a scrim below `sm`.
-  At 390px wide a 420px orb sits directly behind the body copy; measured, the
-  paragraph now reads at 6.2:1 against what is actually painted behind it.
+- **Buttons wrap below `sm`** (`max-w-full text-balance`, `sm:whitespace-nowrap`
+  in `ui/Button.js`). A nowrap label inside a section with `overflow-hidden`
+  runs off a phone and the page-level overflow check never sees it, so check
+  elements, not just the page. A full-width action on a phone gets
+  `w-full sm:w-auto`.
+- **Inputs are at least 16px** on phones (the chat input included), or iOS
+  zooms the page when one is focused.
 
 The checks that keep this honest are not eyeball work: render every page at
 360, 390, 414, 768, 1024, 1280, 1440 and 1920, then assert no horizontal
 overflow, nothing past the right edge, no text under 12px, no tap target under
-36px, and the hero's call to action above the fold.
+44px, and the hero's call to action above the fold. Inline links in running
+text get `.tap` too; the audit counts them.
+
+## Navigation
+
+- **Where you are is always marked.** Routes use `aria-current="page"`; on
+  the home page the marker follows the scroll through `#services`,
+  `#finder` and `#process` (an IntersectionObserver in `Navbar.js`, `SPY_SECTIONS`) with
+  `aria-current="location"`.
+- **Services is a menu, not an anchor.** Desktop opens on click or hover;
+  phones get a collapsible list in the drawer that starts closed. Both close
+  on Escape (focus returns to the button), an outside click and any link. The
+  drawer traps Tab while open.
+- **Every inner page has a breadcrumb** (`ui/Breadcrumbs.js`, which also
+  writes BreadcrumbList data). Service pages end with prev and next links that
+  wrap around.
+- **Two actions that matter are two buttons**, primary and ghost, never two
+  stacked underlined links (the finder's "Find yours in two taps" and
+  "Compare all nine" were missed that way).
+- **Nothing that explains a card is hover-only**: `[@media(hover:none)]:opacity-100`.
+- **WhatsApp always shows the real WhatsApp logo** (`ui/WhatsAppIcon.js`);
+  the chatbot launcher is a bot icon so the two floating buttons never look
+  alike. The WhatsApp button hides on `/request`, which is the WhatsApp
+  handoff already.
+- `.tap` is a flex row everywhere; only its 44px growth is touch-only.
+- The header sits at `z-[60]`, above the chat and WhatsApp buttons.
+
+## Forms
+
+- `--color-placeholder` is clearly lighter than typed text, typed values are
+  weight 500 and placeholders 400, and every example placeholder starts with
+  "e.g.". A placeholder as dark as an answer makes an empty form look filled.
+- Multi-step forms: distinct `key` on each step's button, Enter in a one-line
+  field advances, and nothing is sent before the last step.
+- Success copy is honest: "Request received" only when a row was stored,
+  otherwise "Almost done" and the WhatsApp step.
 
 ## Accessibility
 
-- Decoration is `aria-hidden`. Every glow, grid and mock.
+- Decoration is `aria-hidden`. Every grid, block shape and mock.
+- Questions and answers use native `<details>` (`company/FaqList.js`): they
+  work without JavaScript and announce as expandable.
 - Focus rings are visible for keyboard users, suppressed for mouse users.
 - Colour is never the only signal: the selected service card gets a tick as
   well as a border, and buttons carry words rather than icons alone.
