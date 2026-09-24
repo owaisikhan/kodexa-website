@@ -85,6 +85,10 @@ Every key is optional, and each missing one only switches its feature off:
 | `PAGESPEED_API_KEY` | No speed check (in development a notice says why) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Only `npm run seed:knowledge` needs it; never set it in Vercel |
 
+Regression checks: `npm run check` against a running production build (see
+"Verifying a change" in CLAUDE.md). Playwright is a dev dependency; outside
+Claude Code on the web, run `npx playwright install chromium` once.
+
 A plumbing failure must never cost a lead: if the insert fails, the visitor is
 still handed to WhatsApp.
 

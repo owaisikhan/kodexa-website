@@ -1,5 +1,19 @@
 # Changelog
 
+## Regression checks committed
+
+`npm run check` runs four Playwright checks from `scripts/checks/` against a
+running build: the request form (Continue never sends, Send sends once, Back
+keeps text), the finder extras (link, brief and WhatsApp message, injection,
+restored drafts), in-page links (repeat click, mid-scroll, from another page,
+phone menu, CTA visible at 360x640) and element-level overflow at 320 to 414px
+on twelve pages. Proven by reverting the Lenis fix: three link checks failed.
+
+**Decision worth keeping:** the form check aborts every POST unless
+`--allow-submit` is passed. Tests run against a build with Supabase env once
+stored fake leads in the live table; a safe default is the only fix that does
+not depend on remembering.
+
 ## Docs brought up to date (24 September)
 
 CLAUDE.md was 331 lines of mixed rules and feature notes; it is now a short
