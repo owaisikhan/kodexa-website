@@ -6,7 +6,7 @@ from a Facebook post or an ad. They are not technical and they are not patient.
 **The whole site has one job: get a service request sent.** Every change should
 make that faster or clearer. Anything that makes it slower needs a reason.
 
-> Built with the kodexa-builder skill (v1.1.0). Load it for any new feature or
+> Built with the kodexa-builder skill (v1.2.0). Load it for any new feature or
 > design work, and log preferences, corrections and reversals to
 > `.claude/kodexa-learnings.md` as they happen.
 
