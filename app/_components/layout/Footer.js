@@ -3,6 +3,7 @@ import { ArrowUpRight, GitBranch, Mail, MapPin } from "lucide-react";
 
 import { siteConfig, whatsappHref } from "@/app/_lib/siteConfig";
 import { services } from "@/app/_lib/services-data";
+import { lead } from "@/app/_lib/company-data";
 import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
 
 export default function Footer() {
@@ -95,9 +96,20 @@ export default function Footer() {
                   Request a service
                 </Link>
               </li>
+              {[
+                ["/about", "About us"],
+                ["/contact", "Contact"],
+                ["/faq", "Questions"],
+              ].map(([href, label]) => (
+                <li key={href}>
+                  <Link href={href} className="tap text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)]">
+                    {label}
+                  </Link>
+                </li>
+              ))}
               <li>
                 <a
-                  href={siteConfig.social.github}
+                  href={lead.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="tap gap-1.5 text-sm text-[var(--color-muted)] hover:text-[var(--color-ink)]"
@@ -117,7 +129,10 @@ export default function Footer() {
           <p>
             &copy; {year} {siteConfig.name}. All rights reserved.
           </p>
-          <p>Built by us, in the open.</p>
+          <p className="flex flex-wrap items-center gap-x-5">
+            <Link href="/privacy" className="tap hover:text-[var(--color-text)]">Privacy policy</Link>
+            <Link href="/terms" className="tap hover:text-[var(--color-text)]">Terms of service</Link>
+          </p>
         </div>
       </div>
     </footer>

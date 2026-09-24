@@ -1,5 +1,24 @@
 # Changelog
 
+## The pages a business is expected to have
+
+- **About** (led by Hamid Javed), **Contact** (WhatsApp first, email, hours,
+  location) and **Questions** (twelve answers on price, payments, ownership,
+  timelines and support, also fed to the chatbot).
+- **Privacy policy and terms of service**, in plain words and true of what the
+  site does. Linked from the footer and under the request form.
+- **sitemap.xml, robots.txt and a link preview image**, so a link shared on
+  Facebook or WhatsApp shows a proper card.
+- **Email is now kodexa77@gmail.com.**
+- **Fixed: "How it works" sometimes did nothing**, on a second click or a click
+  while the page was still scrolling. In-page links now go through the smooth
+  scroller.
+- **The builder's extras were rewritten.** Several repeated what the service
+  already includes (staff logins, reports, dark mode, component library,
+  uptime checks); they are replaced by real extras. The message now reads
+  "I would also like cash on delivery." or a short list, instead of
+  "I also need: You make the fixes too."
+
 ## Five more ways in
 
 - **A project builder in the finder's answer**: tick the extra parts you need
@@ -162,7 +181,7 @@ error pages. Dark, motion-led, deliberately light on text.
 - **No screenshots included yet, deliberately.** The candidates that are
   publicly reachable are either login screens (the pump manager, PMC) or a
   course demo carrying someone else's banner (the-wild-oasis), and a client's
-  private dashboard is not ours to publish. Ammar is supplying real ones.
+  private dashboard is not ours to publish. The team is supplying real ones.
 
 ## Branch: feature/admin
 
@@ -203,7 +222,7 @@ along, write notes, reply on WhatsApp.
 ## Branch: feature/chatbot
 
 A site-scoped assistant, ported from the storefront's pipeline in
-`Ammar-Sagheer/saam-s-store` and cut down to what a marketing site needs.
+the saam-s-store repo and cut down to what a marketing site needs.
 
 **What was deliberately left out of the port.** The store's pipeline generates
 SQL against a product database, guards it with a SELECT-only validator, heals

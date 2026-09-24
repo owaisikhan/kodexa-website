@@ -81,3 +81,36 @@ for the rules.
 - **Scope:** all
 - **Target in skill:** scripts/slop_scan.py; SKILL.md section 3 (Next 16 specifics)
 - **Status:** promoted v1.1.0
+
+### L-008 · 2026-09-24 · medium · gap
+- **Said / saw:** "check if kodexa site is missing some important pages that should be there, like a terms and condition, policies page a about us and contact page"
+- **Context:** kodexa-website shipped and was about to run Meta ads with no About, Contact, FAQ, privacy policy, terms, sitemap, robots or link preview image.
+- **Lesson:** Every public site ships with About, Contact, FAQ, Privacy and Terms (content as data, the privacy policy true of what the code stores), plus `app/sitemap.js`, `app/robots.js` (disallow /admin and /api) and `app/opengraph-image.js` using bundled font files. Meta lead ads require a privacy policy URL. Footer carries the legal links; the lead form links to the privacy policy next to the phone field.
+- **Scope:** all
+- **Target in skill:** references/types/marketing-site.md (new "Pages every site needs" section)
+- **Status:** ready
+
+### L-009 · 2026-09-24 · medium · gotcha
+- **Said / saw:** "check that pressing how it works does not work sometimes"
+- **Context:** Lenis smooth scroll plus Next `<Link href="/#process">`: repeat clicks, clicks during a glide, and clicks from a page still gliding all landed in the wrong place (reproduced 5 of 7 cases).
+- **Lesson:** Whenever Lenis is used, construct it with `anchors: true` and `stopInertiaOnNavigate: true`; it honours `scroll-padding-top`, so set that on `html` to the header height plus air. Test a repeat click and a mid-scroll click.
+- **Scope:** all
+- **Target in skill:** references/types/marketing-site.md motion section; references/types/3d-website.md where Lenis is set up
+- **Status:** ready
+
+### L-010 · 2026-09-24 · medium · correction
+- **Said / saw:** "the builder prefills the message correctly, and these extras text is correct and relevant" (screenshot: "I also need: You make the fixes too.")
+- **Context:** Finder extras had one label used both as a checkbox and inside a sentence, and 9 of 26 extras repeated what the service already includes.
+- **Lesson:** Optional add-ons need a checkbox `label` and a separate `phrase` for the generated message; one item reads as a sentence, several as a "- item" list. Every add-on must be something the service does not already include; check against its `includes` list.
+- **Scope:** all
+- **Target in skill:** references/types/marketing-site.md section 6 (Lead capture)
+- **Status:** ready
+
+### L-011 · 2026-09-24 · strong · explicit rule
+- **Said / saw:** "Dont mention Ammar and Owais name anywhere, where required use Hamid Javed, as Hamid should be the front of all this work"
+- **Context:** About page first named both developers with their GitHub links; the footer linked github.com/owaisikhan.
+- **Lesson:** On Kodexa's public sites, ads and client-facing material, the only person named is Hamid Javed (GitHub EmeDev27). Never name Ammar or Owais or link their GitHub accounts. The skill's own description of the studio may stay internal.
+- **Scope:** all (Kodexa-branded work)
+- **Target in skill:** SKILL.md intro and section 2 (placeholders: public-facing name)
+- **Status:** ready
+

@@ -44,3 +44,20 @@ export function replyStatus(now, { timeZone, days, open, close }) {
   }
   return { open: false, back: null };
 }
+
+/**
+ * The hours as a sentence for the contact page: "Monday to Saturday, 10 am
+ * to 8 pm, Pakistan time". A run of consecutive days is written as a range;
+ * anything else is listed.
+ */
+export function hoursText({ days, open, close }) {
+  const sorted = [...days].sort((a, b) => a - b);
+  const run = sorted.every((d, i) => i === 0 || d === sorted[i - 1] + 1);
+  const dayText =
+    sorted.length === 7
+      ? "Every day"
+      : run && sorted.length > 2
+        ? `${DAY_NAMES[sorted[0]]} to ${DAY_NAMES[sorted[sorted.length - 1]]}`
+        : sorted.map((d) => DAY_NAMES[d]).join(", ");
+  return `${dayText}, ${clock(open)} to ${clock(close)}, Pakistan time`;
+}

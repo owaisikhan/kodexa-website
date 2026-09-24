@@ -2,32 +2,13 @@ import { Clock, Code2, Eye, Wallet } from "lucide-react";
 
 import Section, { SectionHeader } from "@/app/_components/ui/Section";
 import Reveal from "@/app/_components/ui/Reveal";
+import { promises as points } from "@/app/_lib/company-data";
 
 // Four objections, answered before they are raised. Deliberately the only
-// text-heavy block on the page, and still only a sentence each.
+// text-heavy block on the page, and still only a sentence each. The words live
+// in company-data.js, because the About page makes the same four promises.
 
-const points = [
-  {
-    icon: Clock,
-    title: "You see it early",
-    body: "A working link in the first week, not a reveal at the end you cannot change.",
-  },
-  {
-    icon: Wallet,
-    title: "A fixed price, first",
-    body: "You approve the number before anything is built. No hourly surprises.",
-  },
-  {
-    icon: Code2,
-    title: "You own everything",
-    body: "The code, the domain, the database, the accounts. Nothing is rented from us.",
-  },
-  {
-    icon: Eye,
-    title: "Built to be handed over",
-    body: "Documented and deployed properly, so another developer could pick it up.",
-  },
-];
+export const promiseIcons = { clock: Clock, wallet: Wallet, code: Code2, eye: Eye };
 
 export default function WhyUs() {
   return (
@@ -41,10 +22,12 @@ export default function WhyUs() {
           />
 
           <div className="grid gap-4 sm:grid-cols-2">
-            {points.map((p, i) => (
+            {points.map((p, i) => {
+              const Icon = promiseIcons[p.icon];
+              return (
               <Reveal key={p.title} delay={i * 0.08}>
                 <div className="panel panel-hover h-full p-6">
-                  <p.icon
+                  <Icon
                     className="h-6 w-6 text-[var(--color-ink)]"
                     strokeWidth={1.6}
                   />
@@ -54,7 +37,8 @@ export default function WhyUs() {
                   </p>
                 </div>
               </Reveal>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
