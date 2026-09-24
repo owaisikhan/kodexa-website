@@ -21,6 +21,15 @@ export default function SmoothScroll() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       touchMultiplier: 1.6,
+      // In-page links (/#process, #finder) scroll through Lenis. Without this
+      // a native jump fought Lenis's own glide: a second click on "How it
+      // works", or a click while the page was still gliding, left the page
+      // where Lenis was heading instead of at the section. Lenis reads the
+      // scroll-padding-top in globals.css, so sections land below the navbar.
+      anchors: true,
+      // Following a link to another page drops any glide still in progress,
+      // so it cannot carry on and override where the new page lands.
+      stopInertiaOnNavigate: true,
     });
 
     lenis.on("scroll", ScrollTrigger.update);

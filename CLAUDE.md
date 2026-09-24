@@ -160,6 +160,39 @@ Adding an admin: insert their email into `app_admins` (Supabase dashboard or
 SQL) **and** create the Supabase Auth user. Both, or they sign in to an empty
 table.
 
+## Company, legal and SEO pages
+
+`/about`, `/contact`, `/faq`, `/privacy` and `/terms`, plus `sitemap.xml`,
+`robots.txt` and the link preview image (`app/opengraph-image.js`).
+
+- **Content is data.** About facts, the four promises and the FAQ live in
+  `app/_lib/company-data.js` (the home page's "Why us" reads the same
+  promises); the privacy policy and terms live in `app/_lib/legal-data.js`.
+  Both use relative imports so `scripts/seedKnowledge.mjs` can load them.
+- **Hamid Javed is the only person named on the site** (`lead` in
+  company-data.js), with his GitHub (EmeDev27) on the About card and in the
+  footer. Do not add other names, or GitHub links that carry them.
+- **The privacy policy must stay true of the code.** Add analytics, a Meta
+  pixel, a newsletter or anywhere new that stores visitor data, and update
+  `legal-data.js` in the same commit, with `updated` set to that day. A Meta
+  pixel for ads counts: it needs a cookie section and a consent decision.
+- **The terms never state a deposit percentage or a free bug-fix period.**
+  Those live in each project's quote, and the terms defer to the quote.
+- **A new public page goes into `app/sitemap.js`**, or search engines will
+  not find it, and into `STATIC_ROUTES` and `PATTERN` in
+  `_components/chat/linkify.js` if the assistant should link to it.
+- The preview image uses the site's fonts from `app/_assets/fonts/` (OFL),
+  because `next/font` does not hand its files to `ImageResponse`.
+
+## In-page links scroll through Lenis
+
+`SmoothScroll.js` turns on Lenis's `anchors` and `stopInertiaOnNavigate`. Before
+that, a native jump to `/#process` fought Lenis's own glide: a second click on
+"How it works", or one made while the page was still gliding, left the page
+wherever Lenis was heading. Lenis reads `scroll-padding-top` from
+`globals.css`, so sections still land below the navbar. Test any change here
+with a click made mid-scroll and a repeat click on the same link.
+
 ## The chatbot
 
 `/api/chat` answers questions about Kodexa and nothing else. The pipeline, in
@@ -188,9 +221,10 @@ not ours to publish. These run real businesses, so describe what the software
 does, never a client's actual numbers, customers or staff.
 
 **The knowledge base is derived, never written by hand.** Every chunk is built
-from `services-data.js` and `siteConfig.js`, so the assistant cannot quote a
+from `services-data.js`, `siteConfig.js` and `company-data.js` (the About
+facts and the FAQ), so the assistant cannot quote a
 service we do not sell, a timeline the page disagrees with, or an old phone
-number. **Edit either file and re-run `npm run seed:knowledge`**, or the
+number. **Edit any of them and re-run `npm run seed:knowledge`**, or the
 chatbot and the site start telling visitors different things.
 
 **Never let it invent a price.** We quote per project. The pricing chunk says

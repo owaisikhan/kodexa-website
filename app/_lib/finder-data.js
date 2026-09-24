@@ -94,51 +94,60 @@ export const finder = {
 // or rupees we have not worked out. `id` travels in the request URL
 // (?needs=payments,delivery), so keep ids short and never rename one that has
 // shipped, or old links lose the extra.
+//
+// Two rules for every entry:
+// - It must be something the service does NOT already include (check that
+//   service's `includes` in services-data.js). Ticking "staff logins" on a
+//   service that always comes with them tells us nothing and reads as extra
+//   cost.
+// - `label` is the checkbox, `phrase` is how it reads in the message: "I would
+//   also like " + phrase + "." with one box ticked, and one "- phrase" line
+//   each with more. Read both out loud before shipping a change.
 export const extras = {
   website: [
-    { id: "urdu", label: "An Urdu version" },
-    { id: "booking", label: "Bookings or enquiries online" },
-    { id: "blog", label: "A news or blog page" },
-    { id: "pages", label: "More than 6 pages" },
+    { id: "urdu", label: "An Urdu version", phrase: "an Urdu version" },
+    { id: "booking", label: "Bookings or enquiries online", phrase: "online bookings or enquiries" },
+    { id: "blog", label: "A news or blog page", phrase: "a news or blog page" },
+    { id: "pages", label: "More than 6 pages", phrase: "more than 6 pages" },
   ],
   "online-store": [
-    { id: "cod", label: "Cash on delivery" },
-    { id: "payments", label: "Card or wallet payments online" },
-    { id: "delivery", label: "Delivery areas and charges" },
-    { id: "assistant", label: "A chat assistant for customers" },
+    { id: "cod", label: "Cash on delivery", phrase: "cash on delivery" },
+    { id: "payments", label: "JazzCash or Easypaisa payments", phrase: "JazzCash or Easypaisa payments" },
+    { id: "delivery", label: "Delivery areas and charges", phrase: "delivery areas and charges" },
+    { id: "assistant", label: "A chat assistant for customers", phrase: "a chat assistant for customers" },
   ],
   "business-software": [
-    { id: "credit", label: "Customer credit and ledgers" },
-    { id: "staff", label: "Separate logins for staff" },
-    { id: "reports", label: "Monthly reports and Excel export" },
-    { id: "offline", label: "A copy that works offline" },
+    { id: "branches", label: "More than one branch", phrase: "more than one branch in the same system" },
+    { id: "barcode", label: "Barcode scanning", phrase: "barcode scanning" },
+    { id: "invoices", label: "Printed invoices and receipts", phrase: "printed invoices and receipts" },
+    { id: "offline", label: "A copy that works offline", phrase: "a copy that works offline" },
   ],
   "offline-desktop": [
-    { id: "counters", label: "More than one counter" },
-    { id: "receipts", label: "Printed receipts" },
-    { id: "backups", label: "Backups to a USB drive" },
+    { id: "counters", label: "More than one counter", phrase: "more than one counter" },
+    { id: "receipts", label: "Printed receipts", phrase: "printed receipts" },
+    { id: "barcode", label: "Barcode scanning", phrase: "barcode scanning" },
   ],
   "android-app": [
-    { id: "printing", label: "Printing and PDF receipts" },
-    { id: "sync", label: "Sync with a website or dashboard" },
-    { id: "playstore", label: "A Play Store listing" },
+    { id: "staff", label: "Separate logins for staff", phrase: "separate logins for staff" },
+    { id: "sync", label: "Sync with a website or dashboard", phrase: "the app synced with a website or dashboard" },
+    { id: "playstore", label: "A Play Store listing", phrase: "a Play Store listing" },
   ],
   "ai-assistant": [
-    { id: "urdu", label: "Urdu and Roman Urdu" },
-    { id: "live", label: "Answers from live stock and prices" },
-    { id: "voice", label: "Voice questions and spoken answers" },
+    { id: "urdu", label: "Urdu and Roman Urdu", phrase: "answers in Urdu and Roman Urdu" },
+    { id: "live", label: "Answers from live stock and prices", phrase: "answers from live stock and prices" },
+    { id: "whatsapp", label: "The assistant on WhatsApp too", phrase: "the assistant on WhatsApp too" },
   ],
   "website-audit": [
-    { id: "fixes", label: "You make the fixes too" },
-    { id: "ads", label: "A review of our ad landing pages" },
+    { id: "fixes", label: "Fix the problems for us", phrase: "the problems fixed for us" },
+    { id: "ads", label: "Check our ad landing pages", phrase: "a check of our ad landing pages" },
   ],
   "ui-design": [
-    { id: "dark", label: "A dark mode" },
-    { id: "library", label: "A component library for our developers" },
+    { id: "brand", label: "A logo and brand colours", phrase: "a logo and brand colours" },
+    { id: "app", label: "Screens for a mobile app too", phrase: "screens for a mobile app too" },
   ],
   support: [
-    { id: "features", label: "Small new features each month" },
-    { id: "uptime", label: "Uptime checks and alerts" },
+    { id: "content", label: "Content updates (prices, photos)", phrase: "content updates, such as new prices and photos" },
+    { id: "renewals", label: "Hosting and domain renewals handled", phrase: "hosting and domain renewals handled" },
   ],
 };
 
@@ -146,12 +155,14 @@ export function extrasFor(slug) {
   return extras[slug] ?? [];
 }
 
-// "I also need: an Urdu version, a news or blog page." for the brief and the
-// WhatsApp message. Unknown ids are dropped, so a hand-edited URL cannot put
-// arbitrary text into the form.
+// "I would also like an Urdu version." for one extra, and a short list for
+// more, for the brief and the WhatsApp message. A list because several
+// phrases already contain "and" ("delivery areas and charges"), which turns
+// one long sentence into a puzzle. Unknown ids are dropped, so a hand-edited
+// URL cannot put arbitrary text into the form.
 export function needsSentence(slug, ids) {
-  const picked = extrasFor(slug).filter((e) => ids.includes(e.id));
+  const picked = extrasFor(slug).filter((e) => ids.includes(e.id)).map((e) => e.phrase);
   if (!picked.length) return "";
-  const list = picked.map((e, i) => (i === 0 ? e.label : e.label.charAt(0).toLowerCase() + e.label.slice(1)));
-  return `I also need: ${list.join(", ")}.`;
+  if (picked.length === 1) return `I would also like ${picked[0]}.`;
+  return `I would also like:\n${picked.map((p) => `- ${p}`).join("\n")}`;
 }

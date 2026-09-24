@@ -4,7 +4,7 @@
 
 The site is **built, deployed-ready and working end to end**. `main` carries
 the live-ready version. `feature/real-screenshots` carries the header and
-screenshot work described below, waiting on Ammar to test it.
+screenshot work described below, waiting on the team to test it.
 
 - Home, nine service pages, work, request flow, 404 and error pages: done.
 - Request flow: tested end to end, stores a row and opens WhatsApp with the
@@ -15,7 +15,7 @@ screenshot work described below, waiting on Ammar to test it.
 
 ## Next, in order
 
-1. **Real screenshots.** Ammar is supplying them, including screens behind a
+1. **Real screenshots.** The team is supplying them, including screens behind a
    login that no session can reach on its own. Drop each file in
    `public/work/` and set `shot` in `app/_lib/services-data.js`. See
    `public/work/README.md`. Nothing else changes.
@@ -52,8 +52,8 @@ session transcript, which is not where a production password should live.
 
 ## Known gaps
 
-- `siteConfig.email` (`hello@kodexa.dev`) and `siteConfig.url` are
-  placeholders. The WhatsApp number is real; these two are not.
+- `siteConfig.url` (`kodexa.dev`) is a placeholder until the domain is
+  bought. The WhatsApp number and the email (kodexa77@gmail.com) are real.
 - The stats in the hero ("9 services", "20+ projects", "24h reply") are
   hand-written. Keep them true.
 - The chatbot has no voice I/O. The store's pipeline speaks answers aloud

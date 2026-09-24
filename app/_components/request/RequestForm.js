@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
@@ -87,20 +88,37 @@ function safeSite(raw) {
 }
 
 // The finder sends ticked extras as ?needs=a,b and the speed check sends
-// ?site=; each becomes one line in the brief ("I also need: ...", "My site:
-// ..."). A new line replaces an old one with the same start rather than
-// stacking under it, because a restored draft often carries the last visit's.
-const LINE_STARTS = ["I also need:", "My site:"];
+// ?site=; each becomes a block in the brief ("I would also like ...", with a
+// "- item" line per extra when there are several, and "My site: ..."). A new
+// block replaces an old one with the same start rather than stacking under it,
+// because a restored draft often carries the last visit's. "I also need:" is
+// the older wording, still found in drafts saved before it changed.
+const NEEDS_STARTS = ["I would also like", "I also need:"];
+const SITE_START = "My site:";
+
+function dropBlock(lines, isStart) {
+  const out = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (!isStart(lines[i])) {
+      out.push(lines[i]);
+      continue;
+    }
+    while (lines[i + 1]?.startsWith("- ")) i++; // the list that belongs to it
+  }
+  return out;
+}
 
 function withNeeds(brief, sentence) {
   if (!sentence) return brief;
   const incoming = sentence.split("\n");
-  const replaced = LINE_STARTS.filter((start) => incoming.some((l) => l.startsWith(start)));
-  const kept = brief
-    .split("\n")
-    .filter((l) => !replaced.some((start) => l.startsWith(start)))
-    .join("\n")
-    .trimEnd();
+  let lines = brief.split("\n");
+  if (incoming.some((l) => NEEDS_STARTS.some((st) => l.startsWith(st)))) {
+    lines = dropBlock(lines, (l) => NEEDS_STARTS.some((st) => l.startsWith(st)));
+  }
+  if (incoming.some((l) => l.startsWith(SITE_START))) {
+    lines = dropBlock(lines, (l) => l.startsWith(SITE_START));
+  }
+  const kept = lines.join("\n").trimEnd();
   return kept ? `${kept}\n${sentence}` : sentence;
 }
 
@@ -309,7 +327,12 @@ export default function RequestForm() {
       </form>
 
       <p className="mt-6 text-center text-sm text-[var(--color-dim)]">
-        No obligation. We reply with a plan and a price before anything starts.
+        No obligation. We reply with a plan and a price before anything starts.{" "}
+        {/* Asked for a phone number, people want to know what happens to it. */}
+        <Link href="/privacy" className="tap underline decoration-1 underline-offset-2 hover:text-[var(--color-text)]">
+          How we use your details
+        </Link>
+        .
       </p>
     </div>
   );

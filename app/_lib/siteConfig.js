@@ -12,7 +12,7 @@ export const siteConfig = {
   whatsapp: "923390391420",
   whatsappDisplay: "+92 339 0391420",
 
-  email: "hello@kodexa.dev",
+  email: "kodexa77@gmail.com",
   location: "Pakistan, working worldwide",
 
   url: "https://kodexa.dev",
@@ -35,10 +35,6 @@ export const siteConfig = {
     close: 20,
   },
 
-  social: {
-    facebook: "https://facebook.com/",
-    github: "https://github.com/owaisikhan",
-  },
 };
 
 // The message pre-filled into WhatsApp when a request is handed off.
@@ -47,7 +43,16 @@ export function whatsappHref({ service, name, business, brief } = {}) {
     `Hi Kodexa, I would like to request: ${service || "a project"}.`,
     name ? `Name: ${name}` : null,
     business ? `Business: ${business}` : null,
-    brief ? `What I need: ${brief}` : null,
+    // The finder's extras arrive as "I would also like ...", which already
+    // reads as a sentence; anything else the visitor wrote gets a label, on
+    // its own line when it runs to several.
+    brief
+      ? brief.startsWith("I would also like")
+        ? brief
+        : brief.includes("\n")
+          ? `What I need:\n${brief}`
+          : `What I need: ${brief}`
+      : null,
   ].filter(Boolean);
 
   return `https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent(

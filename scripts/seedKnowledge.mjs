@@ -14,6 +14,7 @@ import { createClient } from "@supabase/supabase-js";
 
 import { services, process as steps, work } from "../app/_lib/services-data.js";
 import { siteConfig } from "../app/_lib/siteConfig.js";
+import { lead, promises, faqs } from "../app/_lib/company-data.js";
 import { buildProjectChunks } from "../app/_lib/chatbot/projects-data.js";
 
 const EMBEDDING_MODEL = process.env.GEMINI_EMBEDDING_MODEL || "gemini-embedding-001";
@@ -102,6 +103,21 @@ function buildChunks() {
     title: "Projects Kodexa has built",
     content: work.map((w) => `${w.title} (${w.kind}): ${w.body}`).join("\n"),
   });
+
+  // What people ask before they send a request, and who they will be talking
+  // to. From company-data.js, the same list the FAQ and About pages show.
+  chunks.push({
+    topic: "about",
+    title: "About Kodexa",
+    content:
+      `${siteConfig.name} is a software studio based in ${siteConfig.location}, led by ` +
+      `${lead.name} (${lead.role}). Every project is led by ${lead.name}, from the first message to launch. Promises: ` +
+      promises.map((p) => `${p.title}: ${p.body}`).join(" ") +
+      " More at /about.",
+  });
+  for (const f of faqs) {
+    chunks.push({ topic: "faq", title: f.q, content: `${f.q} ${f.a}${f.link ? ` See ${f.link.href}.` : ""}` });
+  }
 
   return chunks;
 }
