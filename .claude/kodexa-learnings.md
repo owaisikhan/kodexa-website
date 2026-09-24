@@ -23,6 +23,12 @@ for the rules.
 | L-005 | 2026-09-23 | gotcha | Multi-step forms: Continue and Submit need different keys, and the form must refuse to submit before the last step | all | promoted v1.1.0 |
 | L-006 | 2026-09-23 | correction | Placeholders must never look like typed answers: lighter token, lighter weight, and an e.g. prefix | all | promoted v1.1.0 |
 | L-007 | 2026-09-23 | stale | slop_scan must skip the block next dev writes into AGENTS.md (its dashes are Next's text, and the block is meant to be committed) | all | promoted v1.1.0 |
+| L-008 | 2026-09-24 | gap | Every public site ships About, Contact, FAQ, privacy, terms, sitemap, robots and an OG image | all | promoted v1.2.0 |
+| L-009 | 2026-09-24 | gotcha | Lenis needs anchors and stopInertiaOnNavigate, or in-page links land wrong on a repeat or mid-scroll click | all | promoted v1.2.0 |
+| L-010 | 2026-09-24 | correction | Add-on pickers carry a label and a separate message phrase, and never offer what the service already includes | all | promoted v1.2.0 |
+| L-011 | 2026-09-24 | rule | Hamid Javed is the only person named on Kodexa's public site, ads and client material | all | promoted v1.2.0 |
+| L-012 | 2026-09-24 | choice | Top-menu labels never share a word; legal, About and Contact stay in the footer | all | promoted v1.2.0 |
+| L-013 | 2026-09-24 | gotcha | Every repo ships npm run check; form checks abort POSTs unless --allow-submit on a build without the database env | all | promoted v1.2.0 |
 
 ## Entries
 
@@ -88,7 +94,7 @@ for the rules.
 - **Lesson:** Every public site ships with About, Contact, FAQ, Privacy and Terms (content as data, the privacy policy true of what the code stores), plus `app/sitemap.js`, `app/robots.js` (disallow /admin and /api) and `app/opengraph-image.js` using bundled font files. Meta lead ads require a privacy policy URL. Footer carries the legal links; the lead form links to the privacy policy next to the phone field.
 - **Scope:** all
 - **Target in skill:** references/types/marketing-site.md (new "Pages every site needs" section)
-- **Status:** ready
+- **Status:** promoted v1.2.0
 
 ### L-009 · 2026-09-24 · medium · gotcha
 - **Said / saw:** "check that pressing how it works does not work sometimes"
@@ -96,7 +102,7 @@ for the rules.
 - **Lesson:** Whenever Lenis is used, construct it with `anchors: true` and `stopInertiaOnNavigate: true`; it honours `scroll-padding-top`, so set that on `html` to the header height plus air. Test a repeat click and a mid-scroll click.
 - **Scope:** all
 - **Target in skill:** references/types/marketing-site.md motion section; references/types/3d-website.md where Lenis is set up
-- **Status:** ready
+- **Status:** promoted v1.2.0
 
 ### L-010 · 2026-09-24 · medium · correction
 - **Said / saw:** "the builder prefills the message correctly, and these extras text is correct and relevant" (screenshot: "I also need: You make the fixes too.")
@@ -104,7 +110,7 @@ for the rules.
 - **Lesson:** Optional add-ons need a checkbox `label` and a separate `phrase` for the generated message; one item reads as a sentence, several as a "- item" list. Every add-on must be something the service does not already include; check against its `includes` list.
 - **Scope:** all
 - **Target in skill:** references/types/marketing-site.md section 6 (Lead capture)
-- **Status:** ready
+- **Status:** promoted v1.2.0
 
 ### L-011 · 2026-09-24 · strong · explicit rule
 - **Said / saw:** "Dont mention Ammar and Owais name anywhere, where required use Hamid Javed, as Hamid should be the front of all this work"
@@ -112,7 +118,7 @@ for the rules.
 - **Lesson:** On Kodexa's public sites, ads and client-facing material, the only person named is Hamid Javed (GitHub EmeDev27). Never name Ammar or Owais or link their GitHub accounts. The skill's own description of the studio may stay internal.
 - **Scope:** all (Kodexa-branded work)
 - **Target in skill:** SKILL.md intro and section 2 (placeholders: public-facing name)
-- **Status:** ready
+- **Status:** promoted v1.2.0
 
 ### L-012 · 2026-09-24 · strong · choice
 - **Said / saw:** "suggest better names, as they both seem to look alike" (nav: "Work" and "How it works"); picked Option B: "Our work" and "Process"
@@ -120,7 +126,7 @@ for the rules.
 - **Lesson:** Top-menu labels must not share a word ("Work" / "How it works" read as one link). Default labels for a studio site: Services, Our work, Process, plus the CTA button. Legal, About and Contact stay in the footer; FAQ may join the phone menu, and every added phone-menu row means re-checking that the CTA is visible on a 360x640 screen.
 - **Scope:** all
 - **Target in skill:** references/types/marketing-site.md section 3 (Navigation)
-- **Status:** ready
+- **Status:** promoted v1.2.0
 
 ### L-013 · 2026-09-24 · medium · gotcha
 - **Said / saw:** "would it be helpful?" then "yes add" (committing the regression checks); earlier, form tests run against a build with Supabase env stored fake leads ("Hamid", "+92 300 1234567") in the live `service_requests` table.
@@ -128,5 +134,5 @@ for the rules.
 - **Lesson:** Every site ships `scripts/checks/` with `npm run check` (plain Playwright, a dev dependency, `/opt/pw-browsers/chromium` when present): one check per bug that shipped or nearly did. Form checks abort every POST in the browser by default and need an explicit `--allow-submit`, used only against a build without the database env. Prove each new check by reintroducing its bug once.
 - **Scope:** all
 - **Target in skill:** SKILL.md section 5 (How done is proven); references/folder-structure.md (scripts/checks)
-- **Status:** ready
+- **Status:** promoted v1.2.0
 
