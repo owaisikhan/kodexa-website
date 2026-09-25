@@ -15,7 +15,13 @@ export const siteConfig = {
   email: "kodexa77@gmail.com",
   location: "Pakistan, working worldwide",
 
-  url: "https://kodexa.dev",
+  url: "https://kodexa.store",
+
+  // Meta Business Manager domain verification (Brand safety > Domains): the
+  // content value of the meta-tag Meta shows for kodexa.store. Public by
+  // design; Meta reads it from the <head> of the home page. Empty means no
+  // tag. A different domain gets a different code.
+  metaDomainVerification: "",
 
   // Shown in the hero and the footer. Keep these honest.
   stats: [

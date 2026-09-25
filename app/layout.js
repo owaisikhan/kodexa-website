@@ -41,6 +41,10 @@ export const metadata = {
     type: "website",
   },
   twitter: { card: "summary_large_image" },
+  // Rendered into <head> on the server, where Meta's verifier looks.
+  ...(siteConfig.metaDomainVerification && {
+    other: { "facebook-domain-verification": siteConfig.metaDomainVerification },
+  }),
 };
 
 export const viewport = {

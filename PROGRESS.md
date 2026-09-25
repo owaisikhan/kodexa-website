@@ -55,7 +55,12 @@ answer model returned intermittent 503s from Google that day.
    whether the drawing should use rupees.
 9. **Real screenshots** of our work: drop files in `public/work/` and set
    `shot` (see `public/work/README.md`).
-10. **The domain.** `siteConfig.url` is `kodexa.dev`, a placeholder.
+10. **The domain is kodexa.store** (bought 25 September, DNS at Hostinger,
+    attached to the `kodexa-website` Vercel project). Next: verify it in Meta
+    (Brand safety > Domains) by putting Meta's code in
+    `siteConfig.metaDomainVerification`. A second Vercel project, `kodexa`
+    (kodexa-two.vercel.app), builds the same repo; delete it unless it is
+    wanted.
 11. **Install kodexa-builder v1.2.0**: upload
     `.claude/kodexa-skill-update/kodexa-builder-v1.2.0.skill` in Claude Code
     settings (skills), replacing 1.1.0. It carries L-008 to L-013.
