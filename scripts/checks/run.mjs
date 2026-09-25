@@ -17,6 +17,7 @@ import form from "./form.mjs";
 import builder from "./builder.mjs";
 import links from "./links.mjs";
 import overflow from "./overflow.mjs";
+import pixel from "./pixel.mjs";
 
 const args = Object.fromEntries(
   process.argv.slice(2).reduce((acc, a, i, all) => {
@@ -26,12 +27,17 @@ const args = Object.fromEntries(
 );
 
 const BASE = args.base || "http://localhost:3000";
-const ALL = { form, builder, links, overflow };
+const ALL = { form, builder, links, overflow, pixel };
 const only = typeof args.only === "string" ? args.only.split(",") : Object.keys(ALL);
 
 // In Claude Code on the web, Chromium is preinstalled at /opt/pw-browsers and
 // must not be downloaded. Elsewhere, run `npx playwright install chromium` once.
-const launch = { headless: true };
+// Meta's hosts are unreachable for every check, so a test run never sends
+// events to the real dataset; checks/pixel.mjs fakes fbevents.js instead.
+const launch = {
+  headless: true,
+  args: ["--host-resolver-rules=MAP connect.facebook.net 0.0.0.0, MAP www.facebook.com 0.0.0.0"],
+};
 if (process.env.PLAYWRIGHT_BROWSERS_PATH === "/opt/pw-browsers") launch.executablePath = "/opt/pw-browsers/chromium";
 
 try {

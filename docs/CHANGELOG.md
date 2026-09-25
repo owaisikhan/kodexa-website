@@ -1,5 +1,20 @@
 # Changelog
 
+## kodexa.store, Meta verification and the Pixel (25 September)
+
+- **The site lives at kodexa.store** (Hostinger DNS to Vercel), with `www`
+  and `http` redirecting to it; `siteConfig.url` follows.
+- **Meta domain verification** tag in `<head>` from
+  `siteConfig.metaDomainVerification`.
+- **Meta Pixel**: PageView, ViewContent, Contact and Lead, loaded after the
+  page (checked: script requested after the load event), never in the admin
+  area. Privacy policy and the FAQ answer about details updated to say so.
+
+**Decision worth keeping:** events created their own queue only once the
+layout's Pixel component had run, so a service page's ViewContent, fired
+first by its own effect, was silently dropped. The committed pixel check
+caught it; `ensurePixel()` now creates the queue on first use, init first.
+
 ## Regression checks committed
 
 `npm run check` runs four Playwright checks from `scripts/checks/` against a

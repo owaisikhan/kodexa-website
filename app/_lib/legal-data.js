@@ -14,8 +14,8 @@ const contactLine = `WhatsApp ${siteConfig.whatsappDisplay} or email ${siteConfi
 
 export const privacy = {
   title: "Privacy policy",
-  updated: "2026-09-24",
-  intro: `This page explains what ${siteConfig.name} collects when you use this website, why, and what you can ask us to do with it. The short version: we collect what you send us so we can reply, we do not sell it, and we do not track you around the internet.`,
+  updated: "2026-09-25",
+  intro: `This page explains what ${siteConfig.name} collects when you use this website, why, and what you can ask us to do with it. The short version: we collect what you send us so we can reply, we do not sell it, and the only tracking is Meta's, to measure and show our ads on Facebook and Instagram.`,
   sections: [
     {
       id: "who",
@@ -53,8 +53,9 @@ export const privacy = {
       id: "browser",
       title: "Cookies and your browser",
       body: [
-        "This site does not use advertising or analytics cookies, and it does not track you across other websites.",
-        "If you start the request form and leave, your answers are saved in your own browser so they are still there when you come back. They never leave your device until you press send, and they are cleared when you send the request or press Start over.",
+        "This site uses the Meta Pixel, a script from Meta (the company behind Facebook and Instagram). It tells Meta which pages you visit here, when you tap a WhatsApp button and when you send a request, and it sets Meta cookies in your browser. We use this to measure whether our ads work and to show our ads to people who have visited this site. When you send a request, the Pixel may also pass Meta your phone number or email in hashed (scrambled) form, so Meta can match the visit to a Facebook or Instagram account. Meta handles this under its own privacy policy.",
+        "To limit this, change your ad preferences in your Facebook or Instagram settings, or block third-party cookies or trackers in your browser. The site works the same either way. We use no other analytics or advertising cookies.",
+        "If you start the request form and leave, your answers are saved in your own browser so they are still there when you come back. They never leave your device until you press send, and they are cleared when you send the request or press Start fresh.",
         "Our team's admin area uses a sign-in cookie. It is only set for our own staff.",
       ],
     },
@@ -67,9 +68,10 @@ export const privacy = {
             "To reply to your request with a plan and a price",
             "To build, deliver and support your project if you go ahead",
             "To keep the site working and protect it from abuse",
+            "To measure our Facebook and Instagram ads, through the Meta Pixel described above",
           ],
         },
-        "We do not sell your information, we do not add you to a mailing list, and we do not use it for advertising.",
+        "We do not sell your information, we do not add you to a mailing list, and we never pass your request's contents (what you need, your business) to Meta or any advertiser.",
       ],
     },
     {
@@ -83,6 +85,7 @@ export const privacy = {
             "Supabase, which stores the requests sent through the form",
             "Google, for the chat assistant (Gemini) and the speed check (PageSpeed Insights)",
             "WhatsApp (Meta), when you choose to send your request there",
+            "Meta, through the Meta Pixel on this site",
           ],
         },
         "Some of these services store data outside Pakistan. We share information with anyone else only if the law requires it.",
