@@ -163,6 +163,8 @@ login. `public/work/README.md` has the size, the crop and what to blur out.
 
 Vercel, from `main`. Set the Supabase URL and anon key, `GEMINI_API_KEY`, `GEMINI_MODEL` (or leave it unset for the alias) and
 `PAGESPEED_API_KEY`. Pin the region to `bom1` to sit beside the database in
-`ap-south-1`. When the real domain is bought, change `siteConfig.url` (it is
-`kodexa.dev`, a placeholder). Migrations are in `supabase/migrations/` (0001 requests, 0002
+`ap-south-1`. The domain is **kodexa.store** (registered at Hostinger; DNS there: A `@`
+76.76.21.21, CNAME `www` cname.vercel-dns.com), attached to the
+`kodexa-website` Vercel project with `www` redirecting to it. It is also
+`siteConfig.url`, which canonical links, the sitemap and link previews use. Migrations are in `supabase/migrations/` (0001 requests, 0002
 admin access, 0003 chatbot knowledge, 0004 project knowledge).
