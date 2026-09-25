@@ -4,6 +4,8 @@ import SmoothScroll from "@/app/_components/layout/SmoothScroll";
 import WhatsAppFab from "@/app/_components/layout/WhatsAppFab";
 import ChatWidget from "@/app/_components/chat/ChatWidget";
 import { isChatConfigured } from "@/app/_lib/chatbot/config";
+import { siteConfig } from "@/app/_lib/siteConfig";
+import MetaPixel from "@/app/_components/analytics/MetaPixel";
 
 // The marketing chrome, and only the marketing chrome.
 //
@@ -27,6 +29,7 @@ export default function SiteLayout({ children }) {
       {/* No API key, no widget: the site keeps working, it just does not offer
           a chat it cannot answer. */}
       {isChatConfigured() ? <ChatWidget /> : null}
+      {siteConfig.metaPixelId ? <MetaPixel /> : null}
     </>
   );
 }

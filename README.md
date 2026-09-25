@@ -92,6 +92,16 @@ Claude Code on the web, run `npx playwright install chromium` once.
 A plumbing failure must never cost a lead: if the insert fails, the visitor is
 still handed to WhatsApp.
 
+## Meta Pixel
+
+Dataset `1824366032179710` (`siteConfig.metaPixelId`; empty turns it off).
+Events: PageView, ViewContent (service pages), Contact (any WhatsApp tap),
+Lead (request sent). Meta's script loads only after the page has loaded.
+Automatic advanced matching is on in Events Manager, which the privacy
+policy discloses. Check it live in Events Manager > Test events. The domain
+is verified in Business Settings > Brand safety > Domains through
+`siteConfig.metaDomainVerification`. Conversions API is not set up yet.
+
 ## Where requests go
 
 - **WhatsApp**, immediately, with the brief written out. This is the one that

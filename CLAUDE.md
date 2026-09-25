@@ -59,9 +59,18 @@ Move one of these and something breaks somewhere else.
   not read back with `INSERT ... RETURNING`.
 - **Finder extra ids travel in URLs** (`?needs=cod,delivery`). Never rename a
   shipped id.
-- **The privacy policy must stay true of the code.** Add analytics, a Meta
-  pixel, a newsletter or a new place visitor data is stored, and update
-  `legal-data.js` in the same commit with `updated` set to that day.
+- **The privacy policy must stay true of the code.** Add analytics, a
+  newsletter, a new tracker or a new place visitor data is stored, and update
+  `legal-data.js` in the same commit with `updated` set to that day. It
+  already describes the Meta Pixel, including hashed contact details from
+  automatic advanced matching.
+- **The Meta Pixel never loads before the page.** `_lib/pixel.js` owns the
+  queue (created on first use, init and PageView first) and `track()`;
+  `analytics/MetaPixel.js` loads fbevents.js with `lazyOnload` and sends
+  PageView on navigation and Contact on any wa.me tap. ViewContent fires on
+  service pages, Lead on the request success screen with the reference as
+  event id (for a later Conversions API copy). Never paste Meta's snippet
+  into `<head>`; it loads the script before the page.
 - **The chatbot's knowledge is derived** from services-data, siteConfig and
   company-data. Edit any of them and re-seed (see README), or the chatbot and
   the site disagree.
@@ -121,8 +130,9 @@ npm run check                   # another; --base, --only form,builder,links,ove
 
 They cover the bugs that shipped or nearly did: the form sending on Continue,
 the extras message, in-page links on a repeat or mid-scroll click, the phone
-menu's call to action at 360x640, and anything past a phone's edge at 320 to
-414px. By default the form check aborts every POST in the browser, so it is
+menu's call to action at 360x640, anything past a phone's edge at 320 to
+414px, and the Pixel's events and load timing (with Meta's script faked;
+every check blocks Meta's hosts, so tests never send real events). By default the form check aborts every POST in the browser, so it is
 safe against any build. Add a check in `scripts/checks/` when a new bug of
 that kind is fixed. Then look at it:
 

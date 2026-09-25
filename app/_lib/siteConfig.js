@@ -21,6 +21,10 @@ export const siteConfig = {
   // content value of the meta-tag Meta shows for kodexa.store. Public by
   // design; Meta reads it from the <head> of the home page. Empty means no
   // tag. A different domain gets a different code.
+  // Meta Pixel (Events Manager > Kodexa Dataset). Public by design; it is in
+  // every page's script. Empty turns the Pixel off everywhere.
+  metaPixelId: "1824366032179710",
+
   metaDomainVerification: "fo57vi7kblfk3vconl08xfbc61xzhj",
 
   // Shown in the hero and the footer. Keep these honest.

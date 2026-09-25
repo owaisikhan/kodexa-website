@@ -94,7 +94,7 @@ export const faqs = [
   },
   {
     q: "What do you do with my details?",
-    a: "We use them to reply to your request and to run your project, and for nothing else. We do not sell them or add you to a mailing list.",
+    a: "We use them to reply to your request and to run your project. We do not sell them or add you to a mailing list. The site also uses the Meta Pixel to measure our Facebook and Instagram ads; the privacy policy says exactly what it sends.",
     link: { href: "/privacy", label: "Read the privacy policy" },
   },
 ];

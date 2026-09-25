@@ -47,9 +47,12 @@ answer model returned intermittent 503s from Google that day.
    ("model overloaded"), as it already does on a 404 (`agent.js`).
 6. **Legal read-through by the owner:** quotes valid 30 days, data requests
    within 30 days, liability capped at the amount paid, Pakistani law.
-7. **Before any Meta pixel or analytics:** add a cookie and tracking section
-   to `legal-data.js` and decide on consent. There is no analytics today, so
-   there is no way to tell which service ad traffic wants.
+7. **Meta Pixel is live (25 September)** with the privacy policy updated.
+   Next: confirm events in Events Manager > Test events, then the
+   Conversions API ("Set up with Meta", or manually with a token in Vercel
+   as `META_CAPI_TOKEN`). No consent banner: the audience is Pakistan; add
+   one before targeting the EU. Re-seed the chatbot: the FAQ answer about
+   details changed.
 8. **The hero drawing says "Anything under $30?"** (`HeroVisual.js`) while the
    Facebook cover advertises Rs 5,000. The site publishes no prices; decide
    whether the drawing should use rupees.

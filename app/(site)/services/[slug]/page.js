@@ -15,6 +15,7 @@ import AskAboutService from "@/app/_components/chat/AskAboutService";
 import { isChatConfigured } from "@/app/_lib/chatbot/config";
 import { isSpeedConfigured } from "@/app/_lib/speed/psi";
 import SpeedCheck from "@/app/_components/speed/SpeedCheck";
+import TrackEvent from "@/app/_components/analytics/TrackEvent";
 
 // Nine static pages, generated at build time. No database, no request-time work.
 export function generateStaticParams() {
@@ -49,6 +50,7 @@ export default async function ServicePage({ params }) {
 
   return (
     <>
+      <TrackEvent event="ViewContent" params={{ content_name: service.title, content_category: "service" }} />
       <section className="relative overflow-hidden pt-[152px] pb-16 md:pb-24">
         <div className="absolute inset-0 grid-bg" aria-hidden />
 

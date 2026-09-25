@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useEffect, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { services } from "@/app/_lib/services-data";
 import { submitRequest } from "@/app/_lib/actions";
 import { needsSentence } from "@/app/_lib/finder-data";
+import { track } from "@/app/_lib/pixel";
 import ServiceIcon, { accentVar, accentInk } from "@/app/_components/ui/ServiceIcon";
 import Button from "@/app/_components/ui/Button";
 import WhatsAppIcon from "@/app/_components/ui/WhatsAppIcon";
@@ -214,7 +215,7 @@ export default function RequestForm() {
     setStep((s) => Math.min(STEPS.length - 1, s + 1));
   }
 
-  if (state?.ok) return <Success state={state} />;
+  if (state?.ok) return <Success state={state} service={service} />;
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -495,7 +496,18 @@ function StepContact({ values, set }) {
   );
 }
 
-function Success({ state }) {
+function Success({ state, service }) {
+  // The Pixel's Lead: the one event ads are optimised for. The reference is
+  // the event id when the request was stored, so a server-side copy of this
+  // event (Conversions API) can later be counted once.
+  const sent = useRef(false);
+  useEffect(() => {
+    if (sent.current) return;
+    sent.current = true;
+    const title = services.find((s) => s.slug === service)?.title;
+    track("Lead", { content_name: title || "Request" }, state.reference || undefined);
+  }, [service, state.reference]);
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96, y: 16 }}
