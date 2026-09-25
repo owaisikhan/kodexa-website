@@ -47,12 +47,13 @@ answer model returned intermittent 503s from Google that day.
    ("model overloaded"), as it already does on a 404 (`agent.js`).
 6. **Legal read-through by the owner:** quotes valid 30 days, data requests
    within 30 days, liability capped at the amount paid, Pakistani law.
-7. **Meta Pixel is live (25 September)** with the privacy policy updated.
-   Next: confirm events in Events Manager > Test events, then the
-   Conversions API ("Set up with Meta", or manually with a token in Vercel
-   as `META_CAPI_TOKEN`). No consent banner: the audience is Pakistan; add
-   one before targeting the EU. Re-seed the chatbot: the FAQ answer about
-   details changed.
+7. **Meta Pixel is live and confirmed (25 September)**: the owner confirmed
+   events in Events Manager, and the live site was seen sending PageView and
+   ViewContent to facebook.com/tr (as image requests, which network logs in
+   automated browsers do not list). Privacy policy updated; the chatbot's
+   FAQ entry about details re-seeded through the Supabase connector. Next:
+   Conversions API via "Set up with Meta" in Events Manager. No consent
+   banner: the audience is Pakistan; add one before targeting the EU.
 8. **The hero drawing says "Anything under $30?"** (`HeroVisual.js`) while the
    Facebook cover advertises Rs 5,000. The site publishes no prices; decide
    whether the drawing should use rupees.
