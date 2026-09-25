@@ -21,7 +21,7 @@ export const siteConfig = {
   // content value of the meta-tag Meta shows for kodexa.store. Public by
   // design; Meta reads it from the <head> of the home page. Empty means no
   // tag. A different domain gets a different code.
-  metaDomainVerification: "",
+  metaDomainVerification: "fo57vi7kblfk3vconl08xfbc61xzhj",
 
   // Shown in the hero and the footer. Keep these honest.
   stats: [
