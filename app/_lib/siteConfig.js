@@ -9,8 +9,8 @@ export const siteConfig = {
 
   // The WhatsApp number every request is handed off to. Digits only, with the
   // country code and no plus sign, because that is the format wa.me expects.
-  whatsapp: "923390391420",
-  whatsappDisplay: "+92 339 0391420",
+  whatsapp: "923374087696",
+  whatsappDisplay: "+92 337 4087696",
 
   email: "kodexa77@gmail.com",
   location: "Pakistan, working worldwide",
