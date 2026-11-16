@@ -16,7 +16,7 @@ only as a record.
   and refusing reads, admin working, chatbot knowledge seeded (24 September:
   contact, about and 12 FAQ chunks added through the Supabase connector,
   because `SUPABASE_SERVICE_ROLE_KEY` is empty in `.env.local`).
-- WhatsApp `+92 339 0391420` and email `kodexa77@gmail.com` are real.
+- WhatsApp `+92 337 4087696` and email `kodexa77@gmail.com` are real.
 - The origin remote reports that the repo moved to
   `github.com/owaisikhan/kodexa-website`; pushes to the old URL still work.
 
